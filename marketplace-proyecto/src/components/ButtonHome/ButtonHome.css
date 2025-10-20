@@ -1,0 +1,11 @@
+.boton-home {
+    color: #fff;
+    background-color: #617487;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 15px 30px;
+    font-size: 2rem;
+    width: 100%;
+    transition: background-color 0.2s;
+}
