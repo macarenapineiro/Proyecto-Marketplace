@@ -1,7 +1,8 @@
 import './CardService.css'
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
-export default function CardService({titulo, descripcion, estado, fecha, categoria, materiales}){
+
+export default function CardService({titulo, descripcion, estado, fecha, categoria, materiales, mostrarBotonCotizar, onCotizar}){
     return(
         <div className="cardContainer">
             <div className="containerRow">
@@ -29,11 +30,18 @@ export default function CardService({titulo, descripcion, estado, fecha, categor
                 <div className="materialList">
                     {materiales.map((material, index) => (
                         <div key={index} className="materialItem" style={{ marginBottom: '8px' }}>
-                            <strong>Material {index + 1}:</strong> {material.nombre} - {material.cantidad} {material.unidad}
+                            <strong>Material {index + 1}:</strong> {material.nombre} ( {material.cantidad} {material.unidad} )
                         </div>
                     ))}
                 </div>
             </div>
+            {mostrarBotonCotizar && (
+                <div className="containerRow">
+                    <button className="cotizarButton" onClick={onCotizar}>
+                        Cotizar servicio
+                    </button>
+                </div>
+            )}
         </div>
     )
 }

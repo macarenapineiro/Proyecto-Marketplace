@@ -8,7 +8,7 @@ export default function Dashboard() {
         <div className="dashboard">
             <Header />
             <div className="dashboardContainer">
-                <h2 className="subtitle">Selecciona un Rol</h2>
+                <h2 className="dashboardSubtitle">Selecciona un Rol</h2>
                 <div className="button-container-rol">
                     <ButtonRol text="Cliente" page="/dashboard/cliente" />
                     <ButtonRol text="Servicio" page="/dashboard/servicio" />

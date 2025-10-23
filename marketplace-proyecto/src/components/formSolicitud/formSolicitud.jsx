@@ -1,8 +1,6 @@
 import './formSolicitud.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 export default function FormSolicitud({ onSubmit, onCancel }) {
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         titulo: '',
         descripcion: '',

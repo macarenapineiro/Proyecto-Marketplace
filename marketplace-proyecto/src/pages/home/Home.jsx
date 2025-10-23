@@ -7,7 +7,7 @@ export default function Home() {
             <div className="home">
                 <Header />
                 <div className="container">
-                    <h2 className="subtitle">Bienvenido</h2>
+                    <h2 className="homeSubtitle">Bienvenido</h2>
                     <div className="button-container">
                         <Boton texto="Iniciar Sesión" pagina="/login" />
                         <Boton texto="Registrarse" pagina="/register" />

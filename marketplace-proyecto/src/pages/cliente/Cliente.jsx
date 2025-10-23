@@ -4,9 +4,10 @@ import CardService from '../../components/CardService/CardService'
 import TabComponent from '../../components/tab/Tab'
 import FormSolicitud from '../../components/formSolicitud/formSolicitud'
 import {useState} from 'react'
+import { useSolicitudes } from '../../context/SolicitudesContext'
 export default function Cliente() {
-    const [showForm, setShowForm] = useState(false);
-  const [solicitudes, setSolicitudes] = useState([]);
+  const { solicitudes, agregarSolicitud } = useSolicitudes();
+  const [showForm, setShowForm] = useState(false);
 
   const handleNuevaSolicitud = () => {
     setShowForm(true);
@@ -17,7 +18,7 @@ export default function Cliente() {
   };
 
   const handleCrearSolicitud = (nuevaSolicitud) => {
-    setSolicitudes(prev => [...prev, nuevaSolicitud]);
+    agregarSolicitud(nuevaSolicitud);    setShowForm(false);
     setShowForm(false);
   };
 

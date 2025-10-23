@@ -1,9 +1,7 @@
 import './ButtonBlack.css'
-import {useNavigate} from 'react-router-dom';
-export default function ButtonBlack({text}) {
-    const navigate = useNavigate();
+export default function ButtonBlack({text, type = "button", onClick}) {
     return (
-        <button className="button-black" onClick={() => navigate('/dashboard')}>
+        <button className="button-black" type={type} onClick={onClick}>
             {text}
         </button>
     )

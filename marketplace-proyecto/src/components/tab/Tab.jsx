@@ -43,7 +43,7 @@ function a11yProps(index) {
 /**
  * Componente principal
  */
-export default function TabComponent({ text1, text2, solicitudes = [], CardServiceComponent }) {
+export default function TabComponent({ text1, text2, solicitudes = [], CardServiceComponent, mostrarBotonCotizar = false, onCotizar }) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -91,6 +91,8 @@ export default function TabComponent({ text1, text2, solicitudes = [], CardServi
                 fecha={solicitud.fecha}
                 categoria={solicitud.categoria}
                 materiales={solicitud.materiales}
+                mostrarBotonCotizar={mostrarBotonCotizar}
+                onCotizar={() => onCotizar && onCotizar(solicitud)}
               />
             ))}
           </Box>

@@ -10,7 +10,8 @@ export default function CardHeader({rol, nombre}){
                 <AccountCircleOutlinedIcon id='userIcon' />
                 <p className='cardHeaderName'>{nombre}</p>
             </div>
-            <button onClick={() => navigate('/login')} className='exitButton'>Salir</button>
+            <button onClick={() => navigate('/dashboard')} className='perfilButton'>Volver</button>
+            <button onClick={() => navigate('/login')} className='exitButton'>Cerrar Sesión</button>
         </header>
     )
 }
