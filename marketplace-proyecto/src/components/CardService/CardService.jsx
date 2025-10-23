@@ -32,9 +32,6 @@ export default function CardService({titulo, descripcion, estado, fecha, categor
                             <strong>Material {index + 1}:</strong> {material.nombre} - {material.cantidad} {material.unidad}
                         </div>
                     ))}
-                    {/* {materiales.map((material, index) => (
-                        <p key={index} className="materialItem">{material.title} ({material.unidades})</p>
-                    ))} */}
                 </div>
             </div>
         </div>
