@@ -25,7 +25,8 @@ export default function Cliente() {
     <div className="clienteContainer">
       <CardHeader rol="Solicitante" nombre="Juan Pérez" />
 
-      {/* Mostrar botón solo si el formulario NO está visible */}
+      <div className="buttonContainer">
+        {/* Mostrar botón solo si el formulario NO está visible */}
       {!showForm && (
         <button 
           className="nuevaSolicitudButton" 
@@ -42,6 +43,7 @@ export default function Cliente() {
           onCancel={handleCancelar} 
         />
       )}
+      </div>
 
       {/* Tabs con solicitudes */}
       <div className="servicioContainer">
