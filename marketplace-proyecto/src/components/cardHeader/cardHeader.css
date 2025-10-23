@@ -48,10 +48,28 @@
     margin-right: 10px;
 }
 .exitButton{
-    background: #fff;
-    border: 1px solid #000;
+    background: #7dabc5;
+    border: none;
     border-radius: 15px;
     padding: 5px 15px;
     font-size: 15px;
     cursor: pointer;
+}
+.exitButton:hover{
+    background-color: #2c729a;
+    color: #fff;
+    border: none;
+}
+.volverButton{
+    background: #c6c9cb;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 15px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.volverButton:hover{
+    background-color: #878b8d;
+    color: #fff;
+    border: none;
 }

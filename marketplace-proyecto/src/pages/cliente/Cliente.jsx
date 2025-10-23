@@ -3,6 +3,7 @@ import CardHeader from '../../components/cardHeader/cardHeader'
 import CardService from '../../components/CardService/CardService'
 import TabComponent from '../../components/tab/Tab'
 import FormSolicitud from '../../components/formSolicitud/formSolicitud'
+import CardCotizacion from '../../components/cardCotizacion/cardCotizacion'
 import {useState} from 'react'
 import { useSolicitudes } from '../../context/SolicitudesContext'
 export default function Cliente() {
@@ -53,6 +54,7 @@ export default function Cliente() {
           text2="Cotizaciones"
           solicitudes={solicitudes}
           CardServiceComponent={CardService}
+          CardCotizacionComponent={CardCotizacion}
         />
       </div>
     </div>

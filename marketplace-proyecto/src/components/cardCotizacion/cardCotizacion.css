@@ -1,0 +1,98 @@
+.cotizacionContainer{
+    background-color: #FFFFFF;
+    border: 1px solid #000;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+}
+.cotizacionSubtitle{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+.estado{
+    font-size: 14px;
+    background-color: #FBE691;
+    color: #8B7643;
+    padding: 4px 8px;
+    border-radius: 15px;
+}
+.precio, .tiempo{
+    font-size: 18px;
+    color: #736C6C;
+    margin: 12px 0;
+}
+.precioValue, .tiempoValue{
+    font-size: 20px;
+    font-style: italic;
+}
+.descripcion{
+    font-size: 14px;
+    color: #000;
+    margin: 12px 0;
+    font-weight: bold;
+}
+.descripcionValue{
+    font-size: 14px;
+    font-style: italic;
+    color: #777474;
+}
+.insumosTitle{
+    font-size: 14px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+.materialContainerRow{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 12px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E8E8E8;
+    padding: 0 8px;
+    border-radius: 5px;
+}
+.materialNombre{
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0;
+}
+.materialPrecio{
+    font-size: 15px;
+    color: #4A4A4A;
+    margin: 0;
+}
+.materialFecha{
+    font-size: 15px;
+    color: #4A4A4A;
+    margin: 8px 0;
+}
+.containerRowButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.aceptarButton, .rechazarButton{    
+    flex: 1;
+    min-width: 120px; 
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.aceptarButton{
+    background-color: #000;
+    color: #FFF;
+    border: none;
+}
+.aceptarButton:hover{
+    background-color: #333333;
+}
+.rechazarButton{
+    background-color: #FFF;
+    color: #000;
+    border: 1px solid #000;
+}

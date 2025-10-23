@@ -1,6 +1,6 @@
 import './formCotizacion.css'
 import {useState} from 'react';
-export default function FormCotizacion({solicitud, onCancel}) {
+export default function FormCotizacion({solicitud, onCancel, onSubmit}) {
     const [formData, setFormData] = useState({
         precio: '',
         tiempoEntrega: '',

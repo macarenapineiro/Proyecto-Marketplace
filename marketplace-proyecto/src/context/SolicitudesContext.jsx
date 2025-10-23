@@ -4,6 +4,7 @@ const SolicitudesContext = createContext();
 
 export function SolicitudesProvider({ children }) {
     const [solicitudes, setSolicitudes] = useState([]);
+    const [cotizaciones, setCotizaciones] = useState([]);
 
     const agregarSolicitud = (nuevaSolicitud) => {
         setSolicitudes(prev => [...prev, nuevaSolicitud]);
@@ -14,9 +15,14 @@ export function SolicitudesProvider({ children }) {
             prev.map(sol => sol.id === id ? { ...sol, ...cambios } : sol)
         );
     };
+    
+    const enviarCotizacion = (cotizacion) =>{
+        setCotizaciones(prev => [...prev, {...cotizacion}])
+        actualizarSolicitud(cotizacion.solicitudId, { estado: 'Pendiente' });
+    }
 
     return (
-        <SolicitudesContext.Provider value={{ solicitudes, agregarSolicitud, actualizarSolicitud }}>
+        <SolicitudesContext.Provider value={{ solicitudes, cotizaciones, agregarSolicitud, actualizarSolicitud, enviarCotizacion }}>
             {children}
         </SolicitudesContext.Provider>
     );

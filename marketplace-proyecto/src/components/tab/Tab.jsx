@@ -43,7 +43,7 @@ function a11yProps(index) {
 /**
  * Componente principal
  */
-export default function TabComponent({ text1, text2, solicitudes = [], CardServiceComponent, mostrarBotonCotizar = false, onCotizar }) {
+export default function TabComponent({ text1, text2, solicitudes = [], CardServiceComponent, CardCotizacionComponent, mostrarBotonCotizar = false, onCotizar }) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -101,80 +101,8 @@ export default function TabComponent({ text1, text2, solicitudes = [], CardServi
 
       {/* Contenido de la segunda pestaña */}
       <CustomTabPanel value={value} index={1}>
-        Item Two
+        <CardCotizacionComponent />
       </CustomTabPanel>
     </Box>
   );
 }
-
-// import * as React from 'react';
-// import PropTypes from 'prop-types';
-// import Tabs from '@mui/material/Tabs';
-// import Tab from '@mui/material/Tab';
-// import Box from '@mui/material/Box';
-// import CardService from '../CardService/CardService';
-
-// function CustomTabPanel(props) {
-//   const { children, value, index, ...other } = props;
-
-//   return (
-//     <div
-//       role="tabpanel"
-//       hidden={value !== index}
-//       id={`simple-tabpanel-${index}`}
-//       aria-labelledby={`simple-tab-${index}`}
-//       {...other}
-//     >
-//       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-//     </div>
-//   );
-// }
-
-// CustomTabPanel.propTypes = {
-//   children: PropTypes.node,
-//   index: PropTypes.number.isRequired,
-//   value: PropTypes.number.isRequired,
-// };
-
-// function a11yProps(index) {
-//   return {
-//     id: `simple-tab-${index}`,
-//     'aria-controls': `simple-tabpanel-${index}`,
-//   };
-// }
-
-// export default function TabComponent({text1, text2}) {
-//   const [value, setValue] = React.useState(0);
-
-//   const handleChange = (event, newValue) => {
-//     setValue(newValue);
-//   };
-
-//   return (
-//     <Box sx={{ width: '100%' }}>
-//       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-//         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-//           <Tab label={text1}{...a11yProps(0)} />
-//           <Tab label={text2} {...a11yProps(1)} />
-//         </Tabs>
-//       </Box>
-//       <CustomTabPanel value={value} index={0}>
-//         <CardService titulo="Servicio 1" descripcion="Descripción del servicio 1" estado="Abierto" fecha="2023-03-15" categoria="Categoría 1" materiales={[{title: "Material 1", unidades: 2}, {title: "Material 2", unidades: 5}]} />
-//       </CustomTabPanel>
-//       <CustomTabPanel value={value} index={1}>
-//         Item Two
-//       </CustomTabPanel>
-//     </Box>
-//   );
-// }
-// // import './Tab.css';
-// // import Tabs from '@mui/material/Tabs';
-// // import Tab from '@mui/material/Tab';
-// // export default function TabComponent({text1, text2, selectedTab, onChange}) {
-// //     return(
-// //         <Tabs value={selectedTab} onChange={onChange}>
-// //             <Tab label={text1} />
-// //             <Tab label={text2} />
-// //         </Tabs>
-// //     )
-// // }
