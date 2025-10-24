@@ -4,32 +4,66 @@ import { useNavigate } from 'react-router-dom'
 import Header from '../../components/header/Header'
 import InformationCard from '../../components/InformationCard/InformationCard'
 import ButtonBlack from '../../components/ButtonBlack/ButtonBlack'
-const HARDCODED_USER = {
-  username: "admin@test.com",
-  password: "admin123",
-  name: "Admin User"
-}
+const USERS = [
+  {
+    username: "cliente@test.com",
+    password: "cliente123",
+    name: "Juan Pérez",
+    rol: "Solicitante",
+    redirect: "/cliente"
+  },
+  {
+    username: "servicio@test.com",
+    password: "servicio123",
+    name: "María Gómez",
+    rol: "Proveedor",
+    redirect: "/servicio"
+  },
+  {
+    username: "insumos@test.com",
+    password: "insumos123",
+    name: "Carlos López",
+    rol: "Proveedor de Insumos",
+    redirect: "/insumo"
+  }
+]
+
 export default function Login() {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    
     function handleSubmit(e) {
       e.preventDefault();
       if(!username || !password){
         setError("Por favor, completa todos los campos");
         return;
       }
-      if (username === HARDCODED_USER.username && password === HARDCODED_USER.password) {
+      const user = USERS.find(u => u.username === username && u.password === password);
+      if(user){
         const fakeToken = "token-demo-abc123";
         localStorage.setItem("authToken", fakeToken);
-        localStorage.setItem("userName", HARDCODED_USER.name);
+        localStorage.setItem("user", JSON.stringify({
+          name: user.name,
+          rol: user.rol
+        }));
         setError(null);
-        navigate('/dashboard');
+        navigate(user.redirect);
       } else{
         setError("Usuario o contraseña incorrectos");
       }
+      // if (username === HARDCODED_USER.username && password === HARDCODED_USER.password) {
+      //   const fakeToken = "token-demo-abc123";
+      //   localStorage.setItem("authToken", fakeToken);
+      //   localStorage.setItem("user", JSON.stringify(HARDCODED_USER));
+      //   setError(null);
+      //   navigate('/dashboard');
+      // } else{
+      //   setError("Usuario o contraseña incorrectos");
+      // }
     }
+    
     function handleLogout(){
       localStorage.removeItem("authToken");
       localStorage.removeItem("userName");

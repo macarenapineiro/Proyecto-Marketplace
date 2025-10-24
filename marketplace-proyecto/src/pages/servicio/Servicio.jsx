@@ -28,10 +28,11 @@ export default function Servicio() {
     setShowForm(false);
     setSolicitudSeleccionada(null);
   }
+  const user = JSON.parse(localStorage.getItem("user"));
 
   return (
     <div className="clienteContainer">
-      <CardHeader rol="Proveedor" nombre="Juan Pérez" />
+      <CardHeader rol={user.rol} nombre={user.name} />
 
       {/* Solo mostrar el formulario si hay una solicitud seleccionada */}
       {showForm && (

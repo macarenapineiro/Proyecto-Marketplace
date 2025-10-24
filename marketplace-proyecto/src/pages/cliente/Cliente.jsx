@@ -19,13 +19,15 @@ export default function Cliente() {
   };
 
   const handleCrearSolicitud = (nuevaSolicitud) => {
-    agregarSolicitud(nuevaSolicitud);    setShowForm(false);
+    agregarSolicitud(nuevaSolicitud);    
     setShowForm(false);
   };
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   return (
     <div className="clienteContainer">
-      <CardHeader rol="Solicitante" nombre="Juan Pérez" />
+      <CardHeader rol={user.rol} nombre={user.name} />
 
       <div className="buttonContainer">
         {/* Mostrar botón solo si el formulario NO está visible */}
