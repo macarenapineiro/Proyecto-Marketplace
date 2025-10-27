@@ -5,9 +5,11 @@ import CardService from '../../components/CardService/CardService'
 import FormCotizacion from '../../components/formCotizacion/formCotizacion'
 import CardInsumos from '../../components/cardInsumos/CardInsumos'
 import { useState } from 'react'
-import { useSolicitudes } from '../../context/SolicitudesContext'
+import { useSolicitudes } from '../../context/ServiceContext'
+import {useAuth} from '../../context/AuthContext'
+
 export default function Insumo() {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const { currentUser } = useAuth();
     const { solicitudes, enviarCotizacion } = useSolicitudes();
     const [showForm, setShowForm] = useState(false);
     const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
@@ -30,29 +32,28 @@ export default function Insumo() {
     }
     return (
         <div className='insumoContainer'>
-            <CardHeader rol={user.rol} nombre={user.name} />
+            <CardHeader rol={currentUser.rol} nombre={currentUser.name} />
             <CardInsumos />
-            {/* Solo mostrar el formulario si hay una solicitud seleccionada */}
-            {/* {showForm && (
+            {showForm && (
                 <FormCotizacion
                     solicitud={solicitudSeleccionada}
                     onCancel={handleCancelar}
                     onSubmit={handleEnviarCotizacion}
                 />
-            )} */}
+            )}
 
             {/* Tabs con solicitudes */}
-            {/* <div className="servicioContainer">
+            <div className="servicioContainer">
                 <TabComponent
                     text1="Solicitudes disponibles"
                     text2="Mis cotizaciones"
                     solicitudes={solicitudes}
-                    CardServiceComponent={CardService}
-                    CardCotizacionComponent={CardCotizacion}
+                    CardServiceComponent={CardInsumos}
+                    CardCotizacionComponent={CardService}
                     mostrarBotonCotizar={true}
                     onCotizar={handleCotizar}
                 />
-            </div> */}
+            </div>
         </div>
     )
 }

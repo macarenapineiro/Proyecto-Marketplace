@@ -1,41 +1,83 @@
 import './cardCotizacion.css'
-export default function CardCotizacion({ }) {
+
+export default function CardCotizacion({
+    titulo = 'Cotización',
+    estado = 'Pendiente',
+    precio = 0,
+    tiempoEntrega = '',
+    descripcion = '',
+    cliente = '',
+    fechaServicio = '',
+    mostrarAcciones = false,
+    mostrarEditar = false,
+    mostrarEliminar = false,
+    onAceptar,
+    onRechazar,
+    onEditar,
+    onEliminar,
+}) {
+    const estadoClass = `estado ${String(estado).toLowerCase()}`;
     return (
-        <>
-            <div className="cotizacionContainer">
+        <div className="cotizacionContainer">
+            <div className="containerRow">
+                <h3 className="cotizacionSubtitle">{titulo}</h3>
+                <span className={estadoClass}>{estado}</span>
+            </div>
+            {cliente && (
                 <div className="containerRow">
-                    <h3 className="cotizacionSubtitle">Cotización: </h3>
-                    <span className="estado">Pendiente</span>
+                    <p className="cliente">Cliente: {cliente}</p>
                 </div>
-                <div className="containerRow">
-                    <div className="containerColumnDoble">
-                        <div className="containerColumn">
-                            <p className="precio">Precio Total</p>
-                            <span className="precioValue">$ 1500</span>
-                        </div>
-                        <div className="containerColumn">
-                            <p className="tiempo">Tiempo Estimado</p>
-                            <span className="tiempoValue">3 días</span>
-                        </div>
+            )}
+            <div className="containerRow">
+                <div className="containerColumnDoble">
+                    <div className="containerColumn">
+                        <p className="precio">Precio Total</p>
+                        <span className="precioValue">$ {precio}</span>
+                    </div>
+                    <div className="containerColumn">
+                        <p className="tiempo">Tiempo Estimado</p>
+                        <span className="tiempoValue">{tiempoEntrega}</span>
                     </div>
                 </div>
+            </div>
+            {descripcion && (
                 <div className="containerRow">
                     <div className="containerColumn">
                         <p className="descripcion">Descripción de la cotización</p>
-                        <span className="descripcionValue">El servicio incluye arreglo completo</span>
-                        <p className="insumosTitle">Insumos cotizados:</p>
+                        <span className="descripcionValue">{descripcion}</span>
                     </div>
                 </div>
-                <div className="materialContainerRow">
-                    <p className="materialNombre">Tornillo</p>
-                    <p className="materialPrecio">$ 100</p>
-                    <p className="materialFecha">Inmediato</p>
+            )}
+            {fechaServicio && (
+                <div className="containerRow">
+                    <div className="containerColumn">
+                        <p className="fechaServicio">Fecha de Servicio</p>
+                        <span className="fechaServicioValue">{fechaServicio}</span>
+                    </div>
                 </div>
+            )}
+            {mostrarAcciones && estado === 'Pendiente' && (
                 <div className="containerRowButton">
-                    <button className="aceptarButton">Aceptar Cotización</button>
-                    <button className="rechazarButton">Rechazar</button>
+                    <button className="aceptarButton" onClick={onAceptar}>
+                        Aceptar Cotización
+                    </button>
+                    <button className="rechazarButton" onClick={onRechazar}>
+                        Rechazar
+                    </button>
                 </div>
-            </div>
-        </>
+            )}
+            {mostrarEditar && estado === 'Pendiente' && (
+                <div className="containerRowButton">
+                    <button className="editarButton" onClick={onEditar}>
+                        Editar Cotización
+                    </button>
+                    {mostrarEliminar && (
+                        <button className="eliminarButton" onClick={onEliminar}>
+                            Eliminar
+                        </button>
+                    )}
+                </div>
+            )}
+        </div>
     )
 }

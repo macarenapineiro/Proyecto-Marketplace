@@ -43,7 +43,23 @@ function a11yProps(index) {
 /**
  * Componente principal
  */
-export default function TabComponent({ text1, text2, solicitudes = [], CardServiceComponent, CardCotizacionComponent, mostrarBotonCotizar = false, onCotizar }) {
+export default function TabComponent({
+  text1,
+  text2,
+  solicitudes = [],
+  cotizaciones = [],
+  CardServiceComponent,
+  CardCotizacionComponent,
+  mostrarBotonCotizar = false,
+  onCotizar,
+  mostrarAccionesCotizacion = false,
+  mostrarEditarCotizacion = false,
+  mostrarEliminarCotizacion = false,
+  onAceptarCotizacion,
+  onRechazarCotizacion,
+  onEditarCotizacion,
+  onEliminarCotizacion,
+}) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -101,7 +117,38 @@ export default function TabComponent({ text1, text2, solicitudes = [], CardServi
 
       {/* Contenido de la segunda pestaña */}
       <CustomTabPanel value={value} index={1}>
-        <CardCotizacionComponent />
+        {cotizaciones.length === 0 ? (
+          <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>
+            No hay cotizaciones aún.
+          </p>
+        ) : (
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 2,
+              justifyContent: 'center',
+            }}
+          >
+            {cotizaciones.map((c) => (
+              <CardCotizacionComponent
+                key={c.id}
+                titulo={c.titulo || `Cotización #${c.id}`}
+                estado={c.estado}
+                precio={c.precio}
+                tiempoEntrega={c.tiempoEntrega}
+                descripcion={c.descripcion}
+                mostrarAcciones={mostrarAccionesCotizacion}
+                mostrarEditar={mostrarEditarCotizacion}
+                mostrarEliminar={mostrarEliminarCotizacion}
+                onAceptar={() => onAceptarCotizacion && onAceptarCotizacion(c)}
+                onRechazar={() => onRechazarCotizacion && onRechazarCotizacion(c)}
+                onEditar={() => onEditarCotizacion && onEditarCotizacion(c)}
+                onEliminar={() => onEliminarCotizacion && onEliminarCotizacion(c)}
+              />
+            ))}
+          </Box>
+        )}
       </CustomTabPanel>
     </Box>
   );

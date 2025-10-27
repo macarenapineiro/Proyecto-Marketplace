@@ -1,11 +1,23 @@
 import './formCotizacion.css'
-import {useState} from 'react';
-export default function FormCotizacion({solicitud, onCancel, onSubmit}) {
+import {useState, useEffect} from 'react';
+export default function FormCotizacion({solicitud, cotizacion, onCancel, onSubmit}) {
     const [formData, setFormData] = useState({
         precio: '',
         tiempoEntrega: '',
         descripcion: ''
     });
+    
+    // Cargar datos si estamos editando
+    useEffect(() => {
+        if (cotizacion) {
+            setFormData({
+                precio: cotizacion.precio || '',
+                tiempoEntrega: cotizacion.tiempoEntrega || '',
+                descripcion: cotizacion.descripcion || ''
+            });
+        }
+    }, [cotizacion]);
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -17,10 +29,11 @@ export default function FormCotizacion({solicitud, onCancel, onSubmit}) {
             return;
         }
         const nuevaCotizacion = {
-            id: Date.now(),
+            id: cotizacion?.id || Date.now(),
             solicitudId: solicitud.id,
             ...formData,
             fecha: new Date().toLocaleDateString(),
+            esEdicion: !!cotizacion
         };
         onSubmit(nuevaCotizacion);
         setFormData({
@@ -32,7 +45,7 @@ export default function FormCotizacion({solicitud, onCancel, onSubmit}) {
     return (
         <div className="formContainer">
             <div className="formRow">
-                <h2 className="subtitle">Crear cotización</h2>
+                <h2 className="subtitle">{cotizacion ? 'Editar cotización' : 'Crear cotización'}</h2>
                 <button className="exitSolicitud" onClick={onCancel}>x</button>
             </div>
             <div className="formRow">
@@ -72,7 +85,7 @@ export default function FormCotizacion({solicitud, onCancel, onSubmit}) {
             </div>
             <div className="containerRowButtons">
                 <button type="button" className="submitButton" onClick={handleSubmit}>
-                    Enviar cotización
+                    {cotizacion ? 'Guardar cambios' : 'Enviar cotización'}
                 </button>
                 <button type="button" className="cancelButton" onClick={onCancel}>
                     Cancelar

@@ -1,16 +1,19 @@
 import './App.css'
-import {BrowserRouter as Router} from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import AppRouter from './routes/AppRouter'
-import { SolicitudesProvider } from './context/SolicitudesContext'
+import { ServiceProvider } from './context/ServiceContext'
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
     <section className="App">
-      <SolicitudesProvider>
-        <Router>
-          <AppRouter />
-        </Router>
-      </SolicitudesProvider>
+      <AuthProvider>
+        <ServiceProvider>
+          <Router>
+            <AppRouter />
+          </Router>
+        </ServiceProvider>
+      </AuthProvider>
     </section>
   )
 }
