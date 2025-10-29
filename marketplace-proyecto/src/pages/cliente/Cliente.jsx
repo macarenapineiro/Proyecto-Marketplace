@@ -4,7 +4,7 @@ import CardService from '../../components/CardService/CardService'
 import TabComponent from '../../components/tab/Tab'
 import FormSolicitud from '../../components/formSolicitud/formSolicitud'
 import CardCotizacion from '../../components/cardCotizacion/cardCotizacion'
-import {useState, useMemo} from 'react'
+import {useState, useMemo, useEffect} from 'react'
 import { useSolicitudes } from '../../context/ServiceContext'
 import {useAuth} from '../../context/AuthContext'
 
@@ -12,6 +12,7 @@ export default function Cliente() {
   const {currentUser} = useAuth();
   const { solicitudes, cotizaciones, agregarSolicitud, agregarCotizacion, actualizarEstadoCotizacion } = useSolicitudes();
   const [showForm, setShowForm] = useState(false);
+  const [sort, setSort] = useState("asc");
 
   const handleNuevaSolicitud = () => {
     setShowForm(true);
@@ -48,6 +49,19 @@ export default function Cliente() {
   const handleRechazar = (cotizacion) => {
     actualizarEstadoCotizacion(cotizacion.id, 'Rechazado');
   };
+  const handleOrdenarPorPrecio = () => {
+    setSort(prevSort => prevSort === "asc" ? "desc" : "asc");
+  }
+  useEffect(() => {
+    const sortedCotizaciones = [...misCotizaciones]
+    sortedCotizaciones.sort((a, b) => {
+      if (sort === "asc") {
+        return a.precio - b.precio;
+      } else {
+        return b.precio - a.precio;
+      }
+    })
+  }, [sort, misCotizaciones])
 
   return (
     <div className="clienteContainer">
@@ -75,6 +89,7 @@ export default function Cliente() {
 
       {/* Tabs con solicitudes */}
       <div className="servicioContainer">
+        <button onClick={handleOrdenarPorPrecio}>Ordenar por precio</button>
         <TabComponent 
           text1="Mis solicitudes" 
           text2="Cotizaciones"
