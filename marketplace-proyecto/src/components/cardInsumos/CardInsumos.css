@@ -91,3 +91,46 @@
     flex-shrink: 0;
     margin-left: 5px;
 }
+
+.cotizarButton {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.cotizarButton:hover {
+    background-color: #333;
+}
+
+.status {
+    font-size: 14px;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+.status.abierto {
+    background-color: #90EE90;
+    color: #2E7D32;
+}
+
+.status.pendiente {
+    background-color: #FBE691;
+    color: #8B7643;
+}
+
+.status.aceptado {
+    background-color: #A5D6A7;
+    color: #1B5E20;
+}
+
+.status.rechazado {
+    background-color: #FFCDD2;
+    color: #B71C1C;
+}

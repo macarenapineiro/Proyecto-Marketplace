@@ -4,92 +4,81 @@ const ServiceContext = createContext();
 
 export function ServiceProvider({ children }) {
     const [solicitudes, setSolicitudes] = useState([]);
-    const [cotizaciones, setCotizaciones] = useState([]);
+    const [cotizacionesServicios, setCotizacionesServicios] = useState([]);
+    const [cotizacionesInsumos, setCotizacionesInsumos] = useState([]);
     
     const agregarSolicitud = (solicitud) => {
         setSolicitudes(prev => [...prev, {...solicitud, id: Date.now(), estado: 'Abierto'}]);
     };
 
-    // Recibe la cotización completa con solicitudId incluido
+    // Recibe la cotización completa con solicitudId incluido y tipo: 'servicio' | 'insumo'
     const agregarCotizacion = (cotizacion) => {
-        setCotizaciones(prev => [...prev, cotizacion]);
-        // Actualizar el estado de la solicitud a Pendiente cuando se crea una cotización
-        setSolicitudes(prev => prev.map(s => 
-            s.id === cotizacion.solicitudId ? {...s, estado: 'Pendiente'} : s
-        ));
+        if (cotizacion.tipo === 'insumo') {
+            setCotizacionesInsumos(prev => [...prev, cotizacion]);
+        } else {
+            setCotizacionesServicios(prev => [...prev, cotizacion]);
+        }
+        // No cambiamos el estado global de la solicitud, solo la visibilidad para el proveedor que cotizó
     };
 
-    const actualizarCotizacion = (cotizacionId, cambios) => {
-        setCotizaciones(prev => prev.map(c => 
-            c.id === cotizacionId ? {...c, ...cambios} : c
-        ));
-    };
-
-    const eliminarCotizacion = (cotizacionId) => {
-        let solicitudId = null;
-        
-        setCotizaciones(prev => {
-            const cotizacion = prev.find(c => c.id === cotizacionId);
-            if (!cotizacion) return prev;
-            
-            solicitudId = cotizacion.solicitudId;
-            // Eliminar la cotización
-            return prev.filter(c => c.id !== cotizacionId);
-        });
-        
-        // Si no quedan más cotizaciones para esa solicitud, volver a estado Abierto
-        if (solicitudId) {
-            setSolicitudes(prev => prev.map(s => {
-                if (s.id === solicitudId) {
-                    const cotizacionesRestantes = cotizaciones.filter(
-                        c => c.solicitudId === solicitudId && c.id !== cotizacionId
-                    );
-                    // Si no quedan cotizaciones, volver a Abierto
-                    if (cotizacionesRestantes.length === 0) {
-                        return {...s, estado: 'Abierto'};
-                    }
-                }
-                return s;
-            }));
+    // Actualiza cotización según tipo
+    const actualizarCotizacion = (cotizacionId, cambios, tipo) => {
+        if (tipo === 'insumo') {
+            setCotizacionesInsumos(prev => prev.map(c => c.id === cotizacionId ? {...c, ...cambios} : c));
+        } else {
+            setCotizacionesServicios(prev => prev.map(c => c.id === cotizacionId ? {...c, ...cambios} : c));
         }
     };
 
-    const actualizarEstadoCotizacion = (cotizacionId, nuevoEstado) => {
-        // Actualizar estado de la cotización y obtener la solicitudId
-        let solicitudId = null;
-        
-        setCotizaciones(prev => {
-            // Encontrar la cotización para obtener su solicitudId
-            const cotizacion = prev.find(c => c.id === cotizacionId);
-            if (!cotizacion) return prev;
-            
-            solicitudId = cotizacion.solicitudId;
-            
-            // Actualizar estado de la cotización
-            return prev.map(c => {
-                if (c.id === cotizacionId) {
-                    return {...c, estado: nuevoEstado};
-                }
-                // Si se acepta una, rechazar las demás de la misma solicitud
-                if (nuevoEstado === 'Aceptado' && c.solicitudId === solicitudId && c.id !== cotizacionId) {
-                    return {...c, estado: 'Rechazado'};
-                }
-                return c;
+    // Elimina cotización según tipo
+    const eliminarCotizacion = (cotizacionId, tipo) => {
+        if (tipo === 'insumo') {
+            setCotizacionesInsumos(prev => prev.filter(c => c.id !== cotizacionId));
+        } else {
+            setCotizacionesServicios(prev => prev.filter(c => c.id !== cotizacionId));
+        }
+    };
+
+    // Actualiza estado de cotización según tipo
+    const actualizarEstadoCotizacion = (cotizacionId, nuevoEstado, tipo) => {
+        if (tipo === 'insumo') {
+            setCotizacionesInsumos(prev => {
+                const cotizacion = prev.find(c => c.id === cotizacionId);
+                if (!cotizacion) return prev;
+                const solicitudId = cotizacion.solicitudId;
+                return prev.map(c => {
+                    if (c.id === cotizacionId) {
+                        return { ...c, estado: nuevoEstado };
+                    }
+                    if (nuevoEstado === 'Aceptado' && c.solicitudId === solicitudId && c.id !== cotizacionId) {
+                        return { ...c, estado: 'Rechazado' };
+                    }
+                    return c;
+                });
             });
-        });
-        
-        // Actualizar estado de la solicitud
-        if (solicitudId) {
-            setSolicitudes(prev => prev.map(s => 
-                s.id === solicitudId ? {...s, estado: nuevoEstado} : s
-            ));
+        } else {
+            setCotizacionesServicios(prev => {
+                const cotizacion = prev.find(c => c.id === cotizacionId);
+                if (!cotizacion) return prev;
+                const solicitudId = cotizacion.solicitudId;
+                return prev.map(c => {
+                    if (c.id === cotizacionId) {
+                        return { ...c, estado: nuevoEstado };
+                    }
+                    if (nuevoEstado === 'Aceptado' && c.solicitudId === solicitudId && c.id !== cotizacionId) {
+                        return { ...c, estado: 'Rechazado' };
+                    }
+                    return c;
+                });
+            });
         }
     };
 
     return(
     <ServiceContext.Provider value={{
         solicitudes,
-        cotizaciones,
+        cotizacionesServicios,
+        cotizacionesInsumos,
         agregarSolicitud,
         agregarCotizacion,
         actualizarCotizacion,
