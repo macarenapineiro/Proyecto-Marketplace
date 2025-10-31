@@ -8,7 +8,7 @@ export function ServiceProvider({ children }) {
     const [cotizacionesInsumos, setCotizacionesInsumos] = useState([]);
     
     const agregarSolicitud = (solicitud) => {
-        setSolicitudes(prev => [...prev, {...solicitud, id: Date.now(), estado: 'Abierto'}]);
+        setSolicitudes(prev => [...prev, {...solicitud}]);
     };
 
     // Recibe la cotización completa con solicitudId incluido y tipo: 'servicio' | 'insumo'

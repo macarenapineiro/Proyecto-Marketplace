@@ -25,14 +25,9 @@ export default function Login() {
     
     if (result.success && result.user) {
       setError(null);
-      navigate(result.user.redirect);
     } else {
       setError("Usuario o contraseña incorrectos");
     }
-  }
-
-  function handleLogout() {
-    logout();
   }
   
   const logged = !!localStorage.getItem("authToken");
