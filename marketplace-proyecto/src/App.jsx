@@ -7,13 +7,13 @@ import { AuthProvider } from "./context/AuthContext";
 function App() {
   return (
     <section className="App">
-      <AuthProvider>
-        <ServiceProvider>
-          <Router>
-            <AppRouter />
-          </Router>
-        </ServiceProvider>
-      </AuthProvider>
+        <AuthProvider>
+          <ServiceProvider>
+            <Router>
+              <AppRouter />
+            </Router>
+          </ServiceProvider>
+        </AuthProvider>
     </section>
   )
 }

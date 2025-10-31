@@ -4,9 +4,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-/**
- * Panel de contenido que se muestra solo cuando su tab está activa
- */
 function CustomTabPanel({ children, value, index }) {
   return (
     <div
@@ -44,8 +41,8 @@ function a11yProps(index) {
  * Componente principal
  */
 export default function TabComponent({
-  text1,
-  text2,
+  text1 = "Solicitudes",
+  text2 = "Cotizaciones",
   solicitudes = [],
   cotizaciones = [],
   CardServiceComponent,
@@ -60,6 +57,8 @@ export default function TabComponent({
   onEditarCotizacion,
   onEliminarCotizacion,
   customCotizacionesRender,
+  sort,
+  onOrdenarPorPrecio,
 }) {
   const [value, setValue] = useState(0);
 
@@ -71,9 +70,9 @@ export default function TabComponent({
     <Box sx={{ width: '100%' }}>
       {/* Encabezado de las pestañas */}
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs 
-          value={value} 
-          onChange={handleChange} 
+        <Tabs
+          value={value}
+          onChange={handleChange}
           aria-label="tabs de solicitudes"
           textColor="primary"
           indicatorColor="primary"
@@ -128,31 +127,42 @@ export default function TabComponent({
                 No hay cotizaciones aún.
               </p>
             ) : (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 2,
-                  justifyContent: 'center',
-                }}
-              >
-                {cotizaciones.map((c) => (
-                  <CardCotizacionComponent
-                    key={c.id}
-                    titulo={c.titulo || `Cotización #${c.id}`}
-                    estado={c.estado}
-                    precio={c.precio}
-                    tiempoEntrega={c.tiempoEntrega}
-                    descripcion={c.descripcion}
-                    mostrarAcciones={mostrarAccionesCotizacion}
-                    mostrarEditar={mostrarEditarCotizacion}
-                    mostrarEliminar={mostrarEliminarCotizacion}
-                    onAceptar={() => onAceptarCotizacion && onAceptarCotizacion(c)}
-                    onRechazar={() => onRechazarCotizacion && onRechazarCotizacion(c)}
-                    onEditar={() => onEditarCotizacion && onEditarCotizacion(c)}
-                    onEliminar={() => onEliminarCotizacion && onEliminarCotizacion(c)}
-                  />
-                ))}
+              <Box sx={{ width: '100%' }}>
+                {/* Botón para ordenar por precio */}
+                {onOrdenarPorPrecio && (
+                  <button
+                    onClick={onOrdenarPorPrecio}
+                    style={{ marginBottom: 10 }}
+                  >
+                    Ordenar por precio {sort === "asc" ? "▼" : "▲"}
+                  </button>
+                )}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 2,
+                    justifyContent: 'center',
+                  }}
+                >
+                  {cotizaciones.map((c) => (
+                    <CardCotizacionComponent
+                      key={c.id}
+                      titulo={c.titulo || `Cotización #${c.id}`}
+                      estado={c.estado}
+                      precio={c.precio}
+                      tiempoEntrega={c.tiempoEntrega}
+                      descripcion={c.descripcion}
+                      mostrarAcciones={mostrarAccionesCotizacion}
+                      mostrarEditar={mostrarEditarCotizacion}
+                      mostrarEliminar={mostrarEliminarCotizacion}
+                      onAceptar={() => onAceptarCotizacion && onAceptarCotizacion(c)}
+                      onRechazar={() => onRechazarCotizacion && onRechazarCotizacion(c)}
+                      onEditar={() => onEditarCotizacion && onEditarCotizacion(c)}
+                      onEliminar={() => onEliminarCotizacion && onEliminarCotizacion(c)}
+                    />
+                  ))}
+                </Box>
               </Box>
             )
           )

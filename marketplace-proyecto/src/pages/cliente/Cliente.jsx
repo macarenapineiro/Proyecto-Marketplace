@@ -4,13 +4,21 @@ import CardService from '../../components/CardService/CardService'
 import TabComponent from '../../components/tab/Tab'
 import FormSolicitud from '../../components/formSolicitud/formSolicitud'
 import CardCotizacion from '../../components/cardCotizacion/cardCotizacion'
-import { useState, useMemo, useEffect } from 'react'
+import { useState } from 'react'
 import { useSolicitudes } from '../../context/ServiceContext'
 import { useAuth } from '../../context/AuthContext'
 
 export default function Cliente() {
   const { currentUser } = useAuth();
-  const { solicitudes, cotizacionesServicios, cotizacionesInsumos, agregarSolicitud, agregarCotizacion, actualizarEstadoCotizacion } = useSolicitudes();
+  const {
+    solicitudes,
+    cotizacionesServicios,
+    cotizacionesInsumos,
+    agregarSolicitud,
+    agregarCotizacion,
+    actualizarEstadoCotizacion
+  } = useSolicitudes();
+
   const [showForm, setShowForm] = useState(false);
   const [sort, setSort] = useState("asc");
 
@@ -23,37 +31,33 @@ export default function Cliente() {
   };
 
   const handleCrearSolicitud = (nuevaSolicitud) => {
-    // Adjuntar cliente creador a la solicitud
     agregarSolicitud({ ...nuevaSolicitud, cliente: currentUser?.name || 'Cliente' });
     setShowForm(false);
   };
 
-  // Filtrar: solo mis solicitudes abiertas (sin cotización de ningún tipo)
-  const misSolicitudesAbiertas = useMemo(() => {
+  const misSolicitudesAbiertas = () => {
     const idsConCotizacion = new Set([
       ...(cotizacionesServicios || []).map(c => c.solicitudId),
       ...(cotizacionesInsumos || []).map(c => c.solicitudId)
     ]);
     return (solicitudes || []).filter(s => s.cliente === currentUser?.name && !idsConCotizacion.has(s.id));
-  }, [solicitudes, cotizacionesServicios, cotizacionesInsumos, currentUser]);
+  }
 
-  // Cotizaciones de servicios recibidas para mis solicitudes
-  const misCotizacionesServicios = useMemo(() => {
-    const idsMisSolicitudes = new Set((solicitudes || []).filter(s => s.cliente === currentUser?.name).map(s => s.id));
+  const misCotizacionesServicios = () => {
+    const misIds = new Set((solicitudes || []).filter(s => s.cliente === currentUser?.name).map(s => s.id));
     const tituloPorId = new Map((solicitudes || []).map(s => [s.id, s.titulo]));
     return (cotizacionesServicios || [])
-      .filter(c => idsMisSolicitudes.has(c.solicitudId))
+      .filter(c => misIds.has(c.solicitudId))
       .map(c => ({ ...c, titulo: `Para: ${tituloPorId.get(c.solicitudId) || 'Solicitud'}`, tipo: 'servicio' }));
-  }, [cotizacionesServicios, solicitudes, currentUser]);
+  }
 
-  // Cotizaciones de insumos recibidas para mis solicitudes
-  const misCotizacionesInsumos = useMemo(() => {
-    const idsMisSolicitudes = new Set((solicitudes || []).filter(s => s.cliente === currentUser?.name).map(s => s.id));
+  const misCotizacionesInsumos = () => {
+    const misIds = new Set((solicitudes || []).filter(s => s.cliente === currentUser?.name).map(s => s.id));
     const tituloPorId = new Map((solicitudes || []).map(s => [s.id, s.titulo]));
     return (cotizacionesInsumos || [])
-      .filter(c => idsMisSolicitudes.has(c.solicitudId))
+      .filter(c => misIds.has(c.solicitudId))
       .map(c => ({ ...c, titulo: `Material: ${c.materialNombre} (${tituloPorId.get(c.solicitudId) || 'Solicitud'})`, tipo: 'insumo' }));
-  }, [cotizacionesInsumos, solicitudes, currentUser]);
+  }
 
   const handleAceptar = (cotizacion) => {
     actualizarEstadoCotizacion(cotizacion.id, 'Aceptado', cotizacion.tipo);
@@ -67,10 +71,21 @@ export default function Cliente() {
     setSort(prevSort => prevSort === "asc" ? "desc" : "asc");
   }
 
-  // Ordenar ambas listas si se desea
-  useEffect(() => {
-    // ...puedes implementar ordenamiento si lo deseas...
-  }, [sort, misCotizacionesServicios, misCotizacionesInsumos])
+  const ordernarPorPrecio = (lista) => {
+    const copia = [...lista];
+    copia.sort((a, b) => {
+      if (sort === "asc") {
+        return a.precio - b.precio;
+      } else {
+        return b.precio - a.precio;
+      }
+    })
+    return copia;
+  }
+
+  const solicitudesAbiertas = misSolicitudesAbiertas();
+  const cotServ = ordernarPorPrecio(misCotizacionesServicios());
+  const cotInsu = ordernarPorPrecio(misCotizacionesInsumos());
 
   return (
     <div className="clienteContainer">
@@ -98,11 +113,10 @@ export default function Cliente() {
 
       {/* Tabs con solicitudes */}
       <div className="servicioContainer">
-        <button onClick={handleOrdenarPorPrecio}>Ordenar por precio</button>
         <TabComponent
           text1="Mis solicitudes"
           text2="Cotizaciones"
-          solicitudes={misSolicitudesAbiertas}
+          solicitudes={solicitudesAbiertas}
           cotizaciones={[]}
           CardServiceComponent={CardService}
           CardCotizacionComponent={CardCotizacion}
@@ -110,43 +124,51 @@ export default function Cliente() {
           onAceptarCotizacion={handleAceptar}
           onRechazarCotizacion={handleRechazar}
           customCotizacionesRender={() => (
-            <div style={{ display: 'flex', gap: 32, justifyContent: 'center', width: '100%' }}>
-              <div style={{ flex: 1 }}>
-                <h3 style={{ textAlign: 'center' }}>Cotizaciones de Servicios</h3>
-                {misCotizacionesServicios.length === 0 ? (
-                  <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>No hay cotizaciones de servicios aún.</p>
-                ) : (
-                  misCotizacionesServicios.map((c) => (
-                    <CardCotizacion
-                      key={c.id}
-                      {...c}
-                      mostrarAcciones={true}
-                      onAceptar={() => handleAceptar(c)}
-                      onRechazar={() => handleRechazar(c)}
-                    />
-                  ))
-                )}
-              </div>
-              <div style={{ flex: 1 }}>
-                <h3 style={{ textAlign: 'center' }}>Cotizaciones de Insumos</h3>
-                {misCotizacionesInsumos.length === 0 ? (
-                  <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>No hay cotizaciones de insumos aún.</p>
-                ) : (
-                  misCotizacionesInsumos.map((c) => (
-                    <CardCotizacion
-                      key={c.id}
-                      {...c}
-                      mostrarAcciones={true}
-                      onAceptar={() => handleAceptar(c)}
-                      onRechazar={() => handleRechazar(c)}
-                    />
-                  ))
-                )}
+            <div style={{ width: '100%' }}>
+              <button onClick={handleOrdenarPorPrecio} style={{ marginBottom: 10 }}>
+                Ordenar por precio {sort === "asc" ? "▼" : "▲"}
+              </button>
+              <div style={{ display: 'flex', gap: 32, justifyContent: 'center', width: '100%' }}>
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ textAlign: 'center' }}>Cotizaciones de Servicios</h3>
+                  {cotServ.length === 0 ? (
+                    <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>No hay cotizaciones de servicios aún.</p>
+                  ) : (
+                    cotServ.map((c) => (
+                      <CardCotizacion
+                        key={c.id}
+                        {...c}
+                        mostrarAcciones={true}
+                        onAceptar={() => handleAceptar(c)}
+                        onRechazar={() => handleRechazar(c)}
+                      />
+                    ))
+                  )}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ textAlign: 'center' }}>Cotizaciones de Insumos</h3>
+                  {cotInsu.length === 0 ? (
+                    <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>No hay cotizaciones de insumos aún.</p>
+                  ) : (
+                    cotInsu.map((c) => (
+                      <CardCotizacion
+                        key={c.id}
+                        {...c}
+                        mostrarAcciones={true}
+                        onAceptar={() => handleAceptar(c)}
+                        onRechazar={() => handleRechazar(c)}
+                      />
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           )}
+          sort={sort}
+          onOrdenarPorPrecio={handleOrdenarPorPrecio}
         />
       </div>
     </div>
+
   );
 }

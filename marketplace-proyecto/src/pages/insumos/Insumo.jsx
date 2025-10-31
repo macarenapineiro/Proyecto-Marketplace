@@ -4,13 +4,14 @@ import TabComponent from '../../components/tab/Tab'
 import FormCotizacionMaterial from '../../components/formCotizacionMaterial/formCotizacionMaterial'
 import CardInsumos from '../../components/cardInsumos/CardInsumos'
 import CardCotizacion from '../../components/cardCotizacion/cardCotizacion'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useSolicitudes } from '../../context/ServiceContext'
 import {useAuth} from '../../context/AuthContext'
 
 export default function Insumo() {
     const { currentUser } = useAuth();
     const { solicitudes, cotizacionesInsumos, agregarCotizacion, actualizarCotizacion, eliminarCotizacion } = useSolicitudes();
+    
     const [showForm, setShowForm] = useState(false);
     const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
     const [materialSeleccionado, setMaterialSeleccionado] = useState(null);
@@ -33,7 +34,6 @@ export default function Insumo() {
     const handleEditar = (cotizacion) => {
         const solicitud = solicitudes.find(s => s.id === cotizacion.solicitudId);
         setSolicitudSeleccionada(solicitud);
-        // reconstruimos el material seleccionado a partir de la cotización
         setMaterialSeleccionado({
             id: cotizacion.materialId,
             nombre: cotizacion.materialNombre,
@@ -41,6 +41,7 @@ export default function Insumo() {
             unidad: cotizacion.materialUnidad,
         });
         setCotizacionEditar(cotizacion);
+        cotizacion.esEdicion = true;
         setShowForm(true);
     };
 
@@ -51,8 +52,6 @@ export default function Insumo() {
     };
 
     const handleEnviarCotizacion = (cotizacion) => {
-        const solicitud = solicitudes.find(s => s.id === cotizacion.solicitudId);
-        
         if (cotizacion.esEdicion) {
             actualizarCotizacion(cotizacion.id, {
                 precio: cotizacion.precio,
@@ -71,22 +70,21 @@ export default function Insumo() {
                 tipo: 'insumo',
             });
         }
-        
-        setShowForm(false);
-        setSolicitudSeleccionada(null);
-        setMaterialSeleccionado(null);
-        setCotizacionEditar(null);
+
+        handleCancelar();
     };
 
-    // Solo mostrar solicitudes que no tengan cotización de insumo
-    const solicitudesDisponibles = useMemo(() => {
-        const idsConCotizacionInsumo = new Set((cotizacionesInsumos || []).map(c => c.solicitudId));
-        return (solicitudes || []).filter(s => s.estado === 'Abierto' && !idsConCotizacionInsumo.has(s.id));
-    }, [solicitudes, cotizacionesInsumos]);
+    const solicitudesDisponiblesFunc = () => {
+        const idsConCotizacionInsumo = (cotizacionesInsumos || []).map(c => c.solicitudId);
+        return (solicitudes || []).filter(s => s.estado === 'Abierto' && !idsConCotizacionInsumo.includes(s.id));
+    };
 
-    const misCotizaciones = useMemo(() => {
+    const misCotizacionesFunc = () => {
         return (cotizacionesInsumos || []).filter(c => c.proveedor === currentUser?.name);
-    }, [cotizacionesInsumos, currentUser]);
+    };
+
+    const solicitudesDisponibles = solicitudesDisponiblesFunc();
+    const misCotizaciones = misCotizacionesFunc();
 
     return (
         <div className='insumoContainer'>
