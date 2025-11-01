@@ -6,16 +6,19 @@ import CardInsumos from '../../components/cardInsumos/CardInsumos'
 import CardCotizacion from '../../components/cardCotizacion/cardCotizacion'
 import { useState } from 'react'
 import { useSolicitudes } from '../../context/ServiceContext'
-import {useAuth} from '../../context/AuthContext'
+import { useAuth } from '../../context/AuthContext'
 
 export default function Insumo() {
     const { currentUser } = useAuth();
     const { solicitudes, cotizacionesInsumos, agregarCotizacion, actualizarCotizacion, eliminarCotizacion } = useSolicitudes();
-    
+
     const [showForm, setShowForm] = useState(false);
     const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
     const [materialSeleccionado, setMaterialSeleccionado] = useState(null);
     const [cotizacionEditar, setCotizacionEditar] = useState(null);
+    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas');
+    const [ubicacionSeleccionada, setUbicacionSeleccionada] = useState('Todas');
+    const [fechaFiltrar, setFechaFiltrar] = useState('');
 
     const handleCancelar = () => {
         setShowForm(false);
@@ -69,22 +72,50 @@ export default function Insumo() {
                 estado: "Pendiente",
                 tipo: 'insumo',
             });
+            setSolicitudSeleccionada(null);
+            setMaterialSeleccionado(null);
         }
 
         handleCancelar();
     };
 
     const solicitudesDisponiblesFunc = () => {
-        const idsConCotizacionInsumo = (cotizacionesInsumos || []).map(c => c.solicitudId);
-        return (solicitudes || []).filter(s => s.estado === 'Abierto' && !idsConCotizacionInsumo.includes(s.id));
+        return (solicitudes || []).filter(s => s.estado === 'Abierto').map(s => {
+            const materialesPendientes = s.materiales.filter(m => {
+                return !(cotizacionesInsumos || []).some(c => c.solicitudId === s.id && (c.materialId === m.id || c.materialId === m.nombre));
+            });
+            return {
+                ...s,
+                materiales: materialesPendientes
+            };
+        })
+            .filter(s => s.materiales.length > 0)
+            .filter(s => s.estado === 'Abierto' && s.materiales.length > 0)
+            .filter(s => categoriaSeleccionada === 'Todas' || s.categoria === categoriaSeleccionada)
+            .filter(s => ubicacionSeleccionada === 'Todas' || s.ubicacion === ubicacionSeleccionada)
+            .filter(s => !fechaFiltrar || !s.fechaLimite || s.fechaLimite <= fechaFiltrar);
+        // const idsConCotizacionInsumo = (cotizacionesInsumos || []).map(c => c.solicitudId);
+        // let filtradas = (solicitudes || []).filter(s => s.estado === 'Abierto' && !idsConCotizacionInsumo.includes(s.id));
+        // if (categoriaSeleccionada !== 'Todas') {
+        //     filtradas = filtradas.filter(s => s.categoria === categoriaSeleccionada);
+        // }
+        // if (ubicacionSeleccionada !== 'Todas') {
+        //     filtradas = filtradas.filter(s => s.ubicacion === ubicacionSeleccionada);
+        // }
+        // if (fechaFiltrar) {
+        //     filtradas = filtradas.filter(
+        //         s => !s.fechaLimite || s.fechaLimite <= fechaFiltrar
+        //     );
+        // }
+        // return filtradas;
     };
 
-    const misCotizacionesFunc = () => {
-        return (cotizacionesInsumos || []).filter(c => c.proveedor === currentUser?.name);
-    };
+    // const misCotizacionesFunc = () => {
+    //     return (cotizacionesInsumos || []).filter(c => c.proveedor === currentUser?.name);
+    // };
 
     const solicitudesDisponibles = solicitudesDisponiblesFunc();
-    const misCotizaciones = misCotizacionesFunc();
+    const misCotizaciones = cotizacionesInsumos.filter(c => c.proveedor === currentUser?.name);;
 
     return (
         <div className='insumoContainer'>
@@ -101,14 +132,56 @@ export default function Insumo() {
 
             {/* Tabs con solicitudes */}
             <div className="servicioContainer">
+                <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+                    <label style={{ marginRight: '10px' }}>Filtrar por categoría:</label>
+                    <select
+                        value={categoriaSeleccionada}
+                        onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+                    >
+                        <option value="Todas">Todas</option>
+                        <option value="reparaciones">reparaciones</option>
+                        <option value="limpieza">limpieza</option>
+                        <option value="jardineria">jardinería</option>
+                        <option value="electricidad">Electricidad</option>
+                        <option value="plomeria">Plomería</option>
+                        <option value="pintura">Pintura</option>
+                        <option value="carpinteria">Carpintería</option>
+                        <option value="construccion">Construcción</option>
+                        <option value="mecanica">Mecánica</option>
+                    </select>
+                    <label style={{ margin: '0 10px' }}>Filtrar por ubicación:</label>
+                    <select
+                        value={ubicacionSeleccionada}
+                        onChange={(e) => setUbicacionSeleccionada(e.target.value)}
+                    >
+                        <option value="Todas">Todas</option>
+                        <option value="Maldonado">Maldonado</option>
+                        <option value="Punta del Este">Punta del Este</option>
+                        <option value="San Carlos">San Carlos</option>
+                        <option value="Pan de Azúcar">Pan de Azúcar</option>
+                        <option value="Piriápolis">Piriápolis</option>
+                        <option value="La Barra">La Barra</option>
+                        <option value="José Ignacio">José Ignacio</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                    <label>Filtrar por fecha:</label>
+                    <input
+                        type="date"
+                        value={fechaFiltrar}
+                        onChange={(e) => setFechaFiltrar(e.target.value)}
+                    />
+                </div>
                 <TabComponent
                     text1="Solicitudes disponibles"
                     text2="Mis cotizaciones"
                     solicitudes={solicitudesDisponibles}
                     cotizaciones={misCotizaciones}
                     CardServiceComponent={(props) => (
-                        <CardInsumos 
-                            {...props}
+                        <CardInsumos
+                            mostrarBotonCotizar={true}
+                            solicitudId={props.solicitud.id}
+                            cotizaciones={misCotizaciones}
+                            {...props.solicitud}
                             onCotizarMaterial={(material) => handleCotizarMaterial(props.solicitud, material)}
                         />
                     )}

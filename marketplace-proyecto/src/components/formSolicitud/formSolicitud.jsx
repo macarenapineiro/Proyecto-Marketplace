@@ -5,7 +5,8 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
         titulo: '',
         descripcion: '',
         categoria: '',
-        ubicacion: ''
+        ubicacion: '',
+        fechaLimite: ''
     });
     const [materiales, setMateriales] = useState([]);
     const [nuevoMaterial, setNuevoMaterial] = useState({
@@ -71,19 +72,22 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
             alert('Por favor, ingresa una ubicación');
             return;
         }
+        if (formData.fechaLimite.trim() === '') {
+            alert('Por favor, ingresa una fecha límite');
+            return;
+        }
 
         const nuevaSolicitud = {
             id: Date.now(),
             ...formData,
             materiales,
             estado: 'Abierto',
-            fecha: new Date().toLocaleDateString(),
         };
 
         onSubmit(nuevaSolicitud); // enviamos al padre
 
         // limpiamos el formulario
-        setFormData({ titulo: '', descripcion: '', categoria: '', ubicacion: '' });
+        setFormData({ titulo: '', descripcion: '', categoria: '', ubicacion: '', fechaLimite: '' });
         setMateriales([]);
         setNuevoMaterial({ nombre: '', unidad: '', cantidad: '' });
     };
@@ -122,7 +126,7 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
             </div>
 
             <div className="containerRow">
-                <div className="containerColumnDoble">
+                <div className="containerColumnTriple">
                     <div className="containerColumn">
                         <label className="label">Categoría</label>
                         <select
@@ -135,17 +139,41 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
                             <option value="reparaciones">Reparaciones</option>
                             <option value="limpieza">Limpieza</option>
                             <option value="jardineria">Jardinería</option>
+                            <option value="electricidad">Electricidad</option>
+                            <option value="plomeria">Plomería</option>
+                            <option value="pintura">Pintura</option>
+                            <option value="carpinteria">Carpintería</option>
+                            <option value="construccion">Construcción</option>
+                            <option value="mecanica">Mecánica</option>
                         </select>
                         <p className="label">Materiales necesarios:</p>
                     </div>
                     <div className="containerColumn">
                         <label className="label">Ubicación</label>
-                        <input
-                            type="text"
+                        <select
                             name="ubicacion"
-                            className="inputField"
-                            placeholder="Ciudad, País"
+                            className="inputSelect"
                             value={formData.ubicacion}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">Seleccionar ubicación</option>
+                            <option value="Maldonado">Maldonado</option>
+                            <option value="Punta del Este">Punta del Este</option>
+                            <option value="San Carlos">San Carlos</option>
+                            <option value="Pan de Azúcar">Pan de Azúcar</option>
+                            <option value="Piriápolis">Piriápolis</option>
+                            <option value="La Barra">La Barra</option>
+                            <option value="José Ignacio">José Ignacio</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div className="containerColumn">
+                        <label className="label">Fecha Límite</label>
+                        <input
+                            type="date"
+                            name="fechaLimite"
+                            className="inputField"
+                            value={formData.fechaLimite}
                             onChange={handleInputChange}
                         />
                     </div>
@@ -162,14 +190,19 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
                         value={nuevoMaterial.nombre}
                         onChange={handleMaterialChange}
                     />
-                    <input
-                        type="text"
+                    <select
                         name="unidad"
-                        placeholder="Unidad (ej: kg, litros, metros)"
-                        className="inputField"
+                        className="inputSelect"
                         value={nuevoMaterial.unidad}
                         onChange={handleMaterialChange}
-                    />
+                    >
+                        <option value="">Seleccionar unidad</option>
+                        <option value="kg">Kilogramos</option>
+                        <option value="litros">Litros</option>
+                        <option value="metros">Metros</option>
+                        <option value="metrosCuadrados">Metros cuadrados</option>
+                        <option value="unidades">Unidades</option>
+                    </select>
                     <input
                         type="number"
                         name="cantidad"

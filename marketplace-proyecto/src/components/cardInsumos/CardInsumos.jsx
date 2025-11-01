@@ -6,10 +6,12 @@ export default function CardInsumos({
     titulo,
     descripcion,
     estado,
-    fecha,
+    fechaLimite,
     categoria,
     ubicacion,
     materiales = [],
+    cotizaciones = [],
+    solicitudId,
     mostrarBotonCotizar = false,
     onCotizarMaterial
 }) {
@@ -25,7 +27,7 @@ export default function CardInsumos({
             <div className="containerRow">
                 <div className="fecha">
                     <AccessTimeIcon id="iconFecha" />
-                    <p className="cardFecha">{fecha}</p>
+                    <p className="cardFecha">{fechaLimite}</p>
                 </div>
                 {ubicacion && <p className="cardUbicacion">{ubicacion}</p>}
                 <span className={`status ${estado?.toLowerCase()}`}>{estado}</span>
@@ -33,23 +35,27 @@ export default function CardInsumos({
             <div className="containerRow">
                 <div className="containerColumn">
                     <p className="cardMateriales">Materiales Necesarios:</p>
-                    {materiales.map((material, index) => (
-                        <div key={index} className="materialesItem">
-                            <div className="materialContainer">
-                                <Inventory2OutlinedIcon id="materialIcon" />
-                                <p className="materialName">{material.nombre}</p>
-                            </div>
+                    {materiales.map((material, index) => {
+                        const yaCotizado = (cotizaciones || []).some(c => c.solicitudId === solicitudId && c.materialId === material.id);
+                        return (
+                            <div key={index} className="materialesItem">
+                                <div className="materialContainer">
+                                    <Inventory2OutlinedIcon id="materialIcon" />
+                                    <p className="materialName">{material.nombre}</p>
+                                </div>
                             <p className="materialCantidad">Cantidad: {material.cantidad} {material.unidad}</p>
                             {mostrarBotonCotizar && (
                                 <button 
                                     className="materialCotizar" 
                                     onClick={() => onCotizarMaterial && onCotizarMaterial(material)}
+                                    disabled={yaCotizado}
                                 >
-                                    Cotizar
+                                    {yaCotizado ? 'Cotizado' : 'Cotizar'}
                                 </button>
                             )}
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>

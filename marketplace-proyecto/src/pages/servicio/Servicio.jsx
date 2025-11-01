@@ -15,6 +15,9 @@ export default function Servicio() {
   const [showForm, setShowForm] = useState(false);
   const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
   const [cotizacionEditar, setCotizacionEditar] = useState(null);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas');
+  const [ubicacionSeleccionada, setUbicacionSeleccionada] = useState('Todas');
+  const [fechaFiltrar, setFechaFiltrar] = useState('');
 
   const handleCancelar = () => {
     setShowForm(false);
@@ -64,8 +67,20 @@ export default function Servicio() {
 
   const solicitudesDisponiblesFunc = () => {
     const idsConCotizacionServicio = (cotizacionesServicios || []).map(c => c.solicitudId);
-    return (solicitudes || []).filter(s => s.estado === 'Abierto' && !idsConCotizacionServicio.includes(s.id));
-  };
+    let filtradas = (solicitudes || []).filter(s => s.estado === 'Abierto' && !idsConCotizacionServicio.includes(s.id));
+    if (categoriaSeleccionada !== 'Todas') {
+      filtradas = filtradas.filter(s => s.categoria === categoriaSeleccionada);
+    }
+    if (ubicacionSeleccionada !== 'Todas') {
+      filtradas = filtradas.filter(s => s.ubicacion === ubicacionSeleccionada);
+    }
+    if (fechaFiltrar) {
+      filtradas = filtradas.filter(
+        s => !s.fechaLimite || s.fechaLimite <= fechaFiltrar
+      );
+    }
+    return filtradas;
+  }
 
   const misCotizacionesFunc = () => {
     return (cotizacionesServicios || []).filter(c => c.proveedor === currentUser?.name);
@@ -90,6 +105,45 @@ export default function Servicio() {
 
       {/* Tabs con solicitudes */}
       <div className="servicioContainer">
+        <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+          <label style={{ marginRight: '10px' }}>Filtrar por categoría:</label>
+          <select
+            value={categoriaSeleccionada}
+            onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+          >
+            <option value="Todas">Todas</option>
+            <option value="reparaciones">reparaciones</option>
+            <option value="limpieza">limpieza</option>
+            <option value="jardineria">jardinería</option>
+            <option value="electricidad">Electricidad</option>
+            <option value="plomeria">Plomería</option>
+            <option value="pintura">Pintura</option>
+            <option value="carpinteria">Carpintería</option>
+            <option value="construccion">Construcción</option>
+            <option value="mecanica">Mecánica</option>
+          </select>
+          <label style={{ margin: '0 10px' }}>Filtrar por ubicación:</label>
+          <select
+            value={ubicacionSeleccionada}
+            onChange={(e) => setUbicacionSeleccionada(e.target.value)}
+          >
+            <option value="Todas">Todas</option>
+            <option value="Maldonado">Maldonado</option>
+            <option value="Punta del Este">Punta del Este</option>
+            <option value="San Carlos">San Carlos</option>
+            <option value="Pan de Azúcar">Pan de Azúcar</option>
+            <option value="Piriápolis">Piriápolis</option>
+            <option value="La Barra">La Barra</option>
+            <option value="José Ignacio">José Ignacio</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <label>Filtrar por fecha:</label>
+          <input
+            type="date"
+            value={fechaFiltrar}
+            onChange={(e) => setFechaFiltrar(e.target.value)}
+          />
+        </div>
         <TabComponent
           text1="Solicitudes disponibles"
           text2="Mis cotizaciones"
@@ -108,7 +162,3 @@ export default function Servicio() {
     </div>
   );
 }
-
-// function useServicio(){
-//   return solicitudesDisponibles;
-// }

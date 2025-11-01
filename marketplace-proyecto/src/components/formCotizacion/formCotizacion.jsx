@@ -21,11 +21,19 @@ export default function FormCotizacion({solicitud, cotizacion, onCancel, onSubmi
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        if (name === 'precio' && parseFloat(value) < 0) {
+            setFormData(prev => ({ ...prev, [name]: '' }));
+        }
     }
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!formData.precio || !formData.tiempoEntrega || !formData.descripcion) {
             alert('Por favor, completa todos los campos');
+            return;
+        }
+        const precioNum = parseFloat(formData.precio);
+        if (isNaN(precioNum) || precioNum <= 0) {
+            alert('El precio debe ser un número mayor a 0');
             return;
         }
         const nuevaCotizacion = {

@@ -1,8 +1,8 @@
 import './CardService.css'
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
-
-export default function CardService({titulo, descripcion, estado, fecha, categoria, materiales, mostrarBotonCotizar, onCotizar}){
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+export default function CardService({titulo, descripcion, estado, fechaLimite, categoria, ubicacion, materiales, mostrarBotonCotizar, onCotizar}){
     return(
         <div className="cardContainer">
             <div className="containerRow">
@@ -15,12 +15,18 @@ export default function CardService({titulo, descripcion, estado, fecha, categor
             <div className="containerRow">
                 <div className="containerFecha">
                     <AccessTimeRoundedIcon id="clockIcon"/> 
-                    <span className="cardFecha">{fecha}</span>
+                    <span className="cardFecha">{fechaLimite}</span>
                 </div>
                 <div className="containerMaterial">
                     <Inventory2OutlinedIcon id="materialIcon"/>
                     <span className="cardMateriales">{materiales.length} materiales</span>
                 </div>
+                <div className="containerUbicacion">
+                    <LocationOnOutlinedIcon id="locationIcon"/>
+                    <span className="cardUbicacion">Ubicación: {ubicacion}</span>
+                </div>
+            </div>
+            <div className="containerRow">
                 <span className="cardCategory">{categoria}</span>
             </div>
             <div className="containerRow">

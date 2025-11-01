@@ -105,7 +105,7 @@ export default function TabComponent({
                 titulo={solicitud.titulo}
                 descripcion={solicitud.descripcion}
                 estado={solicitud.estado}
-                fecha={solicitud.fecha}
+                fechaLimite={solicitud.fechaLimite}
                 categoria={solicitud.categoria}
                 ubicacion={solicitud.ubicacion}
                 materiales={solicitud.materiales}
