@@ -93,7 +93,11 @@ export default function Insumo() {
             .filter(s => s.estado === 'Abierto' && s.materiales.length > 0)
             .filter(s => categoriaSeleccionada === 'Todas' || s.categoria === categoriaSeleccionada)
             .filter(s => ubicacionSeleccionada === 'Todas' || s.ubicacion === ubicacionSeleccionada)
-            .filter(s => !fechaFiltrar || !s.fechaLimite || s.fechaLimite <= fechaFiltrar);
+            .filter(s => {
+                if (!fechaFiltrar) return true;
+                if(!s.fechaLimite) return false;
+                return s.fechaLimite === fechaFiltrar;
+            });
         // const idsConCotizacionInsumo = (cotizacionesInsumos || []).map(c => c.solicitudId);
         // let filtradas = (solicitudes || []).filter(s => s.estado === 'Abierto' && !idsConCotizacionInsumo.includes(s.id));
         // if (categoriaSeleccionada !== 'Todas') {

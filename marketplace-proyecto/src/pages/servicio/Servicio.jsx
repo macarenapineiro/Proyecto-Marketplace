@@ -75,8 +75,10 @@ export default function Servicio() {
       filtradas = filtradas.filter(s => s.ubicacion === ubicacionSeleccionada);
     }
     if (fechaFiltrar) {
-      filtradas = filtradas.filter(
-        s => !s.fechaLimite || s.fechaLimite <= fechaFiltrar
+      filtradas = filtradas.filter(s => {
+          if (!s.fechaLimite) return false;
+          return s.fechaLimite === fechaFiltrar;
+        }
       );
     }
     return filtradas;
