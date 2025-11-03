@@ -35,11 +35,12 @@ export function ServiceProvider({ children }) {
   const actualizarEstadoCotizacion = (cotizacionId, nuevoEstado, tipo) => {
     const actualizar = (prev) => {
       const cotizacion = prev.find(c => c.id === cotizacionId);
+      const material = cotizacion ? cotizacion.materialNombre : null;
       if (!cotizacion) return prev;
       const solicitudId = cotizacion.solicitudId;
       return prev.map(c => {
         if (c.id === cotizacionId) return { ...c, estado: nuevoEstado };
-        if (nuevoEstado === 'Aceptado' && c.solicitudId === solicitudId && c.id !== cotizacionId) {
+        if (nuevoEstado === 'Aceptado' && c.solicitudId === solicitudId && c.id !== cotizacionId && (tipo === 'servicio' || (c.materialNombre === material))) {
           return { ...c, estado: 'Rechazado' };
         }
         return c;

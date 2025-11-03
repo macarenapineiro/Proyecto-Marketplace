@@ -90,7 +90,6 @@ export default function Insumo() {
             };
         })
             .filter(s => s.materiales.length > 0)
-            .filter(s => s.estado === 'Abierto' && s.materiales.length > 0)
             .filter(s => categoriaSeleccionada === 'Todas' || s.categoria === categoriaSeleccionada)
             .filter(s => ubicacionSeleccionada === 'Todas' || s.ubicacion === ubicacionSeleccionada)
             .filter(s => {
@@ -98,25 +97,7 @@ export default function Insumo() {
                 if(!s.fechaLimite) return false;
                 return s.fechaLimite === fechaFiltrar;
             });
-        // const idsConCotizacionInsumo = (cotizacionesInsumos || []).map(c => c.solicitudId);
-        // let filtradas = (solicitudes || []).filter(s => s.estado === 'Abierto' && !idsConCotizacionInsumo.includes(s.id));
-        // if (categoriaSeleccionada !== 'Todas') {
-        //     filtradas = filtradas.filter(s => s.categoria === categoriaSeleccionada);
-        // }
-        // if (ubicacionSeleccionada !== 'Todas') {
-        //     filtradas = filtradas.filter(s => s.ubicacion === ubicacionSeleccionada);
-        // }
-        // if (fechaFiltrar) {
-        //     filtradas = filtradas.filter(
-        //         s => !s.fechaLimite || s.fechaLimite <= fechaFiltrar
-        //     );
-        // }
-        // return filtradas;
     };
-
-    // const misCotizacionesFunc = () => {
-    //     return (cotizacionesInsumos || []).filter(c => c.proveedor === currentUser?.name);
-    // };
 
     const solicitudesDisponibles = solicitudesDisponiblesFunc();
     const misCotizaciones = cotizacionesInsumos.filter(c => c.proveedor === currentUser?.name);;
@@ -134,7 +115,6 @@ export default function Insumo() {
                 />
             )}
 
-            {/* Tabs con solicitudes */}
             <div className="servicioContainer">
                 <div style={{ textAlign: 'center', marginBottom: '15px' }}>
                     <label style={{ marginRight: '10px' }}>Filtrar por categoría:</label>
