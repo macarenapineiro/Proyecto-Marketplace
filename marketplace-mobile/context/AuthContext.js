@@ -50,7 +50,7 @@ export const AuthProvider = ({children}) => {
     const login = async (username:string, password:string) => {
         const user = USERS.find(u => u.username === username && u.password === password);
         if (user) {
-            const userData = { name: user.name, rol: user.rol };
+            const userData = { name: user.name, rol: user.rol, };
             setCurrentUser(userData);
             await AsyncStorage.setItem("user", JSON.stringify(userData));
             return { success: true, user };

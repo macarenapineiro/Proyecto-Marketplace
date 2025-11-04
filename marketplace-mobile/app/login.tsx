@@ -1,6 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
+import { MaterialIcons } from '@expo/vector-icons';
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 interface User {
     name: string;
@@ -44,10 +45,12 @@ export default function LoginScreen() {
 
 
     return (
-        <View style={styles.container}>
-            <View>
-                <Text style={styles.headline}>LogIn</Text>
-
+        <SafeAreaView style={styles.container}>
+            <View style={styles.containerRow}>
+                <MaterialIcons name="store" size={50} color="black" />
+                <Text style={styles.headline}>Marketplace de Servicios</Text>
+            </View>
+            <View style={styles.containerForm}>
                 <Text>Email:</Text>
                 <TextInput
                     value={username}
@@ -72,22 +75,33 @@ export default function LoginScreen() {
                 {error && <Text style={styles.errorText}>{error}</Text>}
                 {successMessage && <Text style={styles.successText}>{successMessage}</Text>}
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#fff",
+    },
+    containerRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 20,
+        paddingTop: 12,
+        paddingBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: "#eee",
+    },
+    containerForm: { 
+        flex: 1,
         padding: 20,
-        justifyContent: "center",
+        justifyContent: "flex-start",
     },
     headline: {
-        textAlign: "center",
-        marginTop: -100,
-        marginBottom: 50,
-        fontWeight: 700,
+         marginLeft: 12,
+        fontWeight: "700",
         fontStyle: "italic",
-        fontSize: 72,
+        fontSize: 20,
     },
     input: {
         borderWidth: 1,
