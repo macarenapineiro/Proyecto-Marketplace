@@ -1,9 +1,11 @@
-// import Footer from '@/components/footer';
+import Footer from '@/components/footer';
 import { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import FormSolicitud from '../components/formSolicitud';
+import CardService from '../components/cardService';
 import Header from '../components/header';
 import { useAuth } from '../context/AuthContext';
+import { useSolicitud } from '../context/SolicitudContext';
+
 interface User {
     name: string;
     rol: 'Solicitante' | 'Proveedor' | 'Proveedor de Insumos';
@@ -16,6 +18,25 @@ interface AuthContextType {
     logout: () => Promise<void>;
 }
 
+interface Material {
+    nombre: string;
+    cantidad: number;
+    unidad: string;
+}
+
+interface Solicitud{
+    titulo: string;
+    descripcion: string;
+    categoria: string;
+    ubicacion: string;
+    fechaLimite: string;
+    materiales: Material[];
+}
+
+interface SolicitudContextType {
+    solicitudes: Solicitud[];
+}
+
 export default function ClienteScreen() {
     const [activeTab, setActiveTab] = useState("Solicitudes");
     const handleTabPress = (tabName: string) => {
@@ -26,13 +47,26 @@ export default function ClienteScreen() {
     const handleLogout = async () => {
         await logout();
     };
+
+    const {solicitudes} = useSolicitud() as SolicitudContextType;
+
     return (
         <SafeAreaView style={styles.container}>
             <Header rol={currentUser?.rol || ''} name={currentUser?.name || ''} />
             <ScrollView style={styles.content}>
-                <FormSolicitud />
+                {solicitudes.map((solicitud, index) => (
+                    <CardService
+                        key={index}
+                        titulo={solicitud.titulo}
+                        descripcion={solicitud.descripcion}
+                        categoria={solicitud.categoria}
+                        ubicacion={solicitud.ubicacion}
+                        tiempo={solicitud.fechaLimite}
+                        materiales={solicitud.materiales}
+                    />
+                ))}
             </ScrollView>
-            {/* <Footer activeTab={activeTab} onTabPress={handleTabPress} /> */}
+            <Footer activeTab={activeTab} onTabPress={handleTabPress} />
         </SafeAreaView>
     )
 }

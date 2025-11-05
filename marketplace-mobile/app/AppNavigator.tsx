@@ -3,11 +3,13 @@ import { useAuth } from '../context/AuthContext';
 import Cliente from './cliente';
 import Login from './login';
 import PerfilScreen from './perfil';
+import Solicitud from './solicitud';
 
 export type RootStackParamList = {
     Login: undefined;
     Cliente: undefined;
     Perfil: undefined;
+    Solicitud: undefined;
     //   Servicio: undefined;
     //   Insumo: undefined;
 };
@@ -39,6 +41,7 @@ export default function AppNavigator() {
                 <>
                     <Stack.Screen name="Cliente" component={Cliente} options={{ headerShown: false }} />
                     <Stack.Screen name="Perfil" component={PerfilScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="Solicitud" component={Solicitud} options={{ headerShown: false }} />
                 </>
             )}
         </Stack.Navigator>

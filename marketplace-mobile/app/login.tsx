@@ -51,6 +51,7 @@ export default function LoginScreen() {
                 <Text style={styles.headline}>Marketplace de Servicios</Text>
             </View>
             <View style={styles.containerForm}>
+                <Text style={styles.subtitle}>Iniciar sesión</Text>
                 <Text>Email:</Text>
                 <TextInput
                     value={username}
@@ -92,16 +93,23 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "#eee",
     },
-    containerForm: { 
+    containerForm: {
         flex: 1,
         padding: 20,
         justifyContent: "flex-start",
     },
     headline: {
-         marginLeft: 12,
+        marginLeft: 12,
         fontWeight: "700",
         fontStyle: "italic",
         fontSize: 20,
+    },
+    subtitle: {
+        fontSize: 30,
+        fontWeight: "600",
+        marginBottom: 20,
+        fontStyle: "italic",
+        alignSelf: "center",
     },
     input: {
         borderWidth: 1,

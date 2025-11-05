@@ -5,7 +5,10 @@ import { useSolicitud } from '../context/SolicitudContext';
 import DropdownComponent from './dropDown';
 
 export default function FormSolicitud() {
-  const {agregarSolicitud} = useSolicitud();
+const { agregarSolicitud } = useSolicitud() as {
+  solicitudes: any[];
+  agregarSolicitud: (solicitud: any) => void;
+};
   const categorias = [
     { label: 'Reparaciones', value: 'reparaciones' },
     { label: 'Limpieza', value: 'limpieza' },
@@ -81,6 +84,11 @@ export default function FormSolicitud() {
       categoria: formData.categoria,
       ubicacion: formData.ubicacion,
       fechaLimite: formData.fechaLimite,
+      materiales: materiales.map(m => ({
+        nombre: m.nombre,
+        cantidad: parseFloat(m.cantidad),
+        unidad: m.unidad
+      })),
     };
     agregarSolicitud(nuevaSolicitud);
 

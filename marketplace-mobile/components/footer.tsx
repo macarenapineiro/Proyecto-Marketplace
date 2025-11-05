@@ -11,7 +11,7 @@ export default function Footer({ activeTab, onTabPress }: FooterProps) {
     const navigation = useNavigation<any>();
     const tabs = [
         { name: "Solicitudes", icon: "list-alt", route: "Cliente" },
-        { name: "Publicar", icon: "add-box", route: "Cliente" },
+        { name: "Publicar", icon: "add-box", route: "Solicitud" },
         { name: "Cotizaciones", icon: "attach-money", route:"Cliente" },
         { name: "Perfil", icon: "person", route: "Perfil" },
     ]
