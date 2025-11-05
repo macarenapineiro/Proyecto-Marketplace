@@ -20,7 +20,7 @@ export default function Footer({ activeTab, onTabPress }: FooterProps) {
             {tabs.map((tab) => {
                 const isActive = activeTab === tab.name;
                 return (
-                    <TouchableOpacity key={tab.name} style={styles.tab} onPress={() => { onTabPress(tab.name); navigation.navigate(tab.route); }}>
+                    <TouchableOpacity key={tab.name} style={styles.tab} onPress={() => { onTabPress(tab.name); navigation.replace(tab.route); }}>
                         <MaterialIcons name={tab.icon as any} size={26} color={isActive ? "black" : "#999"} />
                         <Text style={[styles.label, isActive && styles.activeLabel]}>{tab.name}</Text>
                     </TouchableOpacity>
