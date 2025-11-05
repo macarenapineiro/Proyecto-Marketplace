@@ -1,12 +1,13 @@
-import Footer from '@/components/footer';
-import { useState } from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
+
 
 interface User {
     name: string;
     rol: 'Solicitante' | 'Proveedor' | 'Proveedor de Insumos';
-    email: string;
+    username: string;
 }
 
 interface AuthContextType {
@@ -15,29 +16,37 @@ interface AuthContextType {
 }
 
 
-export default function PerfilScreen() {
+export default function PerfilScreen({ navigation }: any) {
     const { currentUser, logout } = useAuth() as AuthContextType;
-        const [activeTab, setActiveTab] = useState("Solicitudes");
-
-    const handleTabPress = (tabName: string) => {
-        setActiveTab("Perfil");
-    }
     const handleLogout = async () => {
         await logout();
     }
+
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Perfil</Text>
-            {currentUser && (
-                <View style={styles.userInfo}>
-                    <Text style={styles.userInfoText}>Name: {currentUser.name}</Text>
-                    <Text style={styles.userInfoText}>Role: {currentUser.rol}</Text>
+            <LinearGradient
+                colors={['#4C8BF5', '#0052D4']}
+                style={styles.header}>
+                <View style={styles.avatarContainer}>
+                    <View style={styles.avatar}>
+                        <Text style={styles.avatarText}>
+                            {currentUser?.name.charAt(0).toUpperCase()}
+                        </Text>
+                    </View>
+                    <Text style={styles.name}>{currentUser?.name}</Text>
+                    <Text style={styles.email}>{currentUser?.username}</Text>
                 </View>
-            )}
+            </LinearGradient>
+            <View style={styles.infoCard}>
+                <View style={styles.infoRow}>
+                    <MaterialIcons name="badge" size={22} color="#4C8BF5" />
+                    <Text style={styles.infoText}>{currentUser?.rol}</Text>
+                </View>
+            </View>
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-                <Text style={styles.logoutText}>Logout</Text>
+                <MaterialIcons name="logout" size={20} color="#fff" />
+                <Text style={styles.logoutText}>Cerrar sesión</Text>
             </TouchableOpacity>
-            <Footer activeTab={"Perfil"} onTabPress={handleTabPress} />
         </SafeAreaView>
     )
 }
@@ -45,42 +54,74 @@ export default function PerfilScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
+        backgroundColor: '#F8F9FD',
         alignItems: 'center',
+    },
+    header: {
         width: '100%',
-
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginVertical: 20,
-    },
-    userInfo: {
-        marginVertical: 20,
+        paddingVertical: 40,
         alignItems: 'center',
-        backgroundColor: '#fff',
-        width: '80%',
-        padding: 15,
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 5,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
     },
-    userInfoText: {
+    avatarContainer: {
+        alignItems: 'center',
+    },
+    avatar: {
+        width: 90,
+        height: 90,
+        borderRadius: 45,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    avatarText: {
+        fontSize: 40,
+        fontWeight: 'bold',
+        color: '#4C8BF5',
+    },
+    name: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#fff',
+    },
+    email: {
+        fontSize: 14,
+        color: '#DDE6FF',
+    },
+    infoCard: {
+        backgroundColor: '#fff',
+        width: '85%',
+        borderRadius: 15,
+        padding: 20,
+        marginTop: 30,
+        shadowColor: '#000',
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+    },
+    infoRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
+    infoText: {
         fontSize: 18,
-        marginVertical: 5,
+        color: '#333',
     },
     logoutButton: {
-        marginTop: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: '#FF3B30',
-        paddingVertical: 10,
-        paddingHorizontal: 30,
-        borderRadius: 5,
+        paddingVertical: 12,
+        paddingHorizontal: 25,
+        borderRadius: 10,
+        marginTop: 40,
     },
     logoutText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-    }
+        marginLeft: 8,
+    },
 });

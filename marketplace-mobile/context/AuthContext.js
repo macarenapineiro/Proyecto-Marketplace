@@ -7,21 +7,18 @@ const USERS = [
     password: "cliente123",
     name: "Juan Pérez",
     rol: "Solicitante",
-    redirect: "/cliente"
   },
   {
     username: "servicio@test.com",
     password: "servicio123",
     name: "María Gómez",
     rol: "Proveedor",
-    redirect: "/servicio"
   },
   {
     username: "insumos@test.com",
     password: "insumos123",
     name: "Carlos López",
     rol: "Proveedor de Insumos",
-    redirect: "/insumo"
   }
 ]
 
@@ -31,7 +28,6 @@ export const AuthContext = createContext(
 
 export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(null);
-    const [loading, setLoading] = useState(false);
     useEffect(() => {
         (async () => {
             try {
@@ -41,16 +37,14 @@ export const AuthProvider = ({children}) => {
                 }
             } catch (error) {
                 console.error("Error al cargar el usuario:", error);
-            } finally {
-                setLoading(false);
-            }
+            } 
         })();
     }, []);
 
-    const login = async (username:string, password:string) => {
+    const login = async (username, password) => {
         const user = USERS.find(u => u.username === username && u.password === password);
         if (user) {
-            const userData = { name: user.name, rol: user.rol, };
+            const userData = { name: user.name, rol: user.rol, username: user.username };
             setCurrentUser(userData);
             await AsyncStorage.setItem("user", JSON.stringify(userData));
             return { success: true, user };

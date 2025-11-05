@@ -11,13 +11,10 @@ interface User {
 interface AuthContextType {
     currentUser: User | null;
     login: (username: string, password: string) => Promise<{ success: boolean; user: User | null }>;
-    logout: () => Promise<void>;
-    loading: boolean;
-    isAuthenticated: boolean;
 }
 
-export default function LoginScreen() {
-    const { login, logout, isAuthenticated, currentUser } = useAuth() as AuthContextType;
+export default function LoginScreen({navigation}: any) {
+    const { login } = useAuth() as AuthContextType;
     // const navigation = useNavigation<LoginScreenNavigationProp>();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -34,7 +31,6 @@ export default function LoginScreen() {
         if (result.success && result.user) {
             setError(null);
             setSuccessMessage(`Bienvenido, ${result.user.name}`);
-            // if (result.user.rol === 'Solicitante') navigation.replace('Cliente');
             // else if (result.user.rol === 'Proveedor') navigation.replace('Servicio');
             // else if (result.user.rol === 'Proveedor de Insumos') navigation.replace('Insumo');
         } else {

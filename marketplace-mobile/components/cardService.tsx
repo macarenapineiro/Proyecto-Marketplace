@@ -7,7 +7,6 @@ interface Material {
     cantidad: number;
     unidad: string;
 }
-
 interface CardServiceProps {
     titulo: string;
     descripcion: string;
@@ -28,12 +27,6 @@ export default function CardService({ titulo, descripcion, categoria, ubicacion,
             </View>
             <Text style={styles.descripcion}>{descripcion}</Text>
             <Text style={styles.categoria}>{categoria}</Text>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => setShowDetails(prev => !prev)}
-            >
-                <Text style={styles.buttonText}>{showDetails ? 'Ver menos' : 'Ver más info'}</Text>
-            </TouchableOpacity>
             {showDetails && (
                 <View style={styles.details}>
                     <View style={styles.rowItem}>
@@ -46,14 +39,30 @@ export default function CardService({ titulo, descripcion, categoria, ubicacion,
                     </View>
                     <View style={styles.rowItem}>
                         <MaterialIcons name="location-on" size={20} color="#000" />
-                        <Text style={styles.time}>{ubicacion} </Text>
+                        <Text style={styles.time}>{ubicacion.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</Text>
                     </View>
                     <Text style={styles.material}>Materiales solicitados</Text>
                     {materiales.map((m, i) => (
-                        <Text style={styles.materialList}key={i}> {m.nombre} - {m.cantidad} {m.unidad}</Text>
+                        <Text style={styles.materialList} key={i}> {m.nombre} - {m.cantidad} {m.unidad}</Text>
                     ))}
                 </View>
             )}
+            <TouchableOpacity
+                style={[
+                    styles.button,
+                    showDetails ? styles.buttonLess : styles.buttonMore,
+                ]}
+                onPress={() => setShowDetails((prev) => !prev)}
+            >
+                <Text
+                    style={[
+                        styles.buttonText,
+                        showDetails ? styles.buttonTextLess : styles.buttonTextMore,
+                    ]}
+                >
+                    {showDetails ? 'Ver menos' : 'Ver más info'}
+                </Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -61,14 +70,14 @@ export default function CardService({ titulo, descripcion, categoria, ubicacion,
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 16,
+        borderRadius: 16,
+        padding: 18,
+        marginBottom: 18,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
+        shadowOpacity: 0.08,
         shadowRadius: 4,
-        elevation: 2,
+        elevation: 3,
     },
     row: {
         flexDirection: 'row',
@@ -77,75 +86,91 @@ const styles = StyleSheet.create({
 
     },
     estado: {
-        backgroundColor: '#ABEBBA',
-        color: '#438B54',
+        backgroundColor: '#D4EFDF',
+        color: '#1E8449',
         paddingVertical: 4,
-        paddingHorizontal: 8,
-        borderRadius: 10,
+        paddingHorizontal: 10,
+        borderRadius: 12,
         fontSize: 14,
+        fontWeight: '600',
     },
     title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 8,
+        fontSize: 20,
+        fontWeight: '700',
+        color: '#2c3e50',
+        marginBottom: 4,
     },
     descripcion: {
-        fontSize: 16,
-        color: '#777474',
+        fontSize: 15,
+        color: '#7f8c8d',
         fontStyle: 'italic',
-        marginTop: 8,
+        marginTop: 6,
     },
     categoria: {
-        marginTop: 8,
+        marginTop: 10,
         fontSize: 14,
-        fontWeight: '500',
-        color: '#000',
+        fontWeight: '600',
+        color: '#2c3e50',
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 10,
-        paddingVertical: 4,
-        paddingHorizontal: 8,
+        borderColor: '#dfe6e9',
+        borderRadius: 12,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
         alignSelf: 'flex-start',
     },
     rowItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 8,
+        marginTop: 10,
     },
     time: {
-        marginLeft: 4,
+        marginLeft: 6,
         fontSize: 14,
-        color: '#000',
+        color: '#2c3e50',
     },
     material: {
-        marginTop: 12,
+        marginTop: 14,
         fontSize: 16,
-        fontWeight: '500',
-        fontStyle: 'italic',
+        fontWeight: '600',
+        color: '#34495e',
+        marginBottom: 6,
     },
     materialList: {
         fontSize: 14,
         color: '#555',
-        marginTop: 4,
-        borderWidth: 1,
-        borderColor: '#ccc',
+        backgroundColor: '#f8f9fa',
         borderRadius: 10,
-        padding: 8,
-    },
-    button: {
-        marginTop: 10,
-        paddingVertical: 6,
+        paddingVertical: 8,
         paddingHorizontal: 12,
-        backgroundColor: 'none',
-        borderRadius: 8,
-        alignSelf: 'flex-start',
-    },
-    buttonText: {
-        color: '#386a95ff',
-        fontWeight: 'bold',
+        marginTop: 4,
     },
     details: {
-        borderTopColor: '#ccc',
-        paddingTop: 10,
+        borderTopColor: '#ecf0f1',
+        borderTopWidth: 1,
+        paddingTop: 12,
+        marginTop: 12,
     },
+    button: {
+        marginTop: 16,
+        alignSelf: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 12,
+    },
+    buttonMore: {
+    backgroundColor: '#5dade2',
+  },
+  buttonLess: {
+    backgroundColor: '#aeb6bf',
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  buttonTextMore: {
+    color: '#fff',
+  },
+  buttonTextLess: {
+    color: '#2c3e50',
+  },
 })

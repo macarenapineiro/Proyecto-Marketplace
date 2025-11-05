@@ -1,4 +1,4 @@
-import AppNavigator from "../app/AppNavigator";
+import AppNavigator from "@/navigation/AppNavigator";
 import { AuthProvider } from "../context/AuthContext";
 import { SolicitudProvider } from "../context/SolicitudContext";
 export default function RootLayout() {

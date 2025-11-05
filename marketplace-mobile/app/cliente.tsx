@@ -1,6 +1,4 @@
-import Footer from '@/components/footer';
-import { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import CardService from '../components/cardService';
 import Header from '../components/header';
 import { useAuth } from '../context/AuthContext';
@@ -24,7 +22,7 @@ interface Material {
     unidad: string;
 }
 
-interface Solicitud{
+interface Solicitud {
     titulo: string;
     descripcion: string;
     categoria: string;
@@ -38,35 +36,37 @@ interface SolicitudContextType {
 }
 
 export default function ClienteScreen() {
-    const [activeTab, setActiveTab] = useState("Solicitudes");
-    const handleTabPress = (tabName: string) => {
-        setActiveTab(tabName);
-    }
 
-    const { currentUser, logout } = useAuth() as AuthContextType;
-    const handleLogout = async () => {
-        await logout();
-    };
+    const { currentUser } = useAuth() as AuthContextType;
 
-    const {solicitudes} = useSolicitud() as SolicitudContextType;
+    const { solicitudes } = useSolicitud() as SolicitudContextType;
 
     return (
         <SafeAreaView style={styles.container}>
             <Header rol={currentUser?.rol || ''} name={currentUser?.name || ''} />
             <ScrollView style={styles.content}>
-                {solicitudes.map((solicitud, index) => (
-                    <CardService
-                        key={index}
-                        titulo={solicitud.titulo}
-                        descripcion={solicitud.descripcion}
-                        categoria={solicitud.categoria}
-                        ubicacion={solicitud.ubicacion}
-                        tiempo={solicitud.fechaLimite}
-                        materiales={solicitud.materiales}
-                    />
-                ))}
+                <Text style={styles.headline}>Mis Solicitudes</Text>
+                {solicitudes.length === 0 ? (
+                    <View style={styles.emptyContainer}>
+                        <View style={styles.emptyCard}>
+                            <Text style={styles.emptyTitle}>No tienes solicitudes aún</Text>
+                            <Text style={styles.emptyText}>Usa el tab <Text style={styles.highlight}>"Solicitudes"</Text> para crear una nueva.</Text>
+                        </View>
+                    </View>
+                ) : (
+                    solicitudes.map((solicitud, index) => (
+                        <CardService
+                            key={index}
+                            titulo={solicitud.titulo}
+                            descripcion={solicitud.descripcion}
+                            categoria={solicitud.categoria}
+                            ubicacion={solicitud.ubicacion}
+                            tiempo={solicitud.fechaLimite}
+                            materiales={solicitud.materiales}
+                        />
+                    ))
+                )}
             </ScrollView>
-            <Footer activeTab={activeTab} onTabPress={handleTabPress} />
         </SafeAreaView>
     )
 }
@@ -75,35 +75,51 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        backgroundColor: '#fff',
+        backgroundColor: '#f7f9fc',
     },
     headline: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginVertical: 10,
+        fontSize: 22,
+        fontWeight: '700',
+        marginVertical: 20,
         textAlign: 'center',
+        color: '#2c3e50',
     },
     content: {
         paddingHorizontal: 20,
         paddingBottom: 40,
     },
-    // container: {
-    //     flex: 1,
-    //     // justifyContent: 'flex-start',
-    //     // alignItems: 'center',
-    //     width: '100%',
-    // },
-    // headline: {
-    //     fontSize: 24,
-    //     fontWeight: 'bold',
-    //     marginBottom: 10,
-    //     textAlign: 'center',
-    // },
-    // content: {
-    //     flex: 1,
-    //     width: '100%',
-    //     paddingHorizontal: 20,
-    //     // justifyContent: 'center',
-    //     // alignItems: 'center',
-    // }
+    emptyContainer: {
+        marginTop: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    emptyCard: {
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        padding: 20,
+        width: '90%',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 3,
+    },
+    emptyTitle: {
+        fontSize: 20,
+        fontWeight: '700',
+        textAlign: 'center',
+        color: '#34495e',
+        marginBottom: 8,
+    },
+    emptyText: {
+        fontSize: 16,
+        color: '#7f8c8d',
+        textAlign: 'center',
+        lineHeight: 22,
+    },
+    highlight: {
+        color: '#16a085',
+        fontWeight: '600',
+    },
+
 });

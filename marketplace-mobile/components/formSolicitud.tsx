@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+// import { Snackbar } from 'react-native-paper';
 import { useSolicitud } from '../context/SolicitudContext';
 import DropdownComponent from './dropDown';
 
 export default function FormSolicitud() {
-const { agregarSolicitud } = useSolicitud() as {
-  solicitudes: any[];
-  agregarSolicitud: (solicitud: any) => void;
-};
+  // const [showSuccess, setShowSuccess] = useState(false);
+  const { agregarSolicitud } = useSolicitud() as {
+    solicitudes: any[];
+    agregarSolicitud: (solicitud: any) => void;
+  };
   const categorias = [
     { label: 'Reparaciones', value: 'reparaciones' },
     { label: 'Limpieza', value: 'limpieza' },
@@ -74,6 +76,14 @@ const { agregarSolicitud } = useSolicitud() as {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleCancel = () => {
+    // reset
+    setFormData({ titulo: '', descripcion: '', fechaLimite: '', categoria: '', ubicacion: '', materiales: [] });
+    setNuevoMaterial({ nombre: '', cantidad: '', unidad: '' });
+    setMateriales([]);
+    setSelectedDate(null);
+  }
+
   const handleSubmit = () => {
     if (!formData.titulo || !formData.descripcion || !formData.categoria || !formData.ubicacion || !formData.fechaLimite) {
       alert('Completa todos los campos');
@@ -97,10 +107,17 @@ const { agregarSolicitud } = useSolicitud() as {
     setNuevoMaterial({ nombre: '', cantidad: '', unidad: '' });
     setMateriales([]);
     setSelectedDate(null);
+    Alert.alert(
+      '¡Éxito!',
+      'La solicitud se creó correctamente.',
+      [{ text: 'Aceptar', onPress: () => console.log('Usuario aceptó') }],
+      { cancelable: false }
+    );
+    // setShowSuccess(true);
   }
 
   return (
-    <View>
+    <SafeAreaView>
       <View style={styles.container}>
         <Text style={styles.title}>Crear nueva solicitud</Text>
 
@@ -157,7 +174,7 @@ const { agregarSolicitud } = useSolicitud() as {
         </TouchableOpacity>
 
         {materiales.map((m, i) => (
-          <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5, borderWidth: 1, borderColor: '#ccc', borderRadius: 5, marginBottom: 5 }}>
+          <View key={i} style={styles.materialCard}>
             <Text>{m.nombre} ({m.cantidad} {m.unidad})</Text>
             <TouchableOpacity onPress={() => eliminarMaterial(i)}>
               <Text style={{ color: 'red' }}>🗑️</Text>
@@ -166,71 +183,113 @@ const { agregarSolicitud } = useSolicitud() as {
         ))}
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
           <TouchableOpacity style={styles.solicitudButton} onPress={handleSubmit}>
-            <Text style={{ color: '#000', fontWeight: 'bold' }}>Crear solicitud</Text>
+            <Text style={styles.buttonText}>Crear solicitud</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={() => {/* lógica para cancelar */ }}>
-            <Text style={{ color: '#000', fontWeight: 'bold' }}>Cancelar</Text>
+          <TouchableOpacity style={styles.cancelButton} onPress={() => { handleCancel() }}>
+            <Text style={styles.cancelText}>Cancelar</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20
+    padding: 20,
+    backgroundColor: '#f7f9fc',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 15
+    marginBottom: 15,
+    color: '#2c3e50'
   },
   label: {
     fontWeight: 'bold',
     marginTop: 10,
-    marginBottom: 5
+    marginBottom: 5,
+    color: '#34495e'
   },
   input: {
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10
-  },
-  dateButton: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    borderColor: '#d1d8e0',
+    borderRadius: 12,
     padding: 12,
     marginBottom: 10,
+    color: '#2c3e50',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  dateButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#d1d8e0',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   subtitle: {
     fontSize: 20,
     fontWeight: 'bold',
     marginTop: 10,
-    marginBottom: 5
+    marginBottom: 5,
+    color: '#2c3e50'
   },
   agregarButton: {
-    padding: 10,
-    backgroundColor: '#eee',
-    borderRadius: 5,
+    padding: 12,
+    backgroundColor: '#e0f7fa',
+    borderRadius: 12,
     marginBottom: 10,
     alignItems: 'center',
   },
   solicitudButton: {
-    backgroundColor: '#90C6DA',
+    backgroundColor: '#4db6ac',
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 12,
     marginTop: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 5,
   },
   cancelButton: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#eceff1',
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 12,
     marginTop: 10,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+    flex: 1,
+    marginLeft: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  cancelText: {
+    color: '#2c3e50',
+    fontWeight: '600',
+  },
+  materialCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
 })

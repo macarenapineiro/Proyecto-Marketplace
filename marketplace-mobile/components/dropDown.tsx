@@ -12,19 +12,18 @@ interface DropDownProps {
 export default function DropDownComponent({ label, data, value, onValueChange }: DropDownProps) {
     const [isFocus, setIsFocus] = useState(false);
 
-    const renderLabel = () => {
-        if (value || isFocus) {
-            return
-        }
-        return null;
-    };
+    // const renderLabel = () => {
+    //     if (value || isFocus) {
+    //         return
+    //     }
+    //     return null;
+    // };
 
     return (
         <View style={styles.container}>
-            {renderLabel()}
             <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-                placeholderStyle={styles.placeholderStyle}
+                style={[styles.dropdown, isFocus && styles.dropdownFocus]}
+                placeholderStyle={[styles.placeholderStyle, isFocus && styles.placeholderFocus]}
                 selectedTextStyle={styles.selectedTextStyle}
                 inputSearchStyle={styles.inputSearchStyle}
                 iconStyle={styles.iconStyle}
@@ -46,33 +45,50 @@ export default function DropDownComponent({ label, data, value, onValueChange }:
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-    },
-    dropdown: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
-        paddingHorizontal: 8,
+        marginVertical: 10,
+        width: '100%',
     },
     label: {
         position: 'absolute',
-        backgroundColor: 'white',
-        left: 22,
-        top: 8,
-        zIndex: 999,
-        paddingHorizontal: 8,
-        fontSize: 14,
+        left: 12,
+        top: -8,
+        backgroundColor: '#F8F9FD',
+        fontSize: 12,
+        color: '#4C8BF5',
+        paddingHorizontal: 4,
+        zIndex: 10,
+    },
+    dropdown: {
+        height: 50,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 12,
+        paddingHorizontal: 12,
+        backgroundColor: '#fff',
+        shadowColor: '#000',
+        shadowOpacity: 0.05,
+        shadowRadius: 5,
+        elevation: 3,
+    },
+    dropdownFocus: {
+        borderColor: '#4C8BF5',
+        shadowOpacity: 0.1,
     },
     placeholderStyle: {
         fontSize: 16,
+        color: '#999',
+    },
+    placeholderFocus: {
+        color: '#4C8BF5',
     },
     selectedTextStyle: {
         fontSize: 16,
+        color: '#333',
     },
     iconStyle: {
         width: 20,
         height: 20,
+        tintColor: '#4C8BF5',
     },
     inputSearchStyle: {
         height: 40,
