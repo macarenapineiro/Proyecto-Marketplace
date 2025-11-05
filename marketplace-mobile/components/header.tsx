@@ -48,10 +48,11 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center",
         padding: 15,
-        backgroundColor: "#f2f2f2",
+        backgroundColor: "#fff",
         borderBottomWidth: 1,
         borderBottomColor: "#ccc",
         width: '100%',
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
     },
     rol: {
         fontSize: 18,
