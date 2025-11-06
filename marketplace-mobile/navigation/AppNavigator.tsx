@@ -39,19 +39,9 @@ export default function AppNavigator() {
             {isAuthenticated && (
                 <Stack.Screen
                     name="AppTabs"
-                    component={TabNavigator} // <-- aquí va el TabNavigator
+                    component={TabNavigator} 
                     options={{ headerShown: false }}
                 />)}
         </Stack.Navigator>
-        // <Stack.Navigator>
-        //     {!isAuthenticated ? (
-        //         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        //     ) : null}
-
-        //     {isAuthenticated && currentUser?.rol === "Solicitante" && (
-        //         <Stack.Screen name="Cliente" component={Cliente} options={{ headerShown: false }} />
-        //         <Stack.Screen name="Perfil" component={PerfilScreen} options={{ headerShown: false }} />
-        //     )}
-        // </Stack.Navigator>
     );
 }

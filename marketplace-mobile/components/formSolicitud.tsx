@@ -99,6 +99,7 @@ export default function FormSolicitud() {
         cantidad: parseFloat(m.cantidad),
         unidad: m.unidad
       })),
+      estado: 'Abierto',
     };
     agregarSolicitud(nuevaSolicitud);
 

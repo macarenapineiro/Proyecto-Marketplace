@@ -1,3 +1,4 @@
+import { useAuth } from '@/context/AuthContext';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -12,18 +13,34 @@ interface CardServiceProps {
     descripcion: string;
     categoria: string;
     ubicacion: string;
-    tiempo: string; // fecha límite
+    tiempo: string;
+    estado: string;
     materiales: Material[];
+    onCotizar?: () => void;
+}
+interface User {
+    name: string;
+    rol: 'Solicitante' | 'Proveedor' | 'Proveedor de Insumos';
 }
 
-export default function CardService({ titulo, descripcion, categoria, ubicacion, tiempo, materiales }: CardServiceProps) {
-    const [showDetails, setShowDetails] = useState(false);
+interface AuthContextType {
+    currentUser: User | null;
+}
 
+export default function CardService({ titulo, descripcion, categoria, ubicacion, tiempo, materiales, estado = 'Abierto', onCotizar }: CardServiceProps) {
+    const [showDetails, setShowDetails] = useState(false);
+    const { currentUser } = useAuth() as AuthContextType;
+    const estadoStyles: { [key: string]: any } = {
+        abierto: styles.abierto,
+        pendiente: styles.pendiente,
+        aceptado: styles.aceptado,
+        rechazado: styles.rechazado,
+    };
     return (
         <View style={styles.container}>
             <View style={styles.row}>
                 <Text style={styles.title}>{titulo}</Text>
-                <Text style={styles.estado}>Abierto</Text>
+                <Text style={[styles.estado, estadoStyles[estado?.toLowerCase() || 'abierto']]}>{estado}</Text>
             </View>
             <Text style={styles.descripcion}>{descripcion}</Text>
             <Text style={styles.categoria}>{categoria}</Text>
@@ -47,22 +64,29 @@ export default function CardService({ titulo, descripcion, categoria, ubicacion,
                     ))}
                 </View>
             )}
-            <TouchableOpacity
-                style={[
-                    styles.button,
-                    showDetails ? styles.buttonLess : styles.buttonMore,
-                ]}
-                onPress={() => setShowDetails((prev) => !prev)}
-            >
-                <Text
+            <View style={styles.row}>
+                <TouchableOpacity
                     style={[
-                        styles.buttonText,
-                        showDetails ? styles.buttonTextLess : styles.buttonTextMore,
+                        styles.button,
+                        showDetails ? styles.buttonLess : styles.buttonMore,
                     ]}
+                    onPress={() => setShowDetails((prev) => !prev)}
                 >
-                    {showDetails ? 'Ver menos' : 'Ver más info'}
-                </Text>
-            </TouchableOpacity>
+                    <Text
+                        style={[
+                            styles.buttonText,
+                            showDetails ? styles.buttonTextLess : styles.buttonTextMore,
+                        ]}
+                    >
+                        {showDetails ? 'Ver menos' : 'Ver más info'}
+                    </Text>
+                </TouchableOpacity>
+                {currentUser?.rol === 'Proveedor' && onCotizar && (
+                    <TouchableOpacity style={[styles.button, styles.buttonCotizar]} onPress={onCotizar}>
+                        <Text style={[styles.buttonText, styles.buttonTextMore]}>Cotizar Solicitud</Text>
+                    </TouchableOpacity>
+                )}
+            </View>
         </View>
     )
 }
@@ -86,13 +110,27 @@ const styles = StyleSheet.create({
 
     },
     estado: {
-        backgroundColor: '#D4EFDF',
-        color: '#1E8449',
         paddingVertical: 4,
         paddingHorizontal: 10,
         borderRadius: 12,
         fontSize: 14,
         fontWeight: '600',
+    },
+    abierto: {
+        backgroundColor: '#D4EFDF',
+        color: '#1E8449',
+    },
+    pendiente: {
+        backgroundColor: '#FBE691',
+        color: '#8B7643',
+    },
+    aceptado: {
+        backgroundColor: '#5ED08D',
+        color: '#046B0D',
+    },
+    rechazado: {
+        backgroundColor: '#DD8585',
+        color: '#6B0404',
     },
     title: {
         fontSize: 20,
@@ -158,19 +196,23 @@ const styles = StyleSheet.create({
         borderRadius: 12,
     },
     buttonMore: {
-    backgroundColor: '#5dade2',
-  },
-  buttonLess: {
-    backgroundColor: '#aeb6bf',
-  },
-  buttonText: {
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
-  buttonTextMore: {
-    color: '#fff',
-  },
-  buttonTextLess: {
-    color: '#2c3e50',
-  },
+        backgroundColor: '#5dade2',
+    },
+    buttonLess: {
+        backgroundColor: '#aeb6bf',
+    },
+    buttonText: {
+        fontWeight: 'bold',
+        fontSize: 15,
+    },
+    buttonTextMore: {
+        color: '#fff',
+    },
+    buttonTextLess: {
+        color: '#2c3e50',
+    },
+    buttonCotizar: {
+        backgroundColor: '#27ae60',
+        marginLeft: 10,
+    },
 })
