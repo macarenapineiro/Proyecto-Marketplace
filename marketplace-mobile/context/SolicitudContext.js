@@ -16,8 +16,21 @@ export const SolicitudProvider = ({ children }) => {
     setSolicitudSeleccionada(solicitud);
   }
 
+  const limpiarSolicitudSeleccionada = () => setSolicitudSeleccionada(null);
+
+  const actualizarEstadoSolicitud = (titulo, nuevoEstado) => {
+    setSolicitudes((prevSolicitudes) =>
+      prevSolicitudes.map((solicitud) =>
+        solicitud.titulo === titulo ? { ...solicitud, estado: nuevoEstado } : solicitud
+      )
+    );
+  };
+
+  const solicitudesAbiertas = solicitudes.filter(solicitud => solicitud.estado === 'Abierto');
+  const solicitudesPendientes = solicitudes.filter(solicitud => solicitud.estado === 'Pendiente');
+
   return (
-    <SolicitudContext.Provider value={{ solicitudes, agregarSolicitud, solicitudSeleccionada, seleccionarSolicitud }}>
+    <SolicitudContext.Provider value={{ solicitudes, agregarSolicitud, solicitudSeleccionada, seleccionarSolicitud, actualizarEstadoSolicitud, limpiarSolicitudSeleccionada, solicitudesAbiertas, solicitudesPendientes }}>
       {children}
     </SolicitudContext.Provider>
   );

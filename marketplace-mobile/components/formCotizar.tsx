@@ -1,4 +1,7 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useCotizacion } from '../context/CotizacionContext';
+import { useSolicitud } from '../context/SolicitudContext';
 
 interface CardSolicitudProps {
     title: string;
@@ -16,40 +19,94 @@ interface Material {
     unidad: string;
 }
 
-export default function formCotizar({title, description, categoria, ubicacion, fecha, estado, materiales}: CardSolicitudProps) {
-    return( 
+export default function FormCotizar({ title, description, categoria, ubicacion, fecha, estado, materiales }: CardSolicitudProps) {
+    const { agregarCotizacionServicio } = useCotizacion() as {
+        cotizacionesServicio: any[];
+        agregarCotizacionServicio: (cotizacion: any) => void;
+    };
+    const { actualizarEstadoSolicitud, limpiarSolicitudSeleccionada } = useSolicitud() as any;
+
+    const [formData, setFormData] = useState({
+        precio: '',
+        tiempoEstimado: '',
+        detallesAdicionales: '',
+    });
+
+    const handleChange = (name: string, value: string) => {
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    }
+
+    const handleCancel = () => {
+        setFormData({
+            precio: '',
+            tiempoEstimado: '',
+            detallesAdicionales: '',
+        });
+    }
+
+    const handleSubmit = () => {
+        if (!formData.precio || !formData.tiempoEstimado) {
+            alert('Por favor, complete todos los campos obligatorios.');
+            return;
+        }
+        const nuevaCotizacion = {
+            title,
+            description,
+            categoria,
+            ubicacion,
+            fecha,
+            estado: "Pendiente",
+            materiales,
+            ...formData,
+        };
+        agregarCotizacionServicio(nuevaCotizacion);
+        actualizarEstadoSolicitud(title, 'Pendiente');
+        handleCancel();
+        Alert.alert(
+            '¡Éxito!',
+            'La cotización se creó correctamente.',
+            [{ text: 'Aceptar', onPress: () => limpiarSolicitudSeleccionada() }],
+            { cancelable: false }
+        );
+    }
+
+    return (
         <View style={styles.card}>
-            <View style={styles.row}>
-                <Text style={styles.titulo}>Crear cotización</Text>
-            </View>
+            <Text style={styles.header}>Crear cotización</Text>
             <View style={styles.title}>
                 <Text style={styles.title}>Solicitud: {title}</Text>
             </View>
-            <View style={styles.container}>
+            <View style={styles.section}>
                 <Text style={styles.subtitle}>Solicitud</Text>
-                <Text style={styles.descripcion}>{description}</Text>
-                <Text style={styles.material}>Materiales necesarios:</Text>
+                <Text style={styles.text}>{description}</Text>
+                <Text style={styles.subtitle}>Materiales necesarios:</Text>
                 {materiales.map((material, index) => (
-                    <Text key={index} style={styles.materialItem}>- {material.nombre} ({material.cantidad} {material.unidad})</Text>
+                    <Text key={index} style={styles.text}>- {material.nombre} ({material.cantidad} {material.unidad})</Text>
                 ))}
             </View>
-            <View style={styles.cardContainer}>
+            <View style={styles.formSection}>
                 <Text style={styles.label}>Precio cotización:</Text>
-                <TextInput style={styles.input} placeholder="Ingrese el precio total" keyboardType="numeric" />
+                <TextInput value={formData.precio} style={styles.input} placeholder="Ingrese el precio total" keyboardType="numeric" placeholderTextColor="#999" onChangeText={(value) => handleChange('precio', value)} />
                 <Text style={styles.label}>Tiempo estimado:</Text>
-                <TextInput style={styles.input} placeholder="Ingrese el tiempo estimado" />
+                <TextInput value={formData.tiempoEstimado} style={styles.input} placeholder="Ingrese el tiempo estimado" placeholderTextColor="#999" onChangeText={(value) => handleChange('tiempoEstimado', value)} />
                 <Text style={styles.label}>Detalles adicionales:</Text>
                 <TextInput
+                    value={formData.detallesAdicionales}
                     style={[styles.input, { height: 100 }]}
                     placeholder="Ingrese detalles adicionales"
                     multiline
+                    placeholderTextColor="#999"
+                    onChangeText={(value) => handleChange('detallesAdicionales', value)}
                 />
             </View>
-            <View style={styles.row}>
-                <TouchableOpacity style={styles.submitButton}>
+            <View style={styles.buttonsContainer}>
+                <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
                     <Text style={styles.submitButtonText}>Enviar Cotización</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.cancelButton}>
+                <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
                     <Text style={styles.cancelButtonText}>Cancelar</Text>
                 </TouchableOpacity>
             </View>
@@ -59,84 +116,97 @@ export default function formCotizar({title, description, categoria, ubicacion, f
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 16,
+        backgroundColor: '#fafafa',
+        borderRadius: 16,
+        padding: 20,
         margin: 16,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
+        shadowOpacity: 0.05,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 8,
         elevation: 2,
     },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+    header: {
+        fontSize: 22,
+        fontWeight: '600',
+        color: '#222',
         marginBottom: 16,
-    },
-    titulo: {
-        fontSize: 20,
-        fontWeight: 'bold',
+        textAlign: 'center',
     },
     title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 8,
+        fontSize: 17,
+        fontWeight: '500',
+        color: '#333',
+        marginBottom: 12,
+        textAlign: 'center',
     },
-    container: {
-        marginBottom: 16,
+    section: {
+        marginBottom: 20,
+        paddingVertical: 8,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: '#eee',
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: '600',
-        marginBottom: 8,
-    },
-    descripcion: {
-        fontSize: 14,
-        color: '#555',
-        marginBottom: 8,
-    },
-    material: {
-        fontSize: 16,
-        fontWeight: '600',
+        color: '#444',
         marginTop: 8,
+        marginBottom: 4,
     },
-    materialItem: {
+    text: {
         fontSize: 14,
         color: '#555',
+        lineHeight: 20,
     },
-    cardContainer: {
-        marginBottom: 16,
+    formSection: {
+        marginBottom: 20,
     },
     label: {
         fontSize: 14,
-        fontWeight: '600',
-        marginBottom: 4,
+        fontWeight: '500',
+        color: '#444',
+        marginBottom: 6,
     },
     input: {
         borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 4,
-        padding: 8,
-        marginBottom: 12,
+        borderColor: '#ddd',
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        fontSize: 14,
+        color: '#333',
+        marginBottom: 14,
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     submitButton: {
-        backgroundColor: '#3498db',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 4,
+        flex: 1,
+        backgroundColor: '#2f80ed',
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginRight: 8,
     },
     submitButtonText: {
         color: '#fff',
+        fontWeight: '600',
+        fontSize: 15,
     },
     cancelButton: {
-        backgroundColor: '#e74c3c',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 4,
+        flex: 1,
+        backgroundColor: '#e0e0e0',
+        paddingVertical: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginLeft: 8,
     },
     cancelButtonText: {
-        color: '#fff',
+        color: '#333',
+        fontWeight: '500',
+        fontSize: 15,
     },
 })

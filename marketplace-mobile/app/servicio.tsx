@@ -38,10 +38,11 @@ interface Solicitud {
 interface SolicitudContextType {
     solicitudes: Solicitud[];
     seleccionarSolicitud: (solicitud: Solicitud) => void;
+    solicitudesAbiertas: Solicitud[];
 }
 
 export default function Servicio() {
-    const { solicitudes, seleccionarSolicitud } = useSolicitud() as SolicitudContextType;
+    const { solicitudes, seleccionarSolicitud, solicitudesAbiertas } = useSolicitud() as SolicitudContextType;
     const { currentUser } = useAuth() as AuthContextType;
     const navigation = useNavigation<ServicioNavigationProp>();
 
@@ -50,6 +51,7 @@ export default function Servicio() {
         navigation.navigate('Cotizar');
 
     };
+
     return (
         <SafeAreaView>
             <Header rol={currentUser?.rol || ''} name={currentUser?.name || ''} />
@@ -63,7 +65,7 @@ export default function Servicio() {
                         </View>
                     </View>
                 ) : (
-                    solicitudes.map((solicitud, index) => (
+                    solicitudesAbiertas.map((solicitud, index) => (
                         <CardService
                             key={index}
                             titulo={solicitud.titulo}

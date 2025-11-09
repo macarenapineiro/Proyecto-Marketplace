@@ -29,32 +29,34 @@ interface Solicitud {
     ubicacion: string;
     fechaLimite: string;
     materiales: Material[];
+    estado: string;
 }
 
 interface SolicitudContextType {
-    solicitudes: Solicitud[];
+    solicitudesAbiertas: Solicitud[];
 }
 
 export default function ClienteScreen() {
 
     const { currentUser } = useAuth() as AuthContextType;
 
-    const { solicitudes } = useSolicitud() as SolicitudContextType;
+    const { solicitudesAbiertas } = useSolicitud() as SolicitudContextType;
 
     return (
         <SafeAreaView style={styles.container}>
             <Header rol={currentUser?.rol || ''} name={currentUser?.name || ''} />
             <ScrollView style={styles.content}>
                 <Text style={styles.headline}>Mis Solicitudes</Text>
-                {solicitudes.length === 0 ? (
+                {solicitudesAbiertas.length === 0 ? (
                     <View style={styles.emptyContainer}>
                         <View style={styles.emptyCard}>
                             <Text style={styles.emptyTitle}>No tienes solicitudes aún</Text>
                             <Text style={styles.emptyText}>Usa el tab <Text style={styles.highlight}>"Solicitudes"</Text> para crear una nueva.</Text>
                         </View>
                     </View>
+                    
                 ) : (
-                    solicitudes.map((solicitud, index) => (
+                    solicitudesAbiertas.map((solicitud, index) => (
                         <CardService
                             key={index}
                             titulo={solicitud.titulo}
@@ -63,6 +65,7 @@ export default function ClienteScreen() {
                             ubicacion={solicitud.ubicacion}
                             tiempo={solicitud.fechaLimite}
                             materiales={solicitud.materiales}
+                            estado={solicitud.estado}
                         />
                     ))
                 )}

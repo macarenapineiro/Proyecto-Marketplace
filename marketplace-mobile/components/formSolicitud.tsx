@@ -55,8 +55,23 @@ export default function FormSolicitud() {
   };
 
   const agregarMaterial = () => {
-    if (!nuevoMaterial.nombre || !nuevoMaterial.unidad || !nuevoMaterial.cantidad) return;
-    setMateriales(prev => [...prev, nuevoMaterial]);
+    const { nombre, unidad, cantidad } = nuevoMaterial;
+
+    // Validaciones:
+    if (!nombre || !unidad || !cantidad) {
+      Alert.alert('Error', 'Completa todos los campos del material antes de agregarlo.');
+      return;
+    }
+
+    const cantidadNum = parseFloat(cantidad);
+
+    if (isNaN(cantidadNum) || cantidadNum <= 0) {
+      Alert.alert('Error', 'La cantidad debe ser un número mayor a 0.');
+      return;
+    }
+
+    // Agregar material válido
+    setMateriales(prev => [...prev, { nombre, unidad, cantidad }]);
     setNuevoMaterial({ nombre: '', unidad: '', cantidad: '' });
   };
 
