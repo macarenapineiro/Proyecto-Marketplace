@@ -1,0 +1,18 @@
+.header {
+    align-items: center;
+    width: 100%;
+}
+.title{
+    font-size: 2rem;
+    font-weight: 600;
+    color: #000;
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 50px;
+}
+#icon {
+    vertical-align: middle;
+    margin-right: 10px;
+    font-size: 30px;
+    padding-bottom: 5px;
+}

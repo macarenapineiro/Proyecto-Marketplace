@@ -1,0 +1,27 @@
+.register{
+    background-color: #fff;
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 8px;
+    padding: 30px 60px 10px;
+    width: 400px;
+    min-height: 280px;
+}
+.register-title{
+    font-size: 1.5rem;
+    color: #000;
+    margin: 0;
+    text-align: center;
+    font-weight: 400;
+}
+.register-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+}

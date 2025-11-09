@@ -1,0 +1,140 @@
+.cotizacionContainer{
+    background-color: #FFFFFF;
+    border: 1px solid #000;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin-bottom: 20px;
+}
+.cotizacionSubtitle{
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+.estado.pendiente{
+    font-size: 14px;
+    background-color: #FBE691;
+    color: #8B7643;
+    padding: 4px 8px;
+    border-radius: 15px;
+}
+.estado.aceptado{
+    font-size: 14px;
+    background-color: #C8F7C5;
+    color: #3A773A;
+    padding: 4px 8px;
+    border-radius: 15px;
+}
+.estado.rechazado{
+    font-size: 14px;
+    background-color: #F7C5C5;
+    color: #773A3A;
+    padding: 4px 8px;
+    border-radius: 15px;
+}
+.precio, .tiempo{
+    font-size: 18px;
+    color: #736C6C;
+    margin: 12px 0;
+}
+.precioValue, .tiempoValue{
+    font-size: 20px;
+    font-style: italic;
+}
+.descripcion{
+    font-size: 14px;
+    color: #000;
+    margin: 12px 0;
+    font-weight: bold;
+}
+.descripcionValue{
+    font-size: 14px;
+    font-style: italic;
+    color: #777474;
+}
+.insumosTitle{
+    font-size: 14px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+.materialContainerRow{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 12px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E8E8E8;
+    padding: 0 8px;
+    border-radius: 5px;
+}
+.materialNombre{
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0;
+}
+.materialPrecio{
+    font-size: 15px;
+    color: #4A4A4A;
+    margin: 0;
+}
+.materialFecha{
+    font-size: 15px;
+    color: #4A4A4A;
+    margin: 8px 0;
+}
+.containerRowButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.aceptarButton, .rechazarButton, .editarButton, .eliminarButton{    
+    flex: 1;
+    min-width: 120px; 
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.aceptarButton{
+    background: linear-gradient(135deg, #28a745, #147f2e);
+    color: #fff;
+    border: none;
+}
+.aceptarButton:hover{
+    background: linear-gradient(135deg, #1e7e34, #0f3e16);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+.rechazarButton{
+    background: #fff;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+}
+.rechazarButton:hover{
+    background: #e74c3c;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.editarButton{
+    background: linear-gradient(135deg, #4A90E2, #357ABD);
+    color: #fff;
+    border: none;
+}
+.editarButton:hover{
+    background: linear-gradient(135deg, #357ABD, #2d5a9f);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.eliminarButton{
+    background: linear-gradient(135deg, #E74C3C, #C0392B);
+    color: #fff;
+    border: none;
+}
+.eliminarButton:hover{
+    background: linear-gradient(135deg, #C0392B, #992d22);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}

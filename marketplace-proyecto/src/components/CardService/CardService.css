@@ -1,0 +1,177 @@
+.cardContainer{
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 8px;
+    padding: 20px;
+    width: 80%;
+    margin-bottom: 20px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+.containerRow{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.cardTitle{
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+}
+.status.abierto{
+    background-color: #ABEBBA;
+    color: #438B54;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+.status.pendiente{}
+.status.aceptado{}
+.status.rechazado{}
+.cardDescription{
+    color: #777474;
+    font-style: italic;
+    font-size: 14px;
+}
+.cardCategory{
+    font-size: 12px;
+    color: #000;
+    font-style: italic;
+    border:#000 1px solid;
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+.containerFecha{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+}
+.cardFecha{
+    font-size: 12px;
+    color: #000;
+    font-style: italic;
+
+}
+#clockIcon{
+    width: 14px;
+    height: 14px;
+    margin-right: 5px;
+}
+#materialIcon{
+    width: 14px;
+    height: 14px;
+    margin-right: 5px;
+}
+.containerMaterial{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+}
+.cardMateriales{
+    font-size: 12px;
+    color: #000;
+    font-style: italic;
+}
+.cardP{
+    font-size: 14px;
+    color: #000;
+    font-style: italic;
+}
+.materialList{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+.materialItem{
+    border:#000 1px solid;
+    border-radius: 15px;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+.cotizarButton{
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+.cotizarButton:hover{
+    background-color: #333;
+}
+/* .cliente-contenido{
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 8px;
+    padding: 20px;
+    width: 80%;
+}
+.cliente-solicitud{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.solicitud-titulo{
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+}
+.solicitud-estado{
+    background-color: #ABEBBA;
+    color: #438B54;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+.solicitud-descripcion{
+    font-size: 16px;
+    color: #777474;
+    font-style: italic;
+}
+.solicitud-detalles{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.solicitud-detalle{
+    font-size: 14px;
+    color: #000;
+    font-style: italic;
+}
+.materiales-titulo{
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+}
+.solicitud-materiales{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+}
+.material{
+    font-size: 14px;
+    color: #000;
+    border:#000 1px solid;
+    border-radius: 15px;
+    padding: 5px 10px;
+} */

@@ -1,0 +1,75 @@
+.cardHeaderContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 10px 0;
+}
+.rol.solicitante{
+    font-size: 14px;
+    font-weight: 600;
+    color: #0E4784;
+    background-color: #90C6DA;
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+.rol.proveedor{
+    font-size: 14px;
+    font-weight: 600;
+    color: #00601D;
+    background-color: #92DA90;
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+.rol.insumos{
+    font-size: 14px;
+    font-weight: 600;
+    color: #2B0060;
+    background-color: #B6B7EB;
+    border-radius: 15px;
+    padding: 5px 10px;
+}
+.containerUser{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.cardHeaderName{
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+}
+#userIcon{
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+.exitButton{
+    background: #7dabc5;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 15px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.exitButton:hover{
+    background-color: #2c729a;
+    color: #fff;
+    border: none;
+}
+.volverButton{
+    background: #c6c9cb;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 15px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.volverButton:hover{
+    background-color: #878b8d;
+    color: #fff;
+    border: none;
+}

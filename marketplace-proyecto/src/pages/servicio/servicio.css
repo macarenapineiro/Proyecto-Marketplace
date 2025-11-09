@@ -1,0 +1,62 @@
+.clienteContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.servicioContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin-top: 20px;
+}
+.nuevaSolicitudButton{
+    border: none;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.filtrosContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.filtroItem{
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+}
+.filtroItem label{
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+.filtroItem select, .filtroItem input[type="date"]{
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 13px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+.filtroItem select:focus, .filtroItem input[type="date"]:focus{
+    border-color: #000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}

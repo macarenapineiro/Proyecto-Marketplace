@@ -1,0 +1,11 @@
+.button-black {
+    color: #fff;
+    background-color: #000;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 20rem;
+    margin: 20px 0;
+}
