@@ -7,6 +7,7 @@ import CardCotizacion from '../../components/cardCotizacion/cardCotizacion'
 import { useState } from 'react'
 import { useSolicitudes } from '../../context/ServiceContext'
 import { useAuth } from '../../context/AuthContext'
+import { ToastContainer } from 'react-toastify';
 
 export default function Cliente() {
   const { currentUser } = useAuth();
@@ -15,12 +16,12 @@ export default function Cliente() {
     cotizacionesServicios,
     cotizacionesInsumos,
     agregarSolicitud,
-    agregarCotizacion,
     actualizarEstadoCotizacion
   } = useSolicitudes();
 
   const [showForm, setShowForm] = useState(false);
   const [sort, setSort] = useState("asc");
+  const [estadoFiltro, setEstadoFiltro] = useState('Pendiente');
 
   const handleNuevaSolicitud = () => {
     setShowForm(true);
@@ -47,7 +48,7 @@ export default function Cliente() {
     const misIds = new Set((solicitudes || []).filter(s => s.cliente === currentUser?.name).map(s => s.id));
     const tituloPorId = new Map((solicitudes || []).map(s => [s.id, s.titulo]));
     return (cotizacionesServicios || [])
-      .filter(c => misIds.has(c.solicitudId))
+      .filter(c => misIds.has(c.solicitudId) && c.estado === estadoFiltro)
       .map(c => ({ ...c, titulo: `Para: ${tituloPorId.get(c.solicitudId) || 'Solicitud'}`, tipo: 'servicio' }));
   }
 
@@ -55,7 +56,7 @@ export default function Cliente() {
     const misIds = new Set((solicitudes || []).filter(s => s.cliente === currentUser?.name).map(s => s.id));
     const tituloPorId = new Map((solicitudes || []).map(s => [s.id, s.titulo]));
     return (cotizacionesInsumos || [])
-      .filter(c => misIds.has(c.solicitudId))
+      .filter(c => misIds.has(c.solicitudId) && c.estado === estadoFiltro)
       .map(c => ({ ...c, titulo: `Material: ${c.materialNombre} (${tituloPorId.get(c.solicitudId) || 'Solicitud'})`, tipo: 'insumo' }));
   }
 
@@ -109,6 +110,8 @@ export default function Cliente() {
             onCancel={handleCancelar}
           />
         )}
+        <ToastContainer position="top-center" autoClose={3000} theme="colored" />
+
       </div>
 
       {/* Tabs con solicitudes */}
@@ -125,7 +128,34 @@ export default function Cliente() {
           onRechazarCotizacion={handleRechazar}
           customCotizacionesRender={() => (
             <div style={{ width: '100%' }}>
-              <button onClick={handleOrdenarPorPrecio} style={{ marginBottom: 10 }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginBottom: 20 }}>
+                {['Pendiente', 'Aceptado', 'Rechazado'].map((estado) => (
+                  <button
+                    key={estado}
+                    onClick={() => setEstadoFiltro(estado)}
+                    style={{
+                      padding: '6px 12px',
+                      borderRadius: '8px',
+                      border: estadoFiltro === estado ? '2px solid #000' : '1px solid #ccc',
+                      backgroundColor: estadoFiltro === estado ? '#f0f0f0' : '#fff',
+                      cursor: 'pointer',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    {estado}
+                  </button>
+                ))}
+              </div>
+              <button onClick={handleOrdenarPorPrecio} style={{
+                backgroundColor: '#000',
+                color: '#fff',
+                padding: '8px 16px',
+                borderRadius: '6px',
+                fontWeight: 'bold',
+                border: 'none',
+                cursor: 'pointer',
+                marginBottom: '10px',
+              }}>
                 Ordenar por precio {sort === "asc" ? "▼" : "▲"}
               </button>
               <div style={{ display: 'flex', gap: 32, justifyContent: 'center', width: '100%' }}>

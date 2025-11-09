@@ -1,4 +1,5 @@
 import './formCotizacion.css'
+import {toast, ToastContainer} from 'react-toastify';
 import {useState, useEffect} from 'react';
 export default function FormCotizacion({solicitud, cotizacion, onCancel, onSubmit}) {
     const [formData, setFormData] = useState({
@@ -28,12 +29,12 @@ export default function FormCotizacion({solicitud, cotizacion, onCancel, onSubmi
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!formData.precio || !formData.tiempoEntrega || !formData.descripcion) {
-            alert('Por favor, completa todos los campos');
+            toast.warning('Por favor, complete todos los campos');
             return;
         }
         const precioNum = parseFloat(formData.precio);
         if (isNaN(precioNum) || precioNum <= 0) {
-            alert('El precio debe ser un número mayor a 0');
+            toast.warning('El precio debe ser un número mayor a 0');
             return;
         }
         const nuevaCotizacion = {
@@ -44,17 +45,21 @@ export default function FormCotizacion({solicitud, cotizacion, onCancel, onSubmi
             esEdicion: !!cotizacion
         };
         onSubmit(nuevaCotizacion);
+        toast.success(`Cotización ${cotizacion ? 'actualizada' : 'creada'} con éxito`);
         setFormData({
             precio: '',
             tiempoEntrega: '',
             descripcion: ''
         });
     };
+    const handleCancel = () => {
+        onCancel();
+    }
     return (
         <div className="formContainer">
             <div className="formRow">
                 <h2 className="subtitle">{cotizacion ? 'Editar cotización' : 'Crear cotización'}</h2>
-                <button className="exitSolicitud" onClick={onCancel}>x</button>
+                <button className="exitSolicitud" onClick={handleCancel}>x</button>
             </div>
             <div className="formRow">
                 <span className="solTitulo">Para: {solicitud?.titulo}</span>
@@ -88,14 +93,14 @@ export default function FormCotizacion({solicitud, cotizacion, onCancel, onSubmi
             <div className="formRow">
                 <div className="containerColumn">
                     <label className="label" htmlFor="descripcion">Descripción:</label>
-                    <textarea id="descripcion" name="descripcion" className="inputField" placeholder="Ingrese una descripción" value={formData.descripcion} onChange={handleInputChange}></textarea>
+                    <textarea id="descripcion" name="descripcion" className="inputField descriptionField" placeholder="Ingrese una descripción" value={formData.descripcion} onChange={handleInputChange}></textarea>
                 </div>
             </div>
             <div className="containerRowButtons">
                 <button type="button" className="submitButton" onClick={handleSubmit}>
                     {cotizacion ? 'Guardar cambios' : 'Enviar cotización'}
                 </button>
-                <button type="button" className="cancelButton" onClick={onCancel}>
+                <button type="button" className="cancelButton" onClick={handleCancel}>
                     Cancelar
                 </button>
             </div>

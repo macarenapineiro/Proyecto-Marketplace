@@ -5,6 +5,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 80%;
+    margin-bottom: 20px;
 }
 .cotizacionSubtitle{
     font-size: 18px;
@@ -92,37 +93,48 @@
 .aceptarButton, .rechazarButton, .editarButton, .eliminarButton{    
     flex: 1;
     min-width: 120px; 
-    padding: 10px;
+    padding: 12px 20px;
     font-size: 16px;
-    border-radius: 10px;
+    font-weight: bold;
+    border-radius: 12px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 .aceptarButton{
-    background-color: #000;
-    color: #FFF;
+    background: linear-gradient(135deg, #28a745, #147f2e);
+    color: #fff;
     border: none;
 }
 .aceptarButton:hover{
-    background-color: #333333;
+    background: linear-gradient(135deg, #1e7e34, #0f3e16);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
 }
 .rechazarButton{
-    background-color: #FFF;
-    color: #000;
-    border: 1px solid #000;
+    background: #fff;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+}
+.rechazarButton:hover{
+    background: #e74c3c;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 .editarButton{
-    background-color: #4A90E2;
-    color: #FFF;
+    background: linear-gradient(135deg, #4A90E2, #357ABD);
+    color: #fff;
     border: none;
 }
 .editarButton:hover{
-    background-color: #357ABD;
+    background: linear-gradient(135deg, #357ABD, #2d5a9f);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 .eliminarButton{
-    background-color: #E74C3C;
-    color: #FFF;
+    background: linear-gradient(135deg, #E74C3C, #C0392B);
+    color: #fff;
     border: none;
 }
 .eliminarButton:hover{
-    background-color: #C0392B;
+    background: linear-gradient(135deg, #C0392B, #992d22);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }

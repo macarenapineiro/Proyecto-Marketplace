@@ -57,8 +57,6 @@ export default function TabComponent({
   onEditarCotizacion,
   onEliminarCotizacion,
   customCotizacionesRender,
-  sort,
-  onOrdenarPorPrecio,
 }) {
   const [value, setValue] = useState(0);
 
@@ -68,7 +66,6 @@ export default function TabComponent({
 
   return (
     <Box sx={{ width: '100%' }}>
-      {/* Encabezado de las pestañas */}
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs
           value={value}
@@ -83,7 +80,6 @@ export default function TabComponent({
         </Tabs>
       </Box>
 
-      {/* Contenido de la primera pestaña */}
       <CustomTabPanel value={value} index={0}>
         {solicitudes.length === 0 ? (
           <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>
@@ -96,6 +92,7 @@ export default function TabComponent({
               flexWrap: 'wrap',
               gap: 2,
               justifyContent: 'center',
+              alignItems: 'flex-start',
             }}
           >
             {solicitudes.map((solicitud) => (
@@ -129,20 +126,13 @@ export default function TabComponent({
             ) : (
               <Box sx={{ width: '100%' }}>
                 {/* Botón para ordenar por precio */}
-                {onOrdenarPorPrecio && (
-                  <button
-                    onClick={onOrdenarPorPrecio}
-                    style={{ marginBottom: 10 }}
-                  >
-                    Ordenar por precio {sort === "asc" ? "▼" : "▲"}
-                  </button>
-                )}
                 <Box
                   sx={{
                     display: 'flex',
                     flexWrap: 'wrap',
                     gap: 2,
                     justifyContent: 'center',
+                    alignItems: 'flex-start',
                   }}
                 >
                   {cotizaciones.map((c) => (

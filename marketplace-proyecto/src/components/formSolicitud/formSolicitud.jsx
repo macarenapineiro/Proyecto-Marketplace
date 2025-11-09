@@ -1,5 +1,8 @@
 import './formSolicitud.css';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function FormSolicitud({ onSubmit, onCancel }) {
     const [formData, setFormData] = useState({
         titulo: '',
@@ -31,13 +34,13 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
             nuevoMaterial.unidad.trim() === '' ||
             nuevoMaterial.cantidad.trim() === ''
         ) {
-            alert('Por favor, completa nombre, unidad y cantidad del material');
+            toast.warning('Por favor, completa nombre, unidad y cantidad del material');
             return;
         }
 
         const cantidadNum = parseFloat(nuevoMaterial.cantidad);
         if (isNaN(cantidadNum) || cantidadNum <= 0) {
-            alert('Por favor, ingresa una cantidad válida');
+            toast.warning('Por favor, ingresa una cantidad válida');
             return;
         }
 
@@ -49,31 +52,33 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
                 cantidad: cantidadNum
             }
         ]);
-
+        toast.success('Material agregado');
         setNuevoMaterial({ nombre: '', unidad: '', cantidad: '' });
     };
 
     const eliminarMaterial = (index) => {
+        const element = materiales[index];
         setMateriales(prev => prev.filter((_, i) => i !== index));
+        toast.info(`Material "${element.nombre}" eliminado`);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (formData.titulo.trim() === '' || formData.descripcion.trim() === '') {
-            alert('Por favor, completa el título y la descripción');
+            toast.warning('Por favor, completa el título y la descripción');
             return;
         }
         if (formData.categoria === '') {
-            alert('Por favor, selecciona una categoría');
+            toast.warning('Por favor, selecciona una categoría');
             return;
         }
         if (formData.ubicacion.trim() === '') {
-            alert('Por favor, ingresa una ubicación');
+            toast.warning('Por favor, ingresa una ubicación');
             return;
         }
         if (formData.fechaLimite.trim() === '') {
-            alert('Por favor, ingresa una fecha límite');
+            toast.warning('Por favor, ingresa una fecha límite');
             return;
         }
 
@@ -84,9 +89,9 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
             estado: 'Abierto',
         };
 
-        onSubmit(nuevaSolicitud); // enviamos al padre
+        onSubmit(nuevaSolicitud); 
+        toast.success('Solicitud creada con éxito');
 
-        // limpiamos el formulario
         setFormData({ titulo: '', descripcion: '', categoria: '', ubicacion: '', fechaLimite: '' });
         setMateriales([]);
         setNuevoMaterial({ nombre: '', unidad: '', cantidad: '' });
@@ -95,7 +100,7 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
         <div className="formContainer">
             <div className="containerRow">
                 <h2 className="subtitle">Crear nueva solicitud</h2>
-                <button className="exitSolicitud" onClick={onCancel}>x</button>
+                <button className="exitSolicitud" onClick={() => { onCancel(); toast.info('Solicitud cancelada'); } }>x</button>
             </div>
 
             <div className="containerRow">
@@ -146,7 +151,6 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
                             <option value="construccion">Construcción</option>
                             <option value="mecanica">Mecánica</option>
                         </select>
-                        <p className="label">Materiales necesarios:</p>
                     </div>
                     <div className="containerColumn">
                         <label className="label">Ubicación</label>
@@ -179,7 +183,7 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
                     </div>
                 </div>
             </div>
-
+            <p className="label">Materiales necesarios:</p>
             <div className="containerRow">
                 <div className="containerColumnTriple">
                     <input
@@ -250,7 +254,7 @@ export default function FormSolicitud({ onSubmit, onCancel }) {
                 <button type="button" className="submitButton" onClick={handleSubmit}>
                     Crear solicitud
                 </button>
-                <button type="button" className="cancelButton" onClick={onCancel}>
+                <button type="button" className="cancelButton" onClick={() => { onCancel(); toast.info('Solicitud cancelada'); }}>
                     Cancelar
                 </button>
             </div>

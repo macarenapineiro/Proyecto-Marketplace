@@ -10,7 +10,6 @@ export default function Home() {
                     <h2 className="homeSubtitle">Bienvenido</h2>
                     <div className="button-container">
                         <Boton texto="Iniciar Sesión" pagina="/login" />
-                        <Boton texto="Registrarse" pagina="/register" />
                     </div>
                 </div>
             </div>

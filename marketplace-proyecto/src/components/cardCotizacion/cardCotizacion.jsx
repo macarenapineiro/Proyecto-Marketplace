@@ -1,4 +1,5 @@
 import './cardCotizacion.css'
+import {toast, ToastContainer} from 'react-toastify';
 
 export default function CardCotizacion({
     titulo = 'Cotización',
@@ -17,6 +18,18 @@ export default function CardCotizacion({
     onEliminar,
 }) {
     const estadoClass = `estado ${String(estado).toLowerCase()}`;
+    const handleAceptar = () => {
+        onAceptar();
+        toast.success('Cotización aceptada');
+    }
+    const handleRechazar = () => {
+        onRechazar();
+        toast.info('Cotización rechazada');
+    }
+    const handleEliminar = () => {
+        onEliminar();
+        toast.error('Cotización eliminada');
+    }
     return (
         <div className="cotizacionContainer">
             <div className="containerRow">
@@ -58,10 +71,10 @@ export default function CardCotizacion({
             )}
             {mostrarAcciones && estado === 'Pendiente' && (
                 <div className="containerRowButton">
-                    <button className="aceptarButton" onClick={onAceptar}>
+                    <button className="aceptarButton" onClick={handleAceptar}>
                         Aceptar Cotización
                     </button>
-                    <button className="rechazarButton" onClick={onRechazar}>
+                    <button className="rechazarButton" onClick={handleRechazar}>
                         Rechazar
                     </button>
                 </div>
@@ -72,7 +85,7 @@ export default function CardCotizacion({
                         Editar Cotización
                     </button>
                     {mostrarEliminar && (
-                        <button className="eliminarButton" onClick={onEliminar}>
+                        <button className="eliminarButton" onClick={handleEliminar}>
                             Eliminar
                         </button>
                     )}
