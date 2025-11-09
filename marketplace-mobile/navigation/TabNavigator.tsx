@@ -50,6 +50,7 @@ const TabNavigator = () => {
                 <>
                     <Tab.Screen name="Servicio" component={Servicio} options={{ headerShown: false, tabBarIcon: ({ color }) => <MaterialIcons name="add-box" size={24} color={color} /> }} />
                     <Tab.Screen name="Cotizar" component={Cotizar} options={{ headerShown: false, tabBarIcon: ({ color }) => <MaterialIcons name="attach-money" size={24} color={color} /> }} />
+                    <Tab.Screen name="Cotizaciones" component={SolicitudCotizada} options={{ headerShown: false, tabBarIcon: ({ color }) => <MaterialIcons name="attach-money" size={24} color={color} /> }} />
                     <Tab.Screen name="Perfil" component={PerfilScreen} options={{ headerShown: false, tabBarIcon: ({ color }) => <FontAwesome5 name="user" size={24} color={color} /> }} />
                 </>
             )}

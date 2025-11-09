@@ -11,12 +11,26 @@ export const CotizacionProvider = ({ children }) => {
         setCotizacionesServicio([...cotizacionesServicio, nuevaCotizacion]);
     };
 
+    const actualizarCotizacionServicio = (id, cambios) => {
+        setCotizacionesServicio(prevCotizaciones =>
+            prevCotizaciones.map(cotizacion =>
+                cotizacion.id === id ? { ...cotizacion, ...cambios } : cotizacion
+            )
+        );
+    }
+
+    const eliminarCotizacionServicio = (id) => {
+        setCotizacionesServicio(prevCotizaciones =>
+            prevCotizaciones.filter(cotizacion => cotizacion.id !== id)
+        );
+    }
+
     const agregarCotizacionInsumo = (nuevaCotizacion) => {
         setCotizacionesInsumo([...cotizacionesInsumo, nuevaCotizacion]);
     };
 
     return (
-        <CotizacionContext.Provider value={{ cotizacionesServicio, agregarCotizacionServicio, cotizacionesInsumo, agregarCotizacionInsumo }}>
+        <CotizacionContext.Provider value={{ cotizacionesServicio, agregarCotizacionServicio, actualizarCotizacionServicio, eliminarCotizacionServicio, cotizacionesInsumo, agregarCotizacionInsumo }}>
             {children}
         </CotizacionContext.Provider>
     );

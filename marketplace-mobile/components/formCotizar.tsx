@@ -3,7 +3,7 @@ import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'reac
 import { useCotizacion } from '../context/CotizacionContext';
 import { useSolicitud } from '../context/SolicitudContext';
 
-interface CardSolicitudProps {
+interface FormCotizarProps {
     title: string;
     description: string;
     categoria: string;
@@ -11,6 +11,21 @@ interface CardSolicitudProps {
     fecha: string;
     estado: string;
     materiales: Material[];
+    cotizacionExistente?: Cotizacion | null;
+    onSubmit?: (cotizacion: any) => void;
+}
+interface Cotizacion {
+    id: string;
+    title: string;
+    description: string;
+    categoria: string;
+    ubicacion: string;
+    fecha: string;
+    estado: string;
+    materiales: Material[];
+    precio: string;
+    tiempoEstimado: string;
+    detallesAdicionales: string;
 }
 
 interface Material {
@@ -19,7 +34,7 @@ interface Material {
     unidad: string;
 }
 
-export default function FormCotizar({ title, description, categoria, ubicacion, fecha, estado, materiales }: CardSolicitudProps) {
+export default function FormCotizar({ title, description, categoria, ubicacion, fecha, estado, materiales, cotizacionExistente, onSubmit }: FormCotizarProps) {
     const { agregarCotizacionServicio } = useCotizacion() as {
         cotizacionesServicio: any[];
         agregarCotizacionServicio: (cotizacion: any) => void;
@@ -27,9 +42,9 @@ export default function FormCotizar({ title, description, categoria, ubicacion, 
     const { actualizarEstadoSolicitud, limpiarSolicitudSeleccionada } = useSolicitud() as any;
 
     const [formData, setFormData] = useState({
-        precio: '',
-        tiempoEstimado: '',
-        detallesAdicionales: '',
+        precio: cotizacionExistente?.precio?.toString() || '',
+        tiempoEstimado: cotizacionExistente?.tiempoEstimado || '',
+        detallesAdicionales: cotizacionExistente?.detallesAdicionales || '',
     });
 
     const handleChange = (name: string, value: string) => {
@@ -53,6 +68,7 @@ export default function FormCotizar({ title, description, categoria, ubicacion, 
             return;
         }
         const nuevaCotizacion = {
+            id: cotizacionExistente?.id || Date.now().toString(),
             title,
             description,
             categoria,
@@ -62,8 +78,13 @@ export default function FormCotizar({ title, description, categoria, ubicacion, 
             materiales,
             ...formData,
         };
-        agregarCotizacionServicio(nuevaCotizacion);
-        actualizarEstadoSolicitud(title, 'Pendiente');
+        if (onSubmit) {
+            onSubmit(nuevaCotizacion);
+        }
+        else {
+            agregarCotizacionServicio(nuevaCotizacion);
+            actualizarEstadoSolicitud(title, 'Pendiente');
+        }
         handleCancel();
         Alert.alert(
             '¡Éxito!',

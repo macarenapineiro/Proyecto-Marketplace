@@ -105,6 +105,7 @@ export default function FormSolicitud() {
       return;
     }
     const nuevaSolicitud = {
+      id: Date.now().toString(),
       ...formData,
       categoria: formData.categoria,
       ubicacion: formData.ubicacion,
