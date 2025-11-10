@@ -18,10 +18,10 @@ export const SolicitudProvider = ({ children }) => {
 
   const limpiarSolicitudSeleccionada = () => setSolicitudSeleccionada(null);
 
-  const actualizarEstadoSolicitud = (titulo, nuevoEstado) => {
+  const actualizarEstadoSolicitud = (solicitudId, nuevoEstado) => {
     setSolicitudes((prevSolicitudes) =>
       prevSolicitudes.map((solicitud) =>
-        solicitud.titulo === titulo ? { ...solicitud, estado: nuevoEstado } : solicitud
+        solicitud.id === solicitudId ? { ...solicitud, estado: nuevoEstado } : solicitud
       )
     );
   };

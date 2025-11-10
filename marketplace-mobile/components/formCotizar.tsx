@@ -4,6 +4,7 @@ import { useCotizacion } from '../context/CotizacionContext';
 import { useSolicitud } from '../context/SolicitudContext';
 
 interface FormCotizarProps {
+    solicitudId?: string;
     title: string;
     description: string;
     categoria: string;
@@ -16,6 +17,7 @@ interface FormCotizarProps {
 }
 interface Cotizacion {
     id: string;
+    solicitudId?: string;
     title: string;
     description: string;
     categoria: string;
@@ -34,7 +36,7 @@ interface Material {
     unidad: string;
 }
 
-export default function FormCotizar({ title, description, categoria, ubicacion, fecha, estado, materiales, cotizacionExistente, onSubmit }: FormCotizarProps) {
+export default function FormCotizar({ solicitudId, title, description, categoria, ubicacion, fecha, materiales, cotizacionExistente, onSubmit }: FormCotizarProps) {
     const { agregarCotizacionServicio } = useCotizacion() as {
         cotizacionesServicio: any[];
         agregarCotizacionServicio: (cotizacion: any) => void;
@@ -60,6 +62,7 @@ export default function FormCotizar({ title, description, categoria, ubicacion, 
             tiempoEstimado: '',
             detallesAdicionales: '',
         });
+        Alert.alert('Acción cancelada', 'La creación de la cotización ha sido cancelada.');
     }
 
     const handleSubmit = () => {
@@ -67,8 +70,25 @@ export default function FormCotizar({ title, description, categoria, ubicacion, 
             alert('Por favor, complete todos los campos obligatorios.');
             return;
         }
+        if (isNaN(Number(formData.precio))) {
+            alert('El precio debe ser un número válido.');
+            return;
+        }
+        if(Number(formData.precio) < 0) {
+            alert('El precio no puede ser negativo.');
+            return;
+        }
+        if (isNaN(Number(formData.tiempoEstimado))) {
+            alert('El tiempo estimado debe ser un número válido.');
+            return;
+        }
+        if(Number(formData.tiempoEstimado) < 0) {
+            alert('El tiempo estimado no puede ser negativo.');
+            return;
+        }
         const nuevaCotizacion = {
             id: cotizacionExistente?.id || Date.now().toString(),
+            solicitudId: solicitudId || '',
             title,
             description,
             categoria,
@@ -83,9 +103,13 @@ export default function FormCotizar({ title, description, categoria, ubicacion, 
         }
         else {
             agregarCotizacionServicio(nuevaCotizacion);
-            actualizarEstadoSolicitud(title, 'Pendiente');
+            actualizarEstadoSolicitud(solicitudId || '', 'Pendiente');
         }
-        handleCancel();
+        setFormData({
+            precio: '',
+            tiempoEstimado: '',
+            detallesAdicionales: '',
+        });
         Alert.alert(
             '¡Éxito!',
             'La cotización se creó correctamente.',
@@ -112,7 +136,7 @@ export default function FormCotizar({ title, description, categoria, ubicacion, 
                 <Text style={styles.label}>Precio cotización:</Text>
                 <TextInput value={formData.precio} style={styles.input} placeholder="Ingrese el precio total" keyboardType="numeric" placeholderTextColor="#999" onChangeText={(value) => handleChange('precio', value)} />
                 <Text style={styles.label}>Tiempo estimado:</Text>
-                <TextInput value={formData.tiempoEstimado} style={styles.input} placeholder="Ingrese el tiempo estimado" placeholderTextColor="#999" onChangeText={(value) => handleChange('tiempoEstimado', value)} />
+                <TextInput value={formData.tiempoEstimado} style={styles.input} placeholder="Ingrese el tiempo estimado" keyboardType="numeric" placeholderTextColor="#999" onChangeText={(value) => handleChange('tiempoEstimado', value)} />
                 <Text style={styles.label}>Detalles adicionales:</Text>
                 <TextInput
                     value={formData.detallesAdicionales}

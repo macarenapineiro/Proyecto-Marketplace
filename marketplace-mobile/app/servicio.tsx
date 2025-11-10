@@ -4,9 +4,10 @@ import { useAuth } from '@/context/AuthContext';
 import { useSolicitud } from '@/context/SolicitudContext';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import DropdownComponent from '../components/dropDown';
 import { TabParamList } from '../navigation/TabNavigator';
-
 
 type ServicioNavigationProp = BottomTabNavigationProp<TabParamList, 'Servicio'>;
 
@@ -26,6 +27,7 @@ interface Material {
 }
 
 interface Solicitud {
+    id: string;
     titulo: string;
     descripcion: string;
     categoria: string;
@@ -42,9 +44,13 @@ interface SolicitudContextType {
 }
 
 export default function Servicio() {
-    const { solicitudes, seleccionarSolicitud, solicitudesAbiertas } = useSolicitud() as SolicitudContextType;
+    const { seleccionarSolicitud, solicitudesAbiertas } = useSolicitud() as SolicitudContextType;
     const { currentUser } = useAuth() as AuthContextType;
     const navigation = useNavigation<ServicioNavigationProp>();
+
+    const [categoriaFiltro, setCategoriaFiltro] = useState<string>('Todas');
+    const [ubicacionFiltro, setUbicacionFiltro] = useState<string>('Todas');
+    const [fechaFiltro, setFechaFiltro] = useState<string>('Todas');
 
     const handleCotizar = (solicitud: Solicitud) => {
         seleccionarSolicitud(solicitud);
@@ -52,20 +58,111 @@ export default function Servicio() {
 
     };
 
+    const filteredSolicitudes = solicitudesAbiertas.filter(solicitud => {
+        return (categoriaFiltro === 'Todas' || solicitud.categoria === categoriaFiltro) &&
+            (ubicacionFiltro === 'Todas' || solicitud.ubicacion === ubicacionFiltro) &&
+            (fechaFiltro === 'Todas' || solicitud.fechaLimite === fechaFiltro);
+    });
+
+    const categoriaData = [
+        { label: 'Todas', value: 'Todas' },
+        { label: 'Reparaciones', value: 'reparaciones' },
+        { label: 'Limpieza', value: 'limpieza' },
+        { label: 'Jardinería', value: 'jardineria' },
+        { label: 'Electricidad', value: 'electricidad' },
+        { label: 'Plomería', value: 'plomeria' },
+        { label: 'Pintura', value: 'pintura' },
+        { label: 'Carpintería', value: 'carpinteria' },
+        { label: 'Construcción', value: 'construccion' },
+        { label: 'Mecánica', value: 'mecanica' },
+    ];
+
+    const ubicacionData = [
+        { label: 'Todas', value: 'Todas' },
+        { label: 'Maldonado', value: 'Maldonado' },
+        { label: 'Punta del Este', value: 'Punta del Este' },
+        { label: 'San Carlos', value: 'San Carlos' },
+        { label: 'Pan de Azúcar', value: 'Pan de Azúcar' },
+        { label: 'Piriápolis', value: 'Piriápolis' },
+        { label: 'La Barra', value: 'La Barra' },
+        { label: 'José Ignacio', value: 'José Ignacio' },
+        { label: 'Otro', value: 'Otro' },
+    ];
+
+    const fechaData = [
+        { label: 'Todas', value: 'Todas' },
+        ...solicitudesAbiertas.map(s => ({ label: s.fechaLimite, value: s.fechaLimite }))
+    ];
+
     return (
         <SafeAreaView>
             <Header rol={currentUser?.rol || ''} name={currentUser?.name || ''} />
+            <View style={styles.filtrosContainer}>
+                <View style={styles.filtroRow}>
+                    <View style={styles.filtroCol}>
+                        <Text style={styles.filtroLabel}>Filtrar por categoría:</Text>
+                        <DropdownComponent
+                            label="Categoría"
+                            data={categoriaData}
+                            value={categoriaFiltro}
+                            onValueChange={setCategoriaFiltro}
+                            customStyles={{
+                                dropdown: { height: 40 },
+                                placeholderStyle: { fontSize: 12 },
+                                selectedTextStyle: { fontSize: 12 },
+                                inputSearchStyle: { fontSize: 12, height: 30 },
+                            }}
+                        />
+                    </View>
+                    <View style={styles.filtroCol}>
+                        <Text style={styles.filtroLabel}>Filtrar por ubicación:</Text>
+                        <DropdownComponent
+                            label="Ubicación"
+                            data={ubicacionData}
+                            value={ubicacionFiltro}
+                            onValueChange={setUbicacionFiltro}
+                            customStyles={{
+                                dropdown: { height: 40 },
+                                placeholderStyle: { fontSize: 12 },
+                                selectedTextStyle: { fontSize: 12 },
+                                inputSearchStyle: { fontSize: 12, height: 30 },
+                            }}
+                        />
+                    </View>
+                    <View style={styles.filtroCol}>
+                        <Text style={styles.filtroLabel}>Filtrar por fecha:</Text>
+                        <DropdownComponent
+                            label="Fecha"
+                            data={fechaData}
+                            value={fechaFiltro}
+                            onValueChange={setFechaFiltro}
+                            customStyles={{
+                                dropdown: { height: 40 },
+                                placeholderStyle: { fontSize: 12 },
+                                selectedTextStyle: { fontSize: 12 },
+                                inputSearchStyle: { fontSize: 12, height: 30 },
+                            }}
+                        />
+                    </View>
+                </View>
+                <TouchableOpacity
+                    onPress={() => { setCategoriaFiltro('Todas'); setUbicacionFiltro('Todas'); setFechaFiltro('Todas'); }}
+                    style={styles.resetButton}
+                >
+                    <Text style={styles.resetText}>Resetear filtros</Text>
+                </TouchableOpacity>
+            </View>
             <ScrollView style={styles.content}>
-                <Text style={styles.headline}>Mis Solicitudes</Text>
-                {solicitudes.length === 0 ? (
+                <Text style={styles.headline}>Solicitudes disponibles</Text>
+                {solicitudesAbiertas.length === 0 ? (
                     <View style={styles.emptyContainer}>
                         <View style={styles.emptyCard}>
                             <Text style={styles.emptyTitle}>No tienes solicitudes aún</Text>
-                            <Text style={styles.emptyText}>Usa el tab <Text style={styles.highlight}>"Solicitudes"</Text> para crear una nueva.</Text>
+                            <Text style={styles.emptyText}>Parece que aún no has recibido solicitudes. Una vez el solicitante cree una solicitud, aparecerá aquí.</Text>
                         </View>
                     </View>
                 ) : (
-                    solicitudesAbiertas.map((solicitud, index) => (
+                    filteredSolicitudes.map((solicitud, index) => (
                         <CardService
                             key={index}
                             titulo={solicitud.titulo}
@@ -89,6 +186,50 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         backgroundColor: '#f7f9fc',
+    },
+    filtrosContainer: {
+        marginHorizontal: 20,
+        marginVertical: 15,
+    },
+    filtroRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: '#f7f9fc',
+        padding: 10,
+        borderRadius: 16,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 5,
+        elevation: 3,
+    },
+    filtroCol: {
+        flex: 1,
+        marginHorizontal: 5,
+    },
+    filtroLabel: {
+        fontWeight: '600',
+        marginBottom: 4,
+        color: '#2c3e50',
+        textAlign: 'center',
+    },
+    resetButton: {
+        marginTop: 12,
+        alignSelf: 'center',
+        backgroundColor: '#4C8BF5',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 16,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 2,
+    },
+    resetText: {
+        color: '#fff',
+        fontWeight: '600',
+        textAlign: 'center',
     },
     headline: {
         fontSize: 22,

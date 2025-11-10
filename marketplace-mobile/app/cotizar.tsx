@@ -8,6 +8,7 @@ interface Material {
     unidad: string;
 }
 interface CardServiceProps {
+    id: string;
     titulo: string;
     descripcion: string;
     categoria: string;
@@ -25,12 +26,13 @@ export default function Cotizar() {
         return <SafeAreaView style={styles.emptyContainer}>
             <View style={styles.emptyCard}>
                 <Text style={styles.emptyTitle}>No has seleccionado una solicitud aún</Text>
-                <Text style={styles.emptyText}>Usa el tab <Text style={styles.highlight}>"Solicitudes"</Text> para cotizar una solicitud disponible.</Text>
+                <Text style={styles.emptyText}>Usa el tab <Text style={styles.highlight}>"Servicio"</Text> para cotizar una solicitud disponible.</Text>
             </View>
         </SafeAreaView>
     } return (
         <SafeAreaView>
             <FormCotizar
+                solicitudId={solicitudSeleccionada.id}
                 title={solicitudSeleccionada.titulo}
                 description={solicitudSeleccionada.descripcion}
                 categoria={solicitudSeleccionada.categoria}

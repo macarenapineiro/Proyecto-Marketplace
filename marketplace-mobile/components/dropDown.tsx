@@ -7,25 +7,24 @@ interface DropDownProps {
     data: { label: string; value: string }[];
     value?: string | null;
     onValueChange?: (value: string) => void;
+    customStyles?: {
+        dropdown?: object;
+        placeholderStyle?: object;
+        selectedTextStyle?: object;
+        inputSearchStyle?: object;
+    }
 }
 
-export default function DropDownComponent({ label, data, value, onValueChange }: DropDownProps) {
+export default function DropDownComponent({ label, data, value, onValueChange, customStyles }: DropDownProps) {
     const [isFocus, setIsFocus] = useState(false);
-
-    // const renderLabel = () => {
-    //     if (value || isFocus) {
-    //         return
-    //     }
-    //     return null;
-    // };
 
     return (
         <View style={styles.container}>
             <Dropdown
-                style={[styles.dropdown, isFocus && styles.dropdownFocus]}
-                placeholderStyle={[styles.placeholderStyle, isFocus && styles.placeholderFocus]}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
+                style={[styles.dropdown, isFocus && styles.dropdownFocus, customStyles?.dropdown]}
+                placeholderStyle={[styles.placeholderStyle, isFocus && styles.placeholderFocus, customStyles?.placeholderStyle]}
+                selectedTextStyle={[styles.selectedTextStyle, customStyles?.selectedTextStyle]}
+                inputSearchStyle={[styles.inputSearchStyle, customStyles?.inputSearchStyle]}
                 iconStyle={styles.iconStyle}
                 data={data}
                 search

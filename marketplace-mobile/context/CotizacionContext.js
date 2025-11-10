@@ -1,9 +1,11 @@
 import { createContext, useContext, useState } from 'react';
+import { useSolicitud } from './SolicitudContext';
 
 export const CotizacionContext = createContext(
     undefined
 )
 export const CotizacionProvider = ({ children }) => {
+    const { actualizarEstadoSolicitud } = useSolicitud();
     const [cotizacionesServicio, setCotizacionesServicio] = useState([]);
     const [cotizacionesInsumo, setCotizacionesInsumo] = useState([]);
 
@@ -19,18 +21,19 @@ export const CotizacionProvider = ({ children }) => {
         );
     }
 
-    const eliminarCotizacionServicio = (id) => {
-        setCotizacionesServicio(prevCotizaciones =>
-            prevCotizaciones.filter(cotizacion => cotizacion.id !== id)
-        );
+    const eliminarCotizacionServicio = (id, solicitudId) => {
+        setCotizacionesServicio(prevCotizaciones => {
+            const cotizacionEliminada = prevCotizaciones.find(cotizacion => cotizacion.id === id);
+            const nuevasCotizaciones = prevCotizaciones.filter(cotizacion => cotizacion.id !== id);
+            if (cotizacionEliminada){
+                actualizarEstadoSolicitud(cotizacionEliminada.solicitudId, 'Abierto');
+            }
+            return nuevasCotizaciones;
+        });
     }
 
-    const agregarCotizacionInsumo = (nuevaCotizacion) => {
-        setCotizacionesInsumo([...cotizacionesInsumo, nuevaCotizacion]);
-    };
-
     return (
-        <CotizacionContext.Provider value={{ cotizacionesServicio, agregarCotizacionServicio, actualizarCotizacionServicio, eliminarCotizacionServicio, cotizacionesInsumo, agregarCotizacionInsumo }}>
+        <CotizacionContext.Provider value={{ cotizacionesServicio, agregarCotizacionServicio, actualizarCotizacionServicio, eliminarCotizacionServicio, cotizacionesInsumo }}>
             {children}
         </CotizacionContext.Provider>
     );

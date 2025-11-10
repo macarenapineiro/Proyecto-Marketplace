@@ -97,6 +97,7 @@ export default function FormSolicitud() {
     setNuevoMaterial({ nombre: '', cantidad: '', unidad: '' });
     setMateriales([]);
     setSelectedDate(null);
+    Alert.alert('Acción cancelada', 'La creación de la solicitud ha sido cancelada.');
   }
 
   const handleSubmit = () => {

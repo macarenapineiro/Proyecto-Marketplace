@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useAuth } from '../context/AuthContext';
+import { useState } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface CardCotizarProps {
     titulo: string;
@@ -15,19 +15,12 @@ interface CardCotizarProps {
     onRechazar?: () => void;
     onEditar?: () => void;
     onEliminar?: () => void;
+    currentUser?: any;
 }
 
-interface User {
-    name: string;
-    rol: 'Solicitante' | 'Proveedor' | 'Proveedor de Insumos';
-}
+export default function CardCotizar({ currentUser, titulo, estado, descripcion, categoria, ubicacion, precio, tiempoEstimado, detalles, onAceptar, onRechazar, onEditar, onEliminar }: CardCotizarProps) {
+    const [mostrarBotones, setMostrarBotones] = useState(true);
 
-interface AuthContextType {
-    currentUser: User | null;
-}
-
-export default function CardCotizar({ titulo, estado, descripcion, categoria, ubicacion, precio, tiempoEstimado, detalles, onAceptar, onRechazar, onEditar, onEliminar }: CardCotizarProps) {
-    const { currentUser } = useAuth() as AuthContextType;
     const estadoStyles: { [key: string]: any } = {
         abierto: {
             backgroundColor: '#D4EFDF',
@@ -46,6 +39,22 @@ export default function CardCotizar({ titulo, estado, descripcion, categoria, ub
             color: '#6B0404',
         },
     };
+
+    const handleAceptar = () => {
+        setMostrarBotones(false);
+        if (onAceptar) {
+            onAceptar();
+        }
+        Alert.alert('Cotización Aceptada', 'Has aceptado la cotización exitosamente.');
+    }
+
+    const handleRechazar = () => {
+        setMostrarBotones(false);
+        if (onRechazar) {
+            onRechazar();
+        }
+        Alert.alert('Cotización Rechazada', 'Has rechazado la cotización exitosamente.');
+    }
     return (
         <View style={styles.container}>
             <View style={styles.row}>
@@ -71,16 +80,16 @@ export default function CardCotizar({ titulo, estado, descripcion, categoria, ub
             </View>
             <Text style={styles.label}>Detalles Adicionales</Text>
             <Text style={styles.text}>{detalles}</Text>
-            {currentUser?.rol === 'Solicitante' ? (
+            {currentUser?.rol === 'Solicitante' && estado !== 'Aceptado' && estado !== 'Rechazado' ? (
                 <View style={styles.button}>
-                    <TouchableOpacity onPress={onAceptar}>
+                    <TouchableOpacity onPress={handleAceptar}>
                         <Text style={styles.textAceptar}>Aceptar</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={onRechazar}>
+                    <TouchableOpacity onPress={handleRechazar}>
                         <Text style={styles.textRechazar}>Rechazar</Text>
                     </TouchableOpacity>
                 </View>
-            ):currentUser?.rol === 'Proveedor' ? (
+            ):currentUser?.rol === 'Proveedor' && estado!=='Aceptado' && estado!=='Rechazado' ? (
                 <View style={styles.button}>
                     <TouchableOpacity onPress={onEditar}>
                         <Text style={styles.textEditar}>Editar Cotización</Text>
