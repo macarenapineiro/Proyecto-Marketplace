@@ -1,18 +1,16 @@
 import './Login.css'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Header from '../../components/header/Header'
 import { useAuth } from '../../context/AuthContext'
 import InformationCard from '../../components/InformationCard/InformationCard'
-import ButtonBlack from '../../components/ButtonBlack/ButtonBlack'
+import ButtonLogin from '../../components/ButtonLogin/ButtonLogin'
 
 
 export default function Login() {
-  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const { login, logout } = useAuth();
+  const { login } = useAuth();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,8 +28,6 @@ export default function Login() {
     }
   }
   
-  const logged = !!localStorage.getItem("authToken");
-
   return (
     <>
       <Header />
@@ -41,7 +37,7 @@ export default function Login() {
         <form className="login-form" onSubmit={handleSubmit}>
           <InformationCard type="text" name="username" placeholder="Ingresa tu correo electrónico" text="Correo electrónico" value={username} onChange={e => setUsername(e.target.value)} />
           <InformationCard type="password" name="password" placeholder="Ingresa tu contraseña" text="Contraseña" value={password} onChange={e => setPassword(e.target.value)} />
-          <ButtonBlack text="Iniciar sesión" type="submit" />
+          <ButtonLogin text="Iniciar sesión" type="submit" />
         </form>
       </main>
     </>

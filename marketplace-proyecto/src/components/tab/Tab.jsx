@@ -27,9 +27,6 @@ CustomTabPanel.propTypes = {
   index: PropTypes.number.isRequired,
 };
 
-/**
- * Props de accesibilidad: vinculan el tab con su panel
- */
 function a11yProps(index) {
   return {
     id: `tab-${index}`,
@@ -37,9 +34,6 @@ function a11yProps(index) {
   };
 }
 
-/**
- * Componente principal
- */
 export default function TabComponent({
   text1 = "Solicitudes",
   text2 = "Cotizaciones",
@@ -114,7 +108,6 @@ export default function TabComponent({
         )}
       </CustomTabPanel>
 
-      {/* Contenido de la segunda pestaña */}
       <CustomTabPanel value={value} index={1}>
         {customCotizacionesRender
           ? customCotizacionesRender()
@@ -125,7 +118,6 @@ export default function TabComponent({
               </p>
             ) : (
               <Box sx={{ width: '100%' }}>
-                {/* Botón para ordenar por precio */}
                 <Box
                   sx={{
                     display: 'flex',

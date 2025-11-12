@@ -9,7 +9,6 @@ export default function FormCotizacionMaterial({ material, solicitud, cotizacion
         observaciones: ''
     });
 
-    // Cargar datos si estamos editando
     useEffect(() => {
         if (cotizacion) {
             setFormData({

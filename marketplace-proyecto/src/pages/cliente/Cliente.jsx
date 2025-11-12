@@ -93,7 +93,6 @@ export default function Cliente() {
       <CardHeader rol={currentUser.rol} nombre={currentUser.name} />
 
       <div className="buttonContainer">
-        {/* Mostrar botón solo si el formulario NO está visible */}
         {!showForm && (
           <button
             className="nuevaSolicitudButton"
@@ -103,7 +102,6 @@ export default function Cliente() {
           </button>
         )}
 
-        {/* Mostrar formulario si showForm es true */}
         {showForm && (
           <FormSolicitud
             onSubmit={handleCrearSolicitud}
@@ -114,7 +112,6 @@ export default function Cliente() {
 
       </div>
 
-      {/* Tabs con solicitudes */}
       <div className="servicioContainer">
         <TabComponent
           text1="Mis solicitudes"

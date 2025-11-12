@@ -30,9 +30,6 @@
     border-radius: 20px;
     padding: 5px 10px;
 }
-.status.pendiente{}
-.status.aceptado{}
-.status.rechazado{}
 .cardDescription{
     color: #777474;
     font-style: italic;
@@ -114,64 +111,3 @@
 .cotizarButton:hover{
     background-color: #333;
 }
-/* .cliente-contenido{
-    background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 8px;
-    padding: 20px;
-    width: 80%;
-}
-.cliente-solicitud{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-.solicitud-titulo{
-    font-size: 20px;
-    font-weight: 600;
-    color: #000;
-}
-.solicitud-estado{
-    background-color: #ABEBBA;
-    color: #438B54;
-    border: none;
-    border-radius: 20px;
-    padding: 5px 10px;
-}
-.solicitud-descripcion{
-    font-size: 16px;
-    color: #777474;
-    font-style: italic;
-}
-.solicitud-detalles{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-}
-.solicitud-detalle{
-    font-size: 14px;
-    color: #000;
-    font-style: italic;
-}
-.materiales-titulo{
-    font-size: 15px;
-    font-weight: 600;
-    color: #000;
-}
-.solicitud-materiales{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    justify-content: space-between;
-}
-.material{
-    font-size: 14px;
-    color: #000;
-    border:#000 1px solid;
-    border-radius: 15px;
-    padding: 5px 10px;
-} */

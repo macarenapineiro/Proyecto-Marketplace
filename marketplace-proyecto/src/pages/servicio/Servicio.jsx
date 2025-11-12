@@ -146,7 +146,6 @@ export default function Servicio() {
     <div className="clienteContainer">
       <CardHeader rol={currentUser.rol} nombre={currentUser.name} />
 
-      {/* Solo mostrar el formulario si hay una solicitud seleccionada */}
       {showForm && (
         <FormCotizacion
           solicitud={solicitudSeleccionada}

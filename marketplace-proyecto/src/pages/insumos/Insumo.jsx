@@ -109,7 +109,6 @@ export default function Insumo() {
 
         return (
             <div>
-                {/* Botones filtro por estado */}
                 <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginBottom: 20 }}>
                     {['Pendiente', 'Aceptado', 'Rechazado'].map((estado) => (
                         <button

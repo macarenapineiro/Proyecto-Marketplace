@@ -1,7 +1,7 @@
 import './Register.css'
 import Header from '../../components/header/Header'
 import InformationCard from '../../components/InformationCard/InformationCard'
-import ButtonBlack from '../../components/ButtonBlack/ButtonBlack'
+import ButtonLogin from '../../components/ButtonLogin/ButtonLogin'
 export default function Register() {
     return (
         <>
@@ -13,7 +13,7 @@ export default function Register() {
                     <InformationCard type="text" name="phone" placeholder="Ingresa tu número de teléfono" text="Teléfono" />  
                     <InformationCard type="text" name="username" placeholder="Ingresa tu correo electrónico" text="Correo electrónico" />
                     <InformationCard type="password" name="password" placeholder="Ingresa tu contraseña" text="Contraseña" />
-                    <ButtonBlack text="Registrarse" />
+                    <ButtonLogin text="Registrarse" />
                 </form>
               </main>
             </>

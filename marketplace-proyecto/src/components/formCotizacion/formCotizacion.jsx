@@ -8,7 +8,6 @@ export default function FormCotizacion({solicitud, cotizacion, onCancel, onSubmi
         descripcion: ''
     });
     
-    // Cargar datos si estamos editando
     useEffect(() => {
         if (cotizacion) {
             setFormData({

@@ -4,9 +4,7 @@ import { useAuth } from "../context/AuthContext";
 export default function PublicRoute() {
   const { isAuthenticated, currentUser } = useAuth();
 
-  // Si está autenticado, redirigir a su página correspondiente
   if (isAuthenticated && currentUser) {
-    // Mapear rol a ruta
     const roleRoutes = {
       "Solicitante": "/cliente",
       "Proveedor": "/servicio",

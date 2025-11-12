@@ -1,7 +1,6 @@
 import './Dashboard.css'
 import Header from '../../components/header/Header';
 import ButtonRol from '../../components/ButtonRol/ButtonRol';
-import { useEffect } from 'react';
 
 export default function Dashboard() {
     return (
