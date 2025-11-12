@@ -7,7 +7,6 @@ export const CotizacionContext = createContext(
 export const CotizacionProvider = ({ children }) => {
     const { actualizarEstadoSolicitud } = useSolicitud();
     const [cotizacionesServicio, setCotizacionesServicio] = useState([]);
-    const [cotizacionesInsumo, setCotizacionesInsumo] = useState([]);
 
     const agregarCotizacionServicio = (nuevaCotizacion) => {
         setCotizacionesServicio([...cotizacionesServicio, nuevaCotizacion]);
@@ -33,7 +32,7 @@ export const CotizacionProvider = ({ children }) => {
     }
 
     return (
-        <CotizacionContext.Provider value={{ cotizacionesServicio, agregarCotizacionServicio, actualizarCotizacionServicio, eliminarCotizacionServicio, cotizacionesInsumo }}>
+        <CotizacionContext.Provider value={{ cotizacionesServicio, agregarCotizacionServicio, actualizarCotizacionServicio, eliminarCotizacionServicio }}>
             {children}
         </CotizacionContext.Provider>
     );

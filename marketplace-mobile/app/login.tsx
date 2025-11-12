@@ -13,9 +13,8 @@ interface AuthContextType {
     login: (username: string, password: string) => Promise<{ success: boolean; user: User | null }>;
 }
 
-export default function LoginScreen({navigation}: any) {
+export default function LoginScreen() {
     const { login } = useAuth() as AuthContextType;
-    // const navigation = useNavigation<LoginScreenNavigationProp>();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
@@ -31,8 +30,6 @@ export default function LoginScreen({navigation}: any) {
         if (result.success && result.user) {
             setError(null);
             setSuccessMessage(`Bienvenido, ${result.user.name}`);
-            // else if (result.user.rol === 'Proveedor') navigation.replace('Servicio');
-            // else if (result.user.rol === 'Proveedor de Insumos') navigation.replace('Insumo');
         } else {
             setError("Usuario o contraseña incorrectos");
             setSuccessMessage(null);

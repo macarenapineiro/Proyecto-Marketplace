@@ -20,7 +20,7 @@ export type TabParamList = {
 };
 interface User {
     name: string;
-    rol: 'Solicitante' | 'Proveedor' | 'Proveedor de Insumos';
+    rol: 'Solicitante' | 'Proveedor' ;
 }
 
 interface AuthContextType {

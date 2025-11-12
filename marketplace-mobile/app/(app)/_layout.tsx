@@ -40,12 +40,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-
-// import { useAuth } from "@/context/AuthContext";
-// import { Redirect, Slot } from "expo-router";
-
-// export default function AppLayout(){    
-//     const {session} = useAuth();
-//     return !session ? <Redirect href="/login"/> : <Slot/>;
-// }

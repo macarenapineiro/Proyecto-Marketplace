@@ -14,12 +14,6 @@ const USERS = [
     name: "María Gómez",
     rol: "Proveedor",
   },
-  {
-    username: "insumos@test.com",
-    password: "insumos123",
-    name: "Carlos López",
-    rol: "Proveedor de Insumos",
-  }
 ]
 
 export const AuthContext = createContext(

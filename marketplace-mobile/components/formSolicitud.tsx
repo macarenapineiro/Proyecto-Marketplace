@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-// import { Snackbar } from 'react-native-paper';
 import { useSolicitud } from '../context/SolicitudContext';
 import DropdownComponent from './dropDown';
 
 export default function FormSolicitud() {
-  // const [showSuccess, setShowSuccess] = useState(false);
   const { agregarSolicitud } = useSolicitud() as {
     solicitudes: any[];
     agregarSolicitud: (solicitud: any) => void;
@@ -57,7 +55,6 @@ export default function FormSolicitud() {
   const agregarMaterial = () => {
     const { nombre, unidad, cantidad } = nuevoMaterial;
 
-    // Validaciones:
     if (!nombre || !unidad || !cantidad) {
       Alert.alert('Error', 'Completa todos los campos del material antes de agregarlo.');
       return;
@@ -70,7 +67,6 @@ export default function FormSolicitud() {
       return;
     }
 
-    // Agregar material válido
     setMateriales(prev => [...prev, { nombre, unidad, cantidad }]);
     setNuevoMaterial({ nombre: '', unidad: '', cantidad: '' });
   };
@@ -120,7 +116,6 @@ export default function FormSolicitud() {
     };
     agregarSolicitud(nuevaSolicitud);
 
-    // reset
     setFormData({ titulo: '', descripcion: '', fechaLimite: '', categoria: '', ubicacion: '', materiales: [] });
     setNuevoMaterial({ nombre: '', cantidad: '', unidad: '' });
     setMateriales([]);
@@ -131,7 +126,6 @@ export default function FormSolicitud() {
       [{ text: 'Aceptar', onPress: () => console.log('Usuario aceptó') }],
       { cancelable: false }
     );
-    // setShowSuccess(true);
   }
 
   return (

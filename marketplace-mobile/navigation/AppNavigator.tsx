@@ -9,13 +9,12 @@ export type RootStackParamList = {
     Perfil: undefined;
     Solicitud: undefined;
     AppTabs: undefined;
-    //   Servicio: undefined;
-    //   Insumo: undefined;
+
 };
 
 interface User {
     name: string;
-    rol: 'Solicitante' | 'Proveedor' | 'Proveedor de Insumos';
+    rol: 'Solicitante' | 'Proveedor' ;
 }
 
 interface AuthContextType {

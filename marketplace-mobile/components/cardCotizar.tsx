@@ -1,5 +1,4 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface CardCotizarProps {
@@ -19,7 +18,6 @@ interface CardCotizarProps {
 }
 
 export default function CardCotizar({ currentUser, titulo, estado, descripcion, categoria, ubicacion, precio, tiempoEstimado, detalles, onAceptar, onRechazar, onEditar, onEliminar }: CardCotizarProps) {
-    const [mostrarBotones, setMostrarBotones] = useState(true);
 
     const estadoStyles: { [key: string]: any } = {
         abierto: {
@@ -41,7 +39,6 @@ export default function CardCotizar({ currentUser, titulo, estado, descripcion, 
     };
 
     const handleAceptar = () => {
-        setMostrarBotones(false);
         if (onAceptar) {
             onAceptar();
         }
@@ -49,7 +46,6 @@ export default function CardCotizar({ currentUser, titulo, estado, descripcion, 
     }
 
     const handleRechazar = () => {
-        setMostrarBotones(false);
         if (onRechazar) {
             onRechazar();
         }
@@ -67,7 +63,7 @@ export default function CardCotizar({ currentUser, titulo, estado, descripcion, 
             <View style={styles.details}>
                 <View style={styles.rowItem}>
                     <MaterialIcons name="location-on" size={20} color="#000" />
-                    <Text style={styles.time}>{ubicacion}</Text>
+                    <Text style={styles.time}>{ubicacion.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</Text>
                 </View>
                 <View style={styles.rowItem}>
                     <MaterialIcons name="inventory" size={20} color="#000" />

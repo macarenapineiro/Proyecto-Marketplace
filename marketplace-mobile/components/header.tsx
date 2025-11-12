@@ -13,8 +13,6 @@ export default function Header({ rol, name }: HeaderProps) {
                 return "#0E4784";
             case "proveedor":
                 return "#00601D";
-            case "proveedor de insumos":
-                return "#2B0060";
             default:
                 return "#000";
         }
@@ -25,8 +23,6 @@ export default function Header({ rol, name }: HeaderProps) {
                 return "#90C6DA";
             case "proveedor":
                 return "#92DA90";
-            case "proveedor de insumos":
-                return "#B6B7EB";
             default:
                 return "#FFF";
         }

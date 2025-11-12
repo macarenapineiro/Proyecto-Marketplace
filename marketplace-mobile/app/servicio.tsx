@@ -13,7 +13,7 @@ type ServicioNavigationProp = BottomTabNavigationProp<TabParamList, 'Servicio'>;
 
 interface User {
     name: string;
-    rol: 'Solicitante' | 'Proveedor' | 'Proveedor de Insumos';
+    rol: 'Solicitante' | 'Proveedor' ;
 }
 
 interface AuthContextType {
@@ -79,14 +79,14 @@ export default function Servicio() {
 
     const ubicacionData = [
         { label: 'Todas', value: 'Todas' },
-        { label: 'Maldonado', value: 'Maldonado' },
-        { label: 'Punta del Este', value: 'Punta del Este' },
-        { label: 'San Carlos', value: 'San Carlos' },
-        { label: 'Pan de Azúcar', value: 'Pan de Azúcar' },
-        { label: 'Piriápolis', value: 'Piriápolis' },
-        { label: 'La Barra', value: 'La Barra' },
-        { label: 'José Ignacio', value: 'José Ignacio' },
-        { label: 'Otro', value: 'Otro' },
+        { label: 'Maldonado', value: 'maldonado' },
+        { label: 'Punta del Este', value: 'punta_del_este' },
+        { label: 'San Carlos', value: 'san_carlos' },
+        { label: 'Pan de Azúcar', value: 'pan_de_azucar' },
+        { label: 'Piriápolis', value: 'piriapolis' },
+        { label: 'La Barra', value: 'la_barra' },
+        { label: 'José Ignacio', value: 'jose_ignacio' },
+        { label: 'Otro', value: 'otro' },
     ];
 
     const fechaData = [
@@ -95,7 +95,7 @@ export default function Servicio() {
     ];
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ backgroundColor: '#f7f9fc', flex: 1 }}>
             <Header rol={currentUser?.rol || ''} name={currentUser?.name || ''} />
             <View style={styles.filtrosContainer}>
                 <View style={styles.filtroRow}>
@@ -161,7 +161,16 @@ export default function Servicio() {
                             <Text style={styles.emptyText}>Parece que aún no has recibido solicitudes. Una vez el solicitante cree una solicitud, aparecerá aquí.</Text>
                         </View>
                     </View>
-                ) : (
+                ) : filteredSolicitudes.length === 0 ? (
+                    <View style={styles.emptyContainer}>
+                        <View style={styles.emptyCard}>
+                            <Text style={styles.emptyTitle}>Sin resultados</Text>
+                            <Text style={styles.emptyText}>No se encontraron solicitudes que coincidan con los filtros seleccionados.
+                                Prueba modificando o restableciendo los filtros.
+                            </Text>
+                        </View>
+                    </View>
+                ):(
                     filteredSolicitudes.map((solicitud, index) => (
                         <CardService
                             key={index}

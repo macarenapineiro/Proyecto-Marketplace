@@ -1,6 +1,10 @@
+import { useAuth } from "@/context/AuthContext";
 import { useSolicitud } from '@/context/SolicitudContext';
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import FormCotizar from '../components/formCotizar';
+import Header from '../components/header';
 
 interface Material {
     nombre: string;
@@ -19,18 +23,40 @@ interface CardServiceProps {
     onCotizar?: () => void;
 }
 
+interface User {
+    name: string;
+    rol: 'Solicitante' | 'Proveedor' ;
+}
+
+interface AuthContextType {
+    currentUser: User | null;
+}
+
+
 export default function Cotizar() {
     const { solicitudSeleccionada } = useSolicitud() as { solicitudSeleccionada?: CardServiceProps };
+    const { currentUser } = useAuth() as AuthContextType;
 
     if (!solicitudSeleccionada) {
-        return <SafeAreaView style={styles.emptyContainer}>
-            <View style={styles.emptyCard}>
-                <Text style={styles.emptyTitle}>No has seleccionado una solicitud aún</Text>
-                <Text style={styles.emptyText}>Usa el tab <Text style={styles.highlight}>"Servicio"</Text> para cotizar una solicitud disponible.</Text>
-            </View>
-        </SafeAreaView>
+        return (
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#f7f9fc' }}>
+                <Header rol={currentUser?.rol || ''} name={currentUser?.name || ''} />
+                <View style={styles.emptyContainer}>
+                    <View style={styles.emptyCard}>
+                        <Ionicons
+                            name="document-text-outline"
+                            size={60}
+                            color="#16a085"
+                            style={{ alignSelf: 'center', marginBottom: 10 }}
+                        />
+                        <Text style={styles.emptyTitle}>No has seleccionado una solicitud aún</Text>
+                        <Text style={styles.emptyText}>Usa el tab <Text style={styles.highlight}>"Servicio"</Text> para cotizar una solicitud disponible.</Text>
+                    </View>
+                </View>
+            </SafeAreaView>
+        )
     } return (
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#f7f9fc' }}>
             <FormCotizar
                 solicitudId={solicitudSeleccionada.id}
                 title={solicitudSeleccionada.titulo}
@@ -46,7 +72,8 @@ export default function Cotizar() {
 }
 
 const styles = StyleSheet.create({
-     emptyContainer: {
+    emptyContainer: {
+        flex: 1,
         marginTop: 50,
         alignItems: 'center',
         justifyContent: 'center',

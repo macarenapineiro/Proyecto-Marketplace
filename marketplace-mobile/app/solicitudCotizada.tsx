@@ -35,7 +35,7 @@ interface cotizacionContextType {
 
 interface User {
     name: string;
-    rol: 'Solicitante' | 'Proveedor' | 'Proveedor de Insumos';
+    rol: 'Solicitante' | 'Proveedor' ;
 }
 
 interface AuthContextType {
@@ -53,6 +53,7 @@ export default function SolicitudCotizada() {
     const [cotizacionEditar, setCotizacionEditar] = useState<Cotizacion | null>(null);
 
     const [estadoFiltro, setEstadoFiltro] = useState<string>('Pendiente');
+    const [sort, setSort] = useState<'asc' | 'desc'>('asc');
 
     const handleEditar = (cotizacion: Cotizacion) => {
         setCotizacionEditar(cotizacion);
@@ -84,8 +85,18 @@ export default function SolicitudCotizada() {
         actualizarCotizacionServicio(id, { estado: 'Rechazado' });
     }
 
-    const cotizacionesFiltradas = cotizacionesServicio.filter(cotizacion => cotizacion.estado.toLowerCase() === estadoFiltro.toLowerCase());
+    const handleOrdenarPorPrecio = () => {
+        setSort(sort === 'asc' ? 'desc' : 'asc');
+    }
 
+    const ordenarPorPrecio = (lista: Cotizacion[]) => {
+        const copia = [...lista];
+        copia.sort((a, b) => sort === 'asc' ? a.precio - b.precio : b.precio - a.precio);
+        return copia;
+    }
+
+    const cotizacionesFiltradas = cotizacionesServicio.filter(cotizacion => cotizacion.estado.toLowerCase() === estadoFiltro.toLowerCase());
+    const cotizacionesOrdenadas = currentUser?.rol === 'Solicitante' ? ordenarPorPrecio(cotizacionesFiltradas) : cotizacionesFiltradas;
     return (
         <SafeAreaView style={styles.container}>
             <Header rol={currentUser?.rol || ''} name={currentUser?.name || ''} />
@@ -100,6 +111,16 @@ export default function SolicitudCotizada() {
                         </TouchableOpacity>
                     ))}
                 </View>
+                {currentUser?.rol === 'Solicitante' && cotizacionesFiltradas.length > 0 && (
+                    <TouchableOpacity
+                        style={styles.sortButton}
+                        onPress={handleOrdenarPorPrecio}
+                    >
+                        <Text style={styles.sortButtonText}>
+                            Ordenar por precio {sort === 'asc' ? '▼' : '▲'}
+                        </Text>
+                    </TouchableOpacity>
+                )}
                 {!cotizacionesServicio || cotizacionesServicio.length === 0 ? (
                     <View style={styles.emptyContainer}>
                         <View style={styles.emptyCard}>
@@ -115,7 +136,7 @@ export default function SolicitudCotizada() {
                             )}
                         </View>
                     </View>
-                ) : cotizacionesFiltradas.length === 0 ? (
+                ) : cotizacionesOrdenadas.length === 0 ? (
                     <View style={styles.emptyContainer}>
                         <View style={styles.emptyCard}>
                             <Text style={styles.emptyTitle}>No hay cotizaciones {estadoFiltro.toLowerCase()}</Text>
@@ -124,7 +145,7 @@ export default function SolicitudCotizada() {
                             </Text>
                         </View>
                     </View>
-                ) : (cotizacionesFiltradas.map(cotizacion => (
+                ) : (cotizacionesOrdenadas.map(cotizacion => (
                     <CardCotizar
                         key={cotizacion.id}
                         titulo={cotizacion.title || ''}
@@ -236,4 +257,17 @@ const styles = StyleSheet.create({
         color: '#16a085',
         fontWeight: '600',
     },
+    sortButton: {
+        backgroundColor: '#2c3e50',
+        alignSelf: 'center',
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        marginBottom: 10,
+    },
+    sortButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+
 })

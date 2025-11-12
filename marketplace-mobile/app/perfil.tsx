@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 
 interface User {
     name: string;
-    rol: 'Solicitante' | 'Proveedor' | 'Proveedor de Insumos';
+    rol: 'Solicitante' | 'Proveedor' ;
     username: string;
 }
 
@@ -16,7 +16,7 @@ interface AuthContextType {
 }
 
 
-export default function PerfilScreen({ navigation }: any) {
+export default function PerfilScreen() {
     const { currentUser, logout } = useAuth() as AuthContextType;
     const handleLogout = async () => {
         await logout();
@@ -54,7 +54,7 @@ export default function PerfilScreen({ navigation }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F8F9FD',
+        backgroundColor: '#f7f9fc',
         alignItems: 'center',
     },
     header: {

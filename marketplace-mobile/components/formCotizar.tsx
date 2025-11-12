@@ -37,6 +37,7 @@ interface Material {
 }
 
 export default function FormCotizar({ solicitudId, title, description, categoria, ubicacion, fecha, materiales, cotizacionExistente, onSubmit }: FormCotizarProps) {
+    const {solicitudSeleccionada} = useSolicitud() as { solicitudSeleccionada?: any };
     const { agregarCotizacionServicio } = useCotizacion() as {
         cotizacionesServicio: any[];
         agregarCotizacionServicio: (cotizacion: any) => void;
@@ -88,7 +89,7 @@ export default function FormCotizar({ solicitudId, title, description, categoria
         }
         const nuevaCotizacion = {
             id: cotizacionExistente?.id || Date.now().toString(),
-            solicitudId: solicitudId || '',
+            solicitudId: solicitudSeleccionada?.id || '',
             title,
             description,
             categoria,
@@ -103,7 +104,7 @@ export default function FormCotizar({ solicitudId, title, description, categoria
         }
         else {
             agregarCotizacionServicio(nuevaCotizacion);
-            actualizarEstadoSolicitud(solicitudId || '', 'Pendiente');
+            actualizarEstadoSolicitud(solicitudSeleccionada?.id || '', 'Pendiente');
         }
         setFormData({
             precio: '',
