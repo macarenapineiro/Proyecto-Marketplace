@@ -3,6 +3,7 @@ import CardService from '../components/cardService';
 import Header from '../components/header';
 import { useAuth } from '../context/AuthContext';
 import { useSolicitud } from '../context/SolicitudContext';
+import { useCotizacion } from '@/context/CotizacionContext';
 
 interface User {
     name: string;
@@ -23,6 +24,7 @@ interface Material {
 }
 
 interface Solicitud {
+    id: string;
     titulo: string;
     descripcion: string;
     categoria: string;
@@ -41,13 +43,20 @@ export default function ClienteScreen() {
     const { currentUser } = useAuth() as AuthContextType;
 
     const { solicitudesAbiertas } = useSolicitud() as SolicitudContextType;
+    const {cotizacionesServicio} = useCotizacion() as any;
 
+    const solicitudesSinCotizacion = solicitudesAbiertas.filter(solicitud => {
+        const tieneCotizacion = cotizacionesServicio.some(
+            (cotizacion: any) => cotizacion.solicitudId === solicitud.id
+        );
+        return !tieneCotizacion;
+    })
     return (
         <SafeAreaView style={styles.container}>
             <Header rol={currentUser?.rol || ''} name={currentUser?.name || ''} />
             <ScrollView style={styles.content}>
                 <Text style={styles.headline}>Mis Solicitudes</Text>
-                {solicitudesAbiertas.length === 0 ? (
+                {solicitudesSinCotizacion.length === 0 ? (
                     <View style={styles.emptyContainer}>
                         <View style={styles.emptyCard}>
                             <Text style={styles.emptyTitle}>No tienes solicitudes aún</Text>
@@ -56,7 +65,7 @@ export default function ClienteScreen() {
                     </View>
                     
                 ) : (
-                    solicitudesAbiertas.map((solicitud, index) => (
+                    solicitudesSinCotizacion.map((solicitud, index) => (
                         <CardService
                             key={index}
                             titulo={solicitud.titulo}
