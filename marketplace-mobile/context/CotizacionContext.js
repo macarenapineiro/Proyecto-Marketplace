@@ -20,7 +20,7 @@ export const CotizacionProvider = ({ children }) => {
         );
     }
 
-    const eliminarCotizacionServicio = (id, solicitudId) => {
+    const eliminarCotizacionServicio = (id) => {
         const cotizacion = cotizacionesServicio.find(c => c.id === id);
         if (!cotizacion) return;
         setCotizacionesServicio(prev => prev.filter(c => c.id !== id));

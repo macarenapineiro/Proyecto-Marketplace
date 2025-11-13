@@ -88,7 +88,6 @@ export default function FormSolicitud() {
   };
 
   const handleCancel = () => {
-    // reset
     setFormData({ titulo: '', descripcion: '', fechaLimite: '', categoria: '', ubicacion: '', materiales: [] });
     setNuevoMaterial({ nombre: '', cantidad: '', unidad: '' });
     setMateriales([]);

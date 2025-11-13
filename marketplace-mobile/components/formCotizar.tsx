@@ -104,7 +104,6 @@ export default function FormCotizar({ solicitudId, title, description, categoria
         }
         else {
             agregarCotizacionServicio(nuevaCotizacion);
-            actualizarEstadoSolicitud(solicitudSeleccionada?.id || '', 'Pendiente');
         }
         setFormData({
             precio: '',

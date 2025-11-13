@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DropdownComponent from '../components/dropDown';
 import { TabParamList } from '../navigation/TabNavigator';
+import { useCotizacion } from '@/context/CotizacionContext';
 
 type ServicioNavigationProp = BottomTabNavigationProp<TabParamList, 'Servicio'>;
 
@@ -47,6 +48,7 @@ export default function Servicio() {
     const { seleccionarSolicitud, solicitudesAbiertas } = useSolicitud() as SolicitudContextType;
     const { currentUser } = useAuth() as AuthContextType;
     const navigation = useNavigation<ServicioNavigationProp>();
+    const {cotizacionesServicio} = useCotizacion() as {cotizacionesServicio: any[]};
 
     const [categoriaFiltro, setCategoriaFiltro] = useState<string>('Todas');
     const [ubicacionFiltro, setUbicacionFiltro] = useState<string>('Todas');
@@ -57,8 +59,15 @@ export default function Servicio() {
         navigation.navigate('Cotizar');
 
     };
+    const solicitudesDisponibles = solicitudesAbiertas.filter(solicitud=>{
+        const tieneCotizacion = cotizacionesServicio.some(
+            (cotizacion:any) => cotizacion.solicitudId === solicitud.id &&
+            (cotizacion.estado === 'Pendiente' || cotizacion.estado === 'Aceptado')
+        );
+        return !tieneCotizacion;
+    })
 
-    const filteredSolicitudes = solicitudesAbiertas.filter(solicitud => {
+    const filteredSolicitudes = solicitudesDisponibles.filter(solicitud => {
         return (categoriaFiltro === 'Todas' || solicitud.categoria === categoriaFiltro) &&
             (ubicacionFiltro === 'Todas' || solicitud.ubicacion === ubicacionFiltro) &&
             (fechaFiltro === 'Todas' || solicitud.fechaLimite === fechaFiltro);
