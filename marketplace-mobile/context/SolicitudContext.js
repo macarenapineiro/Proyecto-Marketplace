@@ -24,6 +24,15 @@ export const SolicitudProvider = ({ children }) => {
         solicitud.id === solicitudId ? { ...solicitud, estado: nuevoEstado } : solicitud
       )
     );
+    if(nuevoEstado === 'Abierto' || nuevoEstado === 'Pendiente') {
+      const solicitud = solicitudes.find(s => s.id === solicitudId);
+      if(solicitud && !solicitudesAbiertas.some(s => s.id === solicitudId)) {
+        setSolicitudes((prevSolicitudes) => [...prevSolicitudes, solicitud]);
+      }
+      else{
+        setSolicitudes((prevSolicitudes) => prevSolicitudes.filter(s => s.id !== solicitudId));
+      }
+    }
   };
 
   const solicitudesAbiertas = solicitudes.filter(solicitud => solicitud.estado === 'Abierto');

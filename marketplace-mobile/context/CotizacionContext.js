@@ -21,14 +21,12 @@ export const CotizacionProvider = ({ children }) => {
     }
 
     const eliminarCotizacionServicio = (id, solicitudId) => {
-        setCotizacionesServicio(prevCotizaciones => {
-            const cotizacionEliminada = prevCotizaciones.find(cotizacion => cotizacion.id === id);
-            const nuevasCotizaciones = prevCotizaciones.filter(cotizacion => cotizacion.id !== id);
-            if (cotizacionEliminada){
-                actualizarEstadoSolicitud(cotizacionEliminada.solicitudId, 'Abierto');
-            }
-            return nuevasCotizaciones;
-        });
+        const cotizacion = cotizacionesServicio.find(c => c.id === id);
+        if (!cotizacion) return;
+        setCotizacionesServicio(prev => prev.filter(c => c.id !== id));
+        if (cotizacion.solicitudId) {
+            actualizarEstadoSolicitud(cotizacion.solicitudId, 'Abierto'); // o 'Pendiente' según tu lógica
+        }
     }
 
     return (
