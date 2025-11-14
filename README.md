@@ -1,35 +1,35 @@
 # Proyecto Marketplace de Servicios
+Plataforma web y mobile para publicar, cotizar y contratar servicios e insumos.
 
 ## Descripción del proyecto
-Este proyecto consiste en un Marketplace de Servicios, desarrollado con una plataforma web y una aplicación mobile. La plataforma permite la interacción entre tres tipos de usuarios, cada uno con un rol específico.
+Este proyecto consiste en un **Marketplace de Servicios**, desarrollado con una plataforma web y una aplicación mobile. La plataforma permite la interacción entre tres tipos de usuarios, cada uno con un rol específico.
 
-- **Solicitante:**  Publica servicios con título, descripción, categoría, ubicación, fecha deseada y materiales necesarios. Recibe cotizaciones de los proveedores de servicios y de insumos, las cuales puede comparar, ordenar por precio y seleccionar la más conveniente.
-- **Proveedor de Servicios:** Visualiza los servicios publicados, pudiendo filtrarlos por categoría, ubicación y fecha. Envía cotizaciones indicando precio, plazo y detalles adicionales, y puede editarlas o retirarlas mientras el servicio aún no ha sido aceptado o rechazado.
-- **Proveedor de Insumos:** Similar al proveedor de servicios, puede ver los servicios publicados y cotizar los materiales necesarios para cada solicitud, indicando precio, tiempo y detalles adicionales.
+- **Solicitante:**  Publica solicitudes de servicios y materiales, recibe y compara cotizaciones.
+- **Proveedor de Servicios:** Visualiza las solicitudes publicadas, envía cotizaciones y puede editarlas o retirarlas mientras se encuentren pendientes.
+- **Proveedor de Insumos:** Cotiza los materiales necesarios para cada solicitud, indicando precio y tiempo estimado.
 
-La plataforma permite que los servicios sean publicados, cotizados, comparados y finalmente seleccionados, asegurando un flujo claro y roles bien definidos.
-
-En el caso de la aplicación mobile funciona de manera similar, solamente que contempla dos roles: Solicitante y Proveedor de Servicios.
+La versión mobile contempla solo dos roles: SOlicitante y Proveedor de Servicios.
 
 ## Decisiones técnicas
 
 ### Frameworks utilizados:
-- Web desarrollada en React Vite. Mobile desarrollada con React Native (Expo)
+- **Web:** React + Vite
+- **Mobile:** React Native con Expo
 
 ### Gestión de estado:
 Se utilizó `useState` para estados locales y `useContext` para los estados globales. 
     
 **Mobile:**
 - `AuthContext` → gestiona la sesión del usuario y la información asociada (nombre, rol, login/logout) y persiste la sesión en `localStorage`
-- `SolicitudContext` → administra los servicios publicados: creación, edición, selección y filtrado.
-- `CotizacionContext` → administra las cotizaciones de servicios, incluyendo agregar, editar y eliminar. Depende de `SolicitudContext` para sincronizar el estado de las solicitudes.
+- `SolicitudContext` → administra los servicios publicados: creación, edición, selección y filtrado. Los datos se mantienen mientras la aplicación está abierta, pero se pierden al cerrar la app.
+- `CotizacionContext` → administra las cotizaciones de servicios, incluyendo agregar, editar y eliminar. Depende de `SolicitudContext` para sincronizar el estado de las solicitudes. Los datos se pierden al cerrar la app.
 
 **Web**
 - `AuthContext` → al igual que en mobile, gestiona la sesión y los datos del usuario activo.
 - `ServicioContext` → combina las funcionalidades de solicitudes y cotizaciones, centralizando el flujo de datos de la plataforma web.
 
 ### Routing
-- **Web:** `react-route-dom` con rutas públicas y privadas según el rol del usuario.
+- **Web:** `react-router-dom` con rutas públicas y privadas según el rol del usuario.
 - **Mobile:** `React Navigation` con stacks y tabs para diferenciar pantallas según el rol (Solicitante, Proveedor de Servicios). 
 
 ### Mock de datos
@@ -147,7 +147,7 @@ A continuación se muestra el flujo principal del uso de la plataforma web y mob
 
 ![EditarCotizacion](./videos/mobile/EditarCotizacion.gif)
 
-8. Se puede eliminar la cotización y volver a cotizarlo mientras esté pendiente la solicitud
+8. Se puede eliminar la cotización y volver a cotizarla mientras esté pendiente la solicitud
 
 ![EliminarCotizacion](./videos/mobile/EliminarCotizacion.gif)
 
