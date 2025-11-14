@@ -119,3 +119,50 @@ A continuación se muestra el flujo principal del uso de la plataforma web y mob
 ## Demo Mobile
 ### Flujo principal
 
+1. Iniciar Sesión como Solicitante
+
+![IniciarSesiónCliente](./videos/mobile/IniciarSesionCliente.gif)
+
+2. Crear solicitud indicando título, descripción, categoría, ubicación, fecha límite y lista de materiales, con nombre, unidad y cantidad
+
+![CrearSolicitud](./videos/mobile/CrearSolicitud.gif)
+
+3. Se puede desplegar la información
+
+![VerMasInfo](./videos/mobile/VerDetalles.gif)
+
+4. Iniciar sesión como Proveedor de Servicios
+
+![IniciarSesiónServicio](./videos/mobile/IniciarSesionServicio.gif)
+
+5. Se puede filtrar las solicitudes según categoría, ubicación y fecha
+
+![FiltroSolicitud](./videos/mobile/FiltrarSolicitud.gif)
+
+6. Se cotiza la solicitud indicando precio, tiempo estimativo y detalles adicionales
+
+![CotizarSolicitud](./videos/mobile/CotizarSolicitud.gif)
+
+7. Se puede editar la información de la solicitud mientras la solicitud esté en pendiente
+
+![EditarCotizacion](./videos/mobile/EditarCotizacion.gif)
+
+8. Se puede eliminar la cotización y volver a cotizarlo mientras esté pendiente la solicitud
+
+![EliminarCotizacion](./videos/mobile/EliminarCotizacion.gif)
+
+9. Las cotizaciones se pueden filtrar según el estado
+
+![FiltroEstado](./videos/mobile/FiltroEstado.gif)
+
+10. Las cotizaciones se pueden ordenar según el precio
+
+![OrdenPrecio](./videos/mobile/OrdenarPrecio.gif)
+
+11. Las cotizaciones se pueden aceptar
+
+![AceptarCotizacion](./videos/mobile/AceptarCotizacion.gif)
+
+12. Las cotizaciones se pueden rechazar
+
+![RechazarCotizacion](./videos/mobile/RechazarCotizacion.gif)
